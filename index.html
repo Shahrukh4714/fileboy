@@ -3,10 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fileboy — Universal Client-Side Converter Platform</title>
+<title>Fileboy — Universal PDF & Media Converter Platform</title>
 <!-- Client-Side Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
@@ -664,7 +665,7 @@
     <line x1="12" y1="3" x2="12" y2="15"/>
   </svg>
   <h2 style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:16px;">DROP FILES TO CONVERT</h2>
-  <p style="font-size:13px; color:#8E8E93; margin-top:4px;">Supports Images, Documents, Data, WebAssembly Audio & Video</p>
+  <p style="font-size:13px; color:#8E8E93; margin-top:4px;">PDF Merge, Split, Rotate, Images, Documents & Media</p>
 </div>
 
 <!-- Lightbox Modal -->
@@ -716,6 +717,16 @@
     </div>
 
     <div class="drawer-group">
+      <label class="drawer-label">PDF Rotation Angle</label>
+      <select class="drawer-select" id="pdfRotateSelect">
+        <option value="0">No Rotation (0°)</option>
+        <option value="90">Rotate 90° Clockwise</option>
+        <option value="180">Rotate 180° Upside Down</option>
+        <option value="270">Rotate 270° Counter-Clockwise</option>
+      </select>
+    </div>
+
+    <div class="drawer-group">
       <label class="drawer-label">Background Color (For JPG Fill)</label>
       <select class="drawer-select" id="bgFillSelect">
         <option value="white">Fill White (Default)</option>
@@ -753,31 +764,31 @@
 
       <h1 class="title">IMAGE</h1>
       <h1 class="title outline">DOCS</h1>
-      <h1 class="title">DATA</h1>
+      <h1 class="title">PDF PRO</h1>
       <h1 class="title outline">AUDIO</h1>
 
       <div class="hero-format-pills">
-        <span>JPG</span> · <span>PNG</span> · <span>WEBP</span> · <span>PDF</span> · <span>MP4</span> · <span>MP3</span> · <span>CSV</span>
+        <span>MERGE PDF</span> · <span>SPLIT PDF</span> · <span>ROTATE</span> · <span>PDF TO ZIP</span> · <span>JPG</span> · <span>MP4</span>
       </div>
 
       <!-- Hero Middle Feature Widget -->
       <div class="hero-feature-widget">
         <div class="feature-widget-header">
-          <span>CLIENT ENGINE</span>
-          <span class="widget-tag">WASM READY</span>
+          <span>PDF & MEDIA ENGINE</span>
+          <span class="widget-tag">PRO PLATFORM</span>
         </div>
         <div class="feature-pills-list">
           <div class="feature-pill active">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
+            PDF Tools (Merge, Split, Rotate, ZIP)
+          </div>
+          <div class="feature-pill">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
             Images (JPG/PNG/WEBP/BMP/PDF)
           </div>
           <div class="feature-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
-            Documents & Data (DOCX/CSV/JSON)
-          </div>
-          <div class="feature-pill">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M15 10l5 5-5 5M4 4v7a4 4 0 004 4h12"/></svg>
-            WebAssembly Video & Audio (FFmpeg)
+            Data & WebAssembly Media (FFmpeg)
           </div>
         </div>
       </div>
@@ -872,7 +883,7 @@
       <div class="tool-header-bar">
         <div class="tool-status-badge">
           <span class="status-dot"></span>
-          <span>Universal Client Engine · 100% Local</span>
+          <span>PDF & Universal Client Engine</span>
         </div>
         <div class="tool-quick-actions">
           <button class="quick-btn" onclick="toggleHistoryDrawer(true)">
@@ -908,15 +919,21 @@
           </div>
 
           <div class="field-row" style="margin-top:2px;">
-            <div class="field-row-label">Select Format</div>
+            <div class="field-row-label">Select Action / Format</div>
             <div class="pill-box">
               <select class="format-select-input" id="globalFormatSelect" onchange="setGlobalFormat(this.value)">
+                <optgroup label="🔴 PDF Page Tools">
+                  <option value="pdf_merge">Merge Multiple PDFs → 1 PDF</option>
+                  <option value="pdf_split">Split PDF Pages into Individual PDFs</option>
+                  <option value="pdf_rotate">Rotate PDF Pages (90°/180°/270°)</option>
+                  <option value="pdf_to_zip">Export PDF Pages to ZIP Archive</option>
+                </optgroup>
                 <optgroup label="🖼️ Image Formats">
                   <option value="jpeg" selected>JPEG (.jpg)</option>
                   <option value="png">PNG (.png)</option>
                   <option value="webp">WEBP (.webp)</option>
                   <option value="bmp">BMP (.bmp)</option>
-                  <option value="pdf">PDF Document (.pdf)</option>
+                  <option value="pdf">Convert Image to PDF Document</option>
                 </optgroup>
                 <optgroup label="📄 Document Formats">
                   <option value="pdf">PDF Document (.pdf)</option>
@@ -924,12 +941,12 @@
                   <option value="html">HTML Webpage (.html)</option>
                   <option value="md">Markdown (.md)</option>
                 </optgroup>
-                <optgroup label="📊 Data Formats">
+                <optgroup label="📊 Data Sheets">
                   <option value="csv">CSV Spreadsheet (.csv)</option>
                   <option value="json">JSON Data (.json)</option>
                   <option value="xlsx">Excel Sheet (.xlsx)</option>
                 </optgroup>
-                <optgroup label="🎬 Video / Audio (WASM)">
+                <optgroup label="🎬 Video / Audio">
                   <option value="mp4">MP4 Video (.mp4)</option>
                   <option value="webm">WEBM Video (.webm)</option>
                   <option value="gif">Animated GIF (.gif)</option>
@@ -1172,12 +1189,9 @@ function addFilesToBatch(files) {
     const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
     let autoFormat = globalFormat;
 
-    if (file.type.startsWith('video/')) autoFormat = 'mp4';
+    if (file.type === 'application/pdf' && !autoFormat.startsWith('pdf_')) autoFormat = 'pdf_split';
+    else if (file.type.startsWith('video/')) autoFormat = 'mp4';
     else if (file.type.startsWith('audio/')) autoFormat = 'mp3';
-    else if (file.type === 'application/pdf') autoFormat = 'pdf';
-    else if (ext === 'csv') autoFormat = 'json';
-    else if (ext === 'json') autoFormat = 'csv';
-    else if (ext === 'docx') autoFormat = 'txt';
 
     const item = {
       id: 'f_' + Math.random().toString(36).substr(2, 8),
@@ -1239,7 +1253,7 @@ function renderBatch() {
             <div class="stat-lbl">Saved</div>
           </div>
           <div class="stat-card">
-            <div class="stat-val">100%</div>
+            <div class="stat-val">PDF+WASM</div>
             <div class="stat-lbl">Client Local</div>
           </div>
         </div>
@@ -1291,20 +1305,16 @@ function renderBatch() {
 
     const fmtSelect = `
       <select class="override-select" onchange="updateItemFormat('${item.id}', this.value)">
+        <option value="pdf_merge" ${item.targetFormat==='pdf_merge'?'selected':''}>Merge PDF</option>
+        <option value="pdf_split" ${item.targetFormat==='pdf_split'?'selected':''}>Split PDF</option>
+        <option value="pdf_rotate" ${item.targetFormat==='pdf_rotate'?'selected':''}>Rotate PDF</option>
+        <option value="pdf_to_zip" ${item.targetFormat==='pdf_to_zip'?'selected':''}>PDF to ZIP</option>
         <option value="jpeg" ${item.targetFormat==='jpeg'?'selected':''}>JPEG</option>
         <option value="png" ${item.targetFormat==='png'?'selected':''}>PNG</option>
         <option value="webp" ${item.targetFormat==='webp'?'selected':''}>WEBP</option>
-        <option value="bmp" ${item.targetFormat==='bmp'?'selected':''}>BMP</option>
-        <option value="pdf" ${item.targetFormat==='pdf'?'selected':''}>PDF</option>
-        <option value="txt" ${item.targetFormat==='txt'?'selected':''}>TXT</option>
-        <option value="csv" ${item.targetFormat==='csv'?'selected':''}>CSV</option>
-        <option value="json" ${item.targetFormat==='json'?'selected':''}>JSON</option>
-        <option value="xlsx" ${item.targetFormat==='xlsx'?'selected':''}>XLSX</option>
+        <option value="pdf" ${item.targetFormat==='pdf'?'selected':''}>PDF Doc</option>
         <option value="mp4" ${item.targetFormat==='mp4'?'selected':''}>MP4</option>
-        <option value="webm" ${item.targetFormat==='webm'?'selected':''}>WEBM</option>
-        <option value="gif" ${item.targetFormat==='gif'?'selected':''}>GIF</option>
         <option value="mp3" ${item.targetFormat==='mp3'?'selected':''}>MP3</option>
-        <option value="wav" ${item.targetFormat==='wav'?'selected':''}>WAV</option>
       </select>
     `;
 
@@ -1330,9 +1340,16 @@ function renderBatch() {
 }
 
 // ═══════════════════════════════════════════
-// UNIVERSAL CLIENT-SIDE CONVERSION ENGINE
+// PDF PAGE MANAGEMENT & UNIVERSAL CONVERSION ENGINE
 // ═══════════════════════════════════════════
 async function convertAllBatch() {
+  // Check if PDF MERGE is selected for multiple PDFs
+  const pdfMergeItems = batchFiles.filter(f => f.targetFormat === 'pdf_merge' && f.status === 'ready');
+  if (pdfMergeItems.length > 1) {
+    await processPdfMergeBatch(pdfMergeItems);
+    return;
+  }
+
   for (let i = 0; i < batchFiles.length; i++) {
     const item = batchFiles[i];
     if (item.status === 'done' || item.status === 'converting') continue;
@@ -1369,18 +1386,91 @@ async function convertAllBatch() {
   }
 }
 
+async function processPdfMergeBatch(items) {
+  try {
+    items.forEach(it => { it.status = 'converting'; it.progress = 50; });
+    renderBatch();
+
+    const mergedPdf = await PDFLib.PDFDocument.create();
+    for (const item of items) {
+      const bytes = await item.file.arrayBuffer();
+      const pdf = await PDFLib.PDFDocument.load(bytes);
+      const copiedPages = await mergedPdf.copyPages(pdf, pdf.getPageIndices());
+      copiedPages.forEach(p => mergedPdf.addPage(p));
+    }
+
+    const mergedBytes = await mergedPdf.save();
+    const blob = new Blob([mergedBytes], { type: 'application/pdf' });
+    const result = {
+      download_url: URL.createObjectURL(blob),
+      output_filename: `Merged_PDF_${Date.now()}.pdf`,
+      new_size: blob.size
+    };
+
+    items.forEach(it => {
+      it.status = 'done';
+      it.progress = 100;
+      it.result = result;
+    });
+
+    showToast('PDFs Merged Successfully! 📄');
+  } catch (err) {
+    items.forEach(it => {
+      it.status = 'error';
+      it.progress = 100;
+      it.error = err.message || 'PDF Merge failed';
+    });
+  }
+  renderBatch();
+}
+
 async function processUniversalClientConversion(file, targetFmt) {
   const prefix = document.getElementById('prefixInput')?.value || '';
   const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
   const targetExt = targetFmt.toLowerCase();
-  const outputFilename = `${prefix}${baseName}_converted.${targetExt}`;
+  const outputFilename = `${prefix}${baseName}_converted.${targetExt.replace('pdf_', '')}`;
 
-  // 1. IMAGE CONVERSIONS (JPEG, PNG, WEBP, BMP)
+  // 1. PDF TOOLS (pdf_split, pdf_rotate, pdf_to_zip)
+  if (targetExt.startsWith('pdf_')) {
+    const bytes = await file.arrayBuffer();
+    const pdf = await PDFLib.PDFDocument.load(bytes);
+
+    if (targetExt === 'pdf_rotate') {
+      const angle = parseInt(document.getElementById('pdfRotateSelect')?.value || '90');
+      const pages = pdf.getPages();
+      pages.forEach(p => p.setRotation(PDFLib.degrees((p.getRotation().angle + angle) % 360)));
+      const pdfBytes = await pdf.save();
+      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+      return { download_url: URL.createObjectURL(blob), output_filename: `${baseName}_rotated.pdf`, new_size: blob.size };
+    }
+
+    if (targetExt === 'pdf_split' || targetExt === 'pdf_to_zip') {
+      const pageCount = pdf.getPageCount();
+      const zip = new JSZip();
+
+      for (let i = 0; i < pageCount; i++) {
+        const subPdf = await PDFLib.PDFDocument.create();
+        const [copied] = await subPdf.copyPages(pdf, [i]);
+        subPdf.addPage(copied);
+        const subBytes = await subPdf.save();
+        zip.file(`${baseName}_page_${i + 1}.pdf`, subBytes);
+      }
+
+      const zipBlob = await zip.generateAsync({ type: 'blob' });
+      return {
+        download_url: URL.createObjectURL(zipBlob),
+        output_filename: `${baseName}_pages_archive.zip`,
+        new_size: zipBlob.size
+      };
+    }
+  }
+
+  // 2. IMAGE CONVERSIONS (JPEG, PNG, WEBP, BMP)
   if (['jpeg', 'jpg', 'png', 'webp', 'bmp'].includes(targetExt) && file.type.startsWith('image/')) {
     return await convertImageCanvas(file, targetExt, outputFilename);
   }
 
-  // 2. PDF CONVERSIONS (Image/Text/MD -> PDF)
+  // 3. IMAGE/TEXT TO PDF
   if (targetExt === 'pdf') {
     if (file.type.startsWith('image/')) {
       return await convertImageToPdf(file, outputFilename);
@@ -1394,7 +1484,7 @@ async function processUniversalClientConversion(file, targetFmt) {
     }
   }
 
-  // 3. DATA & SHEET CONVERSIONS (CSV, JSON, XLSX)
+  // 4. DATA CONVERSIONS (CSV, JSON, XLSX)
   if (['csv', 'json', 'xlsx', 'html'].includes(targetExt)) {
     if (file.name.endsWith('.csv') || file.type.includes('csv')) {
       const text = await file.text();
@@ -1422,7 +1512,7 @@ async function processUniversalClientConversion(file, targetFmt) {
     }
   }
 
-  // 4. DOCX to TEXT/HTML
+  // 5. DOCX to TEXT
   if (file.name.endsWith('.docx') && (targetExt === 'txt' || targetExt === 'html')) {
     const arrayBuffer = await file.arrayBuffer();
     const result = await mammoth.extractRawText({ arrayBuffer });
@@ -1430,12 +1520,12 @@ async function processUniversalClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
   }
 
-  // 5. WEBASSEMBLY FFMPEG (MP4, WEBM, GIF, MP3, WAV)
+  // 6. WEBASSEMBLY FFMPEG (MP4, WEBM, GIF, MP3, WAV)
   if (['mp4', 'webm', 'gif', 'mp3', 'wav'].includes(targetExt) && (file.type.startsWith('video/') || file.type.startsWith('audio/'))) {
     return await convertMediaFfmpegWasm(file, targetExt, outputFilename);
   }
 
-  // Fallback: Blob copy
+  // Fallback
   const blob = new Blob([await file.arrayBuffer()], { type: file.type || 'application/octet-stream' });
   return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
 }
@@ -1462,7 +1552,6 @@ function convertImageCanvas(file, targetExt, outputFilename) {
 
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
-      // Watermark Text overlay
       const watermark = document.getElementById('watermarkInput')?.value;
       if (watermark) {
         ctx.font = 'bold 20px "Space Grotesk", sans-serif';
@@ -1534,7 +1623,6 @@ async function convertMediaFfmpegWasm(file, targetExt, outputFilename) {
     }
   } catch (e) {}
 
-  // Fallback Audio Decoder
   return await convertAudioToWavFallback(file, outputFilename);
 }
 
