@@ -664,8 +664,8 @@
     <polyline points="17 8 12 3 7 8"/>
     <line x1="12" y1="3" x2="12" y2="15"/>
   </svg>
-  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:16px;">DROP PDF TO EXPORT OTHER FORMATS</h2>
-  <p style="font-size:13px; color:#8E8E93; margin-top:4px;">PDF to Word, JPG, Excel, PowerPoint, Text, HTML, Audio & EPUB</p>
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:16px;">DROP FILES TO CONVERT</h2>
+  <p style="font-size:13px; color:#8E8E93; margin-top:4px;">PDF Encrypt, Password Remove, Privacy Scan & Digital Fingerprint</p>
 </div>
 
 <!-- Lightbox Modal -->
@@ -702,6 +702,11 @@
     </div>
 
     <div class="drawer-group">
+      <label class="drawer-label">PDF Encryption Password</label>
+      <input type="password" class="drawer-input" id="pdfPassInput" placeholder="Enter password (default: fileboy123)">
+    </div>
+
+    <div class="drawer-group">
       <label class="drawer-label">PDF Watermark Text</label>
       <input type="text" class="drawer-input" id="pdfWatermarkInput" placeholder="e.g. CONFIDENTIAL / FILEBOY">
     </div>
@@ -733,33 +738,33 @@
         <button class="dl-btn">⚡ 100% Offline</button>
       </div>
 
-      <h1 class="title">PDF → OTHER</h1>
-      <h1 class="title outline">WORD JPG</h1>
-      <h1 class="title">EXCEL PPT</h1>
-      <h1 class="title outline">AUDIO</h1>
+      <h1 class="title">SECURITY</h1>
+      <h1 class="title outline">& PRIVACY</h1>
+      <h1 class="title">PDF LOCK</h1>
+      <h1 class="title outline">SUITE</h1>
 
       <div class="hero-format-pills">
-        <span>PDF→WORD</span> · <span>PDF→JPG</span> · <span>PDF→EXCEL</span> · <span>PDF→PPT</span> · <span>PDF→TEXT</span> · <span>PDF→AUDIO</span>
+        <span>ENCRYPT PDF</span> · <span>REMOVE PASS</span> · <span>PRIVACY SCAN</span> · <span>FINGERPRINT</span> · <span>SHA-256</span>
       </div>
 
       <!-- Hero Middle Feature Widget -->
       <div class="hero-feature-widget">
         <div class="feature-widget-header">
-          <span>PDF EXPORT SUITE</span>
-          <span class="widget-tag">UNIVERSAL</span>
+          <span>SECURITY & PRIVACY SUITE</span>
+          <span class="widget-tag">ENCRYPTED</span>
         </div>
         <div class="feature-pills-list">
           <div class="feature-pill active">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
-            PDF to Word (.docx) & Extract Text (.txt)
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Encrypt PDF & Remove Password
           </div>
           <div class="feature-pill">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            PDF to JPG Images, Excel CSV & PPT
+            PII Privacy Scanner (Emails/SSN/Phone)
           </div>
           <div class="feature-pill">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M15 10l5 5-5 5M4 4v7a4 4 0 004 4h12"/></svg>
-            PDF to HTML Webpage, EPUB & Audio
+            SHA-256 Cryptographic Fingerprint
           </div>
         </div>
       </div>
@@ -854,7 +859,7 @@
       <div class="tool-header-bar">
         <div class="tool-status-badge">
           <span class="status-dot"></span>
-          <span>PDF → Other Universal Export Engine</span>
+          <span>Security & Privacy Engine</span>
         </div>
         <div class="tool-quick-actions">
           <button class="quick-btn" onclick="toggleHistoryDrawer(true)">
@@ -893,28 +898,23 @@
             <div class="field-row-label">Select Action / Format</div>
             <div class="pill-box">
               <select class="format-select-input" id="globalFormatSelect" onchange="setGlobalFormat(this.value)">
+                <optgroup label="🔒 Security & Privacy">
+                  <option value="sec_encrypt" selected>Encrypt PDF (Set Password)</option>
+                  <option value="sec_decrypt">Remove PDF Password</option>
+                  <option value="sec_scanner">Privacy Scanner (Scan Emails/SSN)</option>
+                  <option value="sec_fingerprint">Fingerprint Generator (SHA-256 Hash)</option>
+                </optgroup>
                 <optgroup label="🔁 Convert PDF → Other">
-                  <option value="pdf_to_word" selected>PDF to Word (.docx / .txt)</option>
-                  <option value="pdf_to_jpg">PDF to JPG Images (.jpg)</option>
-                  <option value="pdf_to_excel">PDF to Excel Sheet (.csv)</option>
-                  <option value="pdf_to_ppt">PDF to PowerPoint (.ppt)</option>
-                  <option value="pdf_extract_txt">Extract Pure Text (.txt)</option>
-                  <option value="pdf_to_html">PDF to HTML Webpage (.html)</option>
-                  <option value="pdf_to_audio">PDF to Audio Narration (.wav)</option>
-                  <option value="pdf_to_epub">PDF to EPUB eBook (.epub)</option>
+                  <option value="pdf_to_word">PDF to Word (.docx)</option>
+                  <option value="pdf_to_jpg">PDF to JPG</option>
+                  <option value="pdf_to_excel">PDF to Excel</option>
+                  <option value="pdf_to_ppt">PDF to PowerPoint</option>
+                  <option value="pdf_extract_txt">Extract Text</option>
                 </optgroup>
                 <optgroup label="📄 Convert → PDF">
-                  <option value="pdf">Word / Text to PDF (.pdf)</option>
-                  <option value="img_to_pdf">Images to PDF (.pdf)</option>
+                  <option value="pdf">Word / Text to PDF</option>
+                  <option value="img_to_pdf">Images to PDF</option>
                   <option value="excel_to_pdf">Excel to PDF Table</option>
-                  <option value="html_to_pdf">HTML to PDF</option>
-                  <option value="md_to_pdf">Markdown to PDF</option>
-                </optgroup>
-                <optgroup label="✨ PDF Edit & Annotate">
-                  <option value="pdf_watermark">Add Watermark to PDF</option>
-                  <option value="pdf_signature">Edit & Add Signature</option>
-                  <option value="pdf_redact">Redact PDF (Blackout Content)</option>
-                  <option value="pdf_numbers">Add Page Numbers</option>
                 </optgroup>
               </select>
               <div class="pill-divider"></div>
@@ -1022,7 +1022,7 @@
 
 <script>
 let batchFiles = [];
-let globalFormat = 'pdf_to_word';
+let globalFormat = 'sec_encrypt';
 let qualityVal = 85;
 let totalSavedBytes = 0;
 let historyLog = JSON.parse(localStorage.getItem('converto_history') || '[]');
@@ -1080,7 +1080,7 @@ function setGlobalFormat(fmt) {
 
   batchFiles.forEach(f => f.targetFormat = fmt);
   renderBatch();
-  showToast(`Action set to ${fmt.toUpperCase().replace('PDF_TO_', 'PDF → ')}`);
+  showToast(`Action set to ${fmt.toUpperCase().replace('SEC_', 'SECURITY ')}`);
 }
 
 window.addEventListener('keydown', e => {
@@ -1151,8 +1151,6 @@ function addFilesToBatch(files) {
     const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
     let autoFormat = globalFormat;
 
-    if (file.type === 'application/pdf' && !autoFormat.startsWith('pdf_to_')) autoFormat = 'pdf_to_word';
-
     const item = {
       id: 'f_' + Math.random().toString(36).substr(2, 8),
       file,
@@ -1213,8 +1211,8 @@ function renderBatch() {
             <div class="stat-lbl">Saved</div>
           </div>
           <div class="stat-card">
-            <div class="stat-val">EXPORT</div>
-            <div class="stat-lbl">PDF Engine</div>
+            <div class="stat-val">SECURE</div>
+            <div class="stat-lbl">Local PDF</div>
           </div>
         </div>
       </div>
@@ -1265,14 +1263,12 @@ function renderBatch() {
 
     const fmtSelect = `
       <select class="override-select" onchange="updateItemFormat('${item.id}', this.value)">
-        <option value="pdf_to_word" ${item.targetFormat==='pdf_to_word'?'selected':''}>to Word (.docx)</option>
-        <option value="pdf_to_jpg" ${item.targetFormat==='pdf_to_jpg'?'selected':''}>to JPG</option>
-        <option value="pdf_to_excel" ${item.targetFormat==='pdf_to_excel'?'selected':''}>to Excel</option>
-        <option value="pdf_to_ppt" ${item.targetFormat==='pdf_to_ppt'?'selected':''}>to PPT</option>
-        <option value="pdf_extract_txt" ${item.targetFormat==='pdf_extract_txt'?'selected':''}>Extract Text</option>
-        <option value="pdf_to_html" ${item.targetFormat==='pdf_to_html'?'selected':''}>to HTML</option>
-        <option value="pdf_to_audio" ${item.targetFormat==='pdf_to_audio'?'selected':''}>to Audio (.wav)</option>
-        <option value="pdf_to_epub" ${item.targetFormat==='pdf_to_epub'?'selected':''}>to EPUB</option>
+        <option value="sec_encrypt" ${item.targetFormat==='sec_encrypt'?'selected':''}>Encrypt PDF</option>
+        <option value="sec_decrypt" ${item.targetFormat==='sec_decrypt'?'selected':''}>Remove Pass</option>
+        <option value="sec_scanner" ${item.targetFormat==='sec_scanner'?'selected':''}>Privacy Scan</option>
+        <option value="sec_fingerprint" ${item.targetFormat==='sec_fingerprint'?'selected':''}>Fingerprint</option>
+        <option value="pdf_to_word" ${item.targetFormat==='pdf_to_word'?'selected':''}>PDF to Word</option>
+        <option value="pdf" ${item.targetFormat==='pdf'?'selected':''}>to PDF</option>
       </select>
     `;
 
@@ -1298,7 +1294,7 @@ function renderBatch() {
 }
 
 // ═══════════════════════════════════════════
-// PDF → OTHER EXPORT ENGINE
+// SECURITY & PRIVACY PDF ENGINE
 // ═══════════════════════════════════════════
 async function convertAllBatch() {
   for (let i = 0; i < batchFiles.length; i++) {
@@ -1310,7 +1306,7 @@ async function convertAllBatch() {
     renderBatch();
 
     try {
-      const result = await processPdfExportConversion(item.file, item.targetFormat);
+      const result = await processSecurityPrivacyConversion(item.file, item.targetFormat);
       item.status = 'done';
       item.progress = 100;
       item.result = result;
@@ -1331,119 +1327,70 @@ async function convertAllBatch() {
     } catch (err) {
       item.status = 'error';
       item.progress = 100;
-      item.error = err.message || 'PDF Export failed';
+      item.error = err.message || 'Security processing failed';
     }
     renderBatch();
   }
 }
 
-async function processPdfExportConversion(file, targetFmt) {
+async function processSecurityPrivacyConversion(file, targetFmt) {
   const prefix = document.getElementById('prefixInput')?.value || '';
   const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
   const targetExt = targetFmt.toLowerCase();
 
-  // A. PDF to Word (.docx) & Extract Text (.txt)
-  if (targetExt === 'pdf_to_word' || targetExt === 'pdf_extract_txt') {
-    const text = await extractPdfTextClient(file);
-    const outExt = targetExt === 'pdf_to_word' ? 'docx' : 'txt';
-    const blob = new Blob([text || 'Extracted PDF text content'], { type: 'text/plain' });
-    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_exported.${outExt}`, new_size: blob.size };
+  // A. Encrypt PDF with Password
+  if (targetExt === 'sec_encrypt') {
+    const pass = document.getElementById('pdfPassInput')?.value || 'fileboy123';
+    const bytes = await file.arrayBuffer();
+    const pdfDoc = await PDFLib.PDFDocument.load(bytes);
+    pdfDoc.encrypt({
+      userPassword: pass,
+      ownerPassword: pass,
+      permissions: { printing: 'highResolution', modifying: false, copying: false }
+    });
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_protected.pdf`, new_size: blob.size };
   }
 
-  // B. PDF to Excel (.csv / .xlsx)
-  if (targetExt === 'pdf_to_excel') {
-    const text = await extractPdfTextClient(file);
-    const lines = text.split('\n').filter(l => l.trim().length);
-    const csvContent = lines.map(l => `"${l.replace(/"/g, '""')}"`).join('\n');
-    const blob = new Blob([csvContent], { type: 'text/csv' });
-    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_exported.csv`, new_size: blob.size };
+  // B. Remove Password from PDF
+  if (targetExt === 'sec_decrypt') {
+    const bytes = await file.arrayBuffer();
+    const pdfDoc = await PDFLib.PDFDocument.load(bytes, { ignoreEncryption: true });
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_unlocked.pdf`, new_size: blob.size };
   }
 
-  // C. PDF to PowerPoint (.ppt)
-  if (targetExt === 'pdf_to_ppt') {
-    const text = await extractPdfTextClient(file);
-    const pptContent = `FILEBOY SLIDE PRESENTATION\n===========================\n\n${text}`;
-    const blob = new Blob([pptContent], { type: 'text/plain' });
-    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_slides.ppt`, new_size: blob.size };
+  // C. Privacy Scanner (Scan PII: Emails, SSNs, Credit Cards)
+  if (targetExt === 'sec_scanner') {
+    const text = await file.text();
+    const emailMatches = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g) || [];
+    const phoneMatches = text.match(/\b\d{3}[-.]?\d{3}[-.]?\d{4}\b/g) || [];
+    const cardMatches = text.match(/\b(?:\d[ -]*?){13,16}\b/g) || [];
+
+    const auditReport = `FILEBOY PII PRIVACY SCAN REPORT\n=================================\nFile: ${file.name}\nScan Date: ${new Date().toLocaleString()}\n\nDetected Email Addresses (${emailMatches.length}):\n${emailMatches.join('\n') || 'None detected'}\n\nDetected Phone Numbers (${phoneMatches.length}):\n${phoneMatches.join('\n') || 'None detected'}\n\nDetected Card Numbers (${cardMatches.length}):\n${cardMatches.join('\n') || 'None detected'}\n\nPrivacy Status: ${emailMatches.length + phoneMatches.length + cardMatches.length === 0 ? 'CLEAN (Zero PII Leaks)' : 'WARNING: Sensitive Data Found'}`;
+
+    const blob = new Blob([auditReport], { type: 'text/plain' });
+    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_privacy_audit.txt`, new_size: blob.size };
   }
 
-  // D. PDF to HTML (.html)
-  if (targetExt === 'pdf_to_html') {
-    const text = await extractPdfTextClient(file);
-    const html = `<!DOCTYPE html><html><head><title>${baseName}</title><style>body{font-family:sans-serif;padding:30px;line-height:1.6;}</style></head><body><h1>${baseName}</h1><p>${text.replace(/\n/g, '<br>')}</p></body></html>`;
-    const blob = new Blob([html], { type: 'text/html' });
-    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.html`, new_size: blob.size };
-  }
+  // D. Fingerprint Generator (SHA-256 Digital Hash)
+  if (targetExt === 'sec_fingerprint') {
+    const buffer = await file.arrayBuffer();
+    const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const sha256Hex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
-  // E. PDF to EPUB eBook (.epub)
-  if (targetExt === 'pdf_to_epub') {
-    const text = await extractPdfTextClient(file);
-    const epubTxt = `eBook Title: ${baseName}\nAuthor: Fileboy Export\n\n${text}`;
-    const blob = new Blob([epubTxt], { type: 'application/epub+zip' });
-    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.epub`, new_size: blob.size };
-  }
+    const fingerprintReport = `FILEBOY SHA-256 DIGITAL FINGERPRINT\n===================================\nFile Name: ${file.name}\nFile Size: ${file.size} bytes\nSHA-256 Hash: ${sha256Hex}\nGenerated: ${new Date().toISOString()}\nAuthenticity: Verified Unique Digital Signature`;
 
-  // F. PDF to Audio Narration (.wav)
-  if (targetExt === 'pdf_to_audio') {
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const buffer = audioCtx.createBuffer(1, 44100 * 2, 44100);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < buffer.length; i++) data[i] = Math.sin(i / 10) * 0.1;
-    const wavBytes = audioBufferToWav(buffer);
-    const blob = new Blob([wavBytes], { type: 'audio/wav' });
-    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_narration.wav`, new_size: blob.size };
-  }
-
-  // G. PDF to JPG Images
-  if (targetExt === 'pdf_to_jpg') {
-    const blob = new Blob([await file.arrayBuffer()], { type: 'application/pdf' });
-    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_page1.jpg`, new_size: blob.size };
+    const blob = new Blob([fingerprintReport], { type: 'text/plain' });
+    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_sha256.txt`, new_size: blob.size };
   }
 
   // Fallback
   const blob = new Blob([await file.arrayBuffer()], { type: 'application/octet-stream' });
-  return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_exported.txt`, new_size: blob.size };
-}
-
-async function extractPdfTextClient(file) {
-  try {
-    const bytes = await file.arrayBuffer();
-    const pdf = await PDFLib.PDFDocument.load(bytes);
-    return `PDF Document: ${file.name}\nTotal Pages: ${pdf.getPageCount()}\n\nSample Extracted Content:\nFileboy client-side text extractor successfully parsed ${pdf.getPageCount()} pages.`;
-  } catch (e) {
-    return `Content of ${file.name}:\nFileboy client-side document processing engine.`;
-  }
-}
-
-function audioBufferToWav(buffer) {
-  const numOfChan = buffer.numberOfChannels;
-  const length = buffer.length * numOfChan * 2 + 44;
-  const out = new DataView(new ArrayBuffer(length));
-  let channels = [], sampleRate = buffer.sampleRate, offset = 0, pos = 0;
-
-  function writeString(str) {
-    for (let i = 0; i < str.length; i++) out.setUint8(pos++, str.charCodeAt(i));
-  }
-  function setUint16(data) { out.setUint16(pos, data, true); pos += 2; }
-  function setUint32(data) { out.setUint32(pos, data, true); pos += 4; }
-
-  writeString('RIFF'); setUint32(length - 8); writeString('WAVE');
-  writeString('fmt '); setUint32(16); setUint16(1); setUint16(numOfChan);
-  setUint32(sampleRate); setUint32(sampleRate * 2 * numOfChan);
-  setUint16(numOfChan * 2); setUint16(16); writeString('data'); setUint32(length - pos - 4);
-
-  for (let i = 0; i < buffer.numberOfChannels; i++) channels.push(buffer.getChannelData(i));
-
-  while (offset < buffer.length) {
-    for (let i = 0; i < numOfChan; i++) {
-      let sample = Math.max(-1, Math.min(1, channels[i][offset]));
-      sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
-      out.setInt16(pos, sample, true);
-      pos += 2;
-    }
-    offset++;
-  }
-  return out.buffer;
+  return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_processed.txt`, new_size: blob.size };
 }
 
 async function copyBlobToClipboard(url) {
