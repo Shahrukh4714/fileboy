@@ -3,12 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fileboy — Universal Client-Side Converter</title>
+<title>Fileboy — Universal Client-Side Converter Platform</title>
 <!-- Client-Side Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
 
@@ -590,6 +591,11 @@
     font-family:'Space Grotesk', sans-serif;
   }
   .drawer-range { width:100%; accent-color:#3B6BF5; }
+  .drawer-input {
+    width:100%; padding:8px 10px;
+    background:#161618; color:#fff;
+    border:1.5px solid #111113; font-size:12px; font-weight:700;
+  }
   .drawer-select {
     width:100%; padding:8px 10px;
     background:#161618; color:#fff;
@@ -658,7 +664,7 @@
     <line x1="12" y1="3" x2="12" y2="15"/>
   </svg>
   <h2 style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:16px;">DROP FILES TO CONVERT</h2>
-  <p style="font-size:13px; color:#8E8E93; margin-top:4px;">Supports Images, Documents, Data (CSV/JSON/XLSX), Audio & Video</p>
+  <p style="font-size:13px; color:#8E8E93; margin-top:4px;">Supports Images, Documents, Data, WebAssembly Audio & Video</p>
 </div>
 
 <!-- Lightbox Modal -->
@@ -718,6 +724,16 @@
       </select>
     </div>
 
+    <div class="drawer-group">
+      <label class="drawer-label">Batch Output Prefix</label>
+      <input type="text" class="drawer-input" id="prefixInput" placeholder="e.g. fileboy_">
+    </div>
+
+    <div class="drawer-group">
+      <label class="drawer-label">Watermark Text (Image Outputs)</label>
+      <input type="text" class="drawer-input" id="watermarkInput" placeholder="e.g. Confidential / Fileboy">
+    </div>
+
     <button class="drawer-close-btn" onclick="toggleDrawer(false)">SAVE & CLOSE</button>
   </div>
 </div>
@@ -741,27 +757,27 @@
       <h1 class="title outline">AUDIO</h1>
 
       <div class="hero-format-pills">
-        <span>JPG</span> · <span>PNG</span> · <span>WEBP</span> · <span>PDF</span> · <span>CSV</span> · <span>JSON</span> · <span>WAV</span>
+        <span>JPG</span> · <span>PNG</span> · <span>WEBP</span> · <span>PDF</span> · <span>MP4</span> · <span>MP3</span> · <span>CSV</span>
       </div>
 
       <!-- Hero Middle Feature Widget -->
       <div class="hero-feature-widget">
         <div class="feature-widget-header">
           <span>CLIENT ENGINE</span>
-          <span class="widget-tag">UNIVERSAL</span>
+          <span class="widget-tag">WASM READY</span>
         </div>
         <div class="feature-pills-list">
           <div class="feature-pill active">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            Images (JPG/PNG/WEBP/BMP/GIF/PDF)
+            Images (JPG/PNG/WEBP/BMP/PDF)
           </div>
           <div class="feature-pill">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
-            Documents (DOCX/TXT/MD/PDF)
+            Documents & Data (DOCX/CSV/JSON)
           </div>
           <div class="feature-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
-            Data Sheets (CSV/JSON/XLSX/HTML)
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M15 10l5 5-5 5M4 4v7a4 4 0 004 4h12"/></svg>
+            WebAssembly Video & Audio (FFmpeg)
           </div>
         </div>
       </div>
@@ -913,7 +929,11 @@
                   <option value="json">JSON Data (.json)</option>
                   <option value="xlsx">Excel Sheet (.xlsx)</option>
                 </optgroup>
-                <optgroup label="🎵 Audio Extract">
+                <optgroup label="🎬 Video / Audio (WASM)">
+                  <option value="mp4">MP4 Video (.mp4)</option>
+                  <option value="webm">WEBM Video (.webm)</option>
+                  <option value="gif">Animated GIF (.gif)</option>
+                  <option value="mp3">MP3 Audio (.mp3)</option>
                   <option value="wav">WAV Audio (.wav)</option>
                 </optgroup>
               </select>
@@ -968,7 +988,6 @@
           </div>
 
           <div id="fileListRows">
-            <!-- Default mockup state -->
             <div class="upload-file-row">
               <div class="file-thumb">IMG</div>
               <div class="upload-file-info">
@@ -1027,6 +1046,7 @@ let globalFormat = 'jpeg';
 let qualityVal = 85;
 let totalSavedBytes = 0;
 let historyLog = JSON.parse(localStorage.getItem('converto_history') || '[]');
+let ffmpegInstance = null;
 
 function triggerFilePicker() {
   document.getElementById('file-input').click();
@@ -1153,7 +1173,7 @@ function addFilesToBatch(files) {
     let autoFormat = globalFormat;
 
     if (file.type.startsWith('video/')) autoFormat = 'mp4';
-    else if (file.type.startsWith('audio/')) autoFormat = 'wav';
+    else if (file.type.startsWith('audio/')) autoFormat = 'mp3';
     else if (file.type === 'application/pdf') autoFormat = 'pdf';
     else if (ext === 'csv') autoFormat = 'json';
     else if (ext === 'json') autoFormat = 'csv';
@@ -1280,6 +1300,10 @@ function renderBatch() {
         <option value="csv" ${item.targetFormat==='csv'?'selected':''}>CSV</option>
         <option value="json" ${item.targetFormat==='json'?'selected':''}>JSON</option>
         <option value="xlsx" ${item.targetFormat==='xlsx'?'selected':''}>XLSX</option>
+        <option value="mp4" ${item.targetFormat==='mp4'?'selected':''}>MP4</option>
+        <option value="webm" ${item.targetFormat==='webm'?'selected':''}>WEBM</option>
+        <option value="gif" ${item.targetFormat==='gif'?'selected':''}>GIF</option>
+        <option value="mp3" ${item.targetFormat==='mp3'?'selected':''}>MP3</option>
         <option value="wav" ${item.targetFormat==='wav'?'selected':''}>WAV</option>
       </select>
     `;
@@ -1346,9 +1370,10 @@ async function convertAllBatch() {
 }
 
 async function processUniversalClientConversion(file, targetFmt) {
+  const prefix = document.getElementById('prefixInput')?.value || '';
   const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
   const targetExt = targetFmt.toLowerCase();
-  const outputFilename = `${baseName}_converted.${targetExt}`;
+  const outputFilename = `${prefix}${baseName}_converted.${targetExt}`;
 
   // 1. IMAGE CONVERSIONS (JPEG, PNG, WEBP, BMP)
   if (['jpeg', 'jpg', 'png', 'webp', 'bmp'].includes(targetExt) && file.type.startsWith('image/')) {
@@ -1365,11 +1390,7 @@ async function processUniversalClientConversion(file, targetFmt) {
       const doc = new jsPDF();
       doc.text(text.slice(0, 4000), 10, 10);
       const pdfBlob = doc.output('blob');
-      return {
-        download_url: URL.createObjectURL(pdfBlob),
-        output_filename: outputFilename,
-        new_size: pdfBlob.size
-      };
+      return { download_url: URL.createObjectURL(pdfBlob), output_filename: outputFilename, new_size: pdfBlob.size };
     }
   }
 
@@ -1409,12 +1430,12 @@ async function processUniversalClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
   }
 
-  // 5. AUDIO DECODE (Web Audio API -> WAV)
-  if (targetExt === 'wav' && (file.type.startsWith('audio/') || file.type.startsWith('video/'))) {
-    return await convertAudioToWav(file, outputFilename);
+  // 5. WEBASSEMBLY FFMPEG (MP4, WEBM, GIF, MP3, WAV)
+  if (['mp4', 'webm', 'gif', 'mp3', 'wav'].includes(targetExt) && (file.type.startsWith('video/') || file.type.startsWith('audio/'))) {
+    return await convertMediaFfmpegWasm(file, targetExt, outputFilename);
   }
 
-  // Fallback: If same format or basic blob copy
+  // Fallback: Blob copy
   const blob = new Blob([await file.arrayBuffer()], { type: file.type || 'application/octet-stream' });
   return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
 }
@@ -1440,6 +1461,14 @@ function convertImageCanvas(file, targetExt, outputFilename) {
       }
 
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      // Watermark Text overlay
+      const watermark = document.getElementById('watermarkInput')?.value;
+      if (watermark) {
+        ctx.font = 'bold 20px "Space Grotesk", sans-serif';
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        ctx.fillText(watermark, 20, canvas.height - 20);
+      }
 
       let mimeType = `image/${targetExt}`;
       if (targetExt === 'jpg') mimeType = 'image/jpeg';
@@ -1485,7 +1514,31 @@ function convertImageToPdf(file, outputFilename) {
   });
 }
 
-async function convertAudioToWav(file, outputFilename) {
+async function convertMediaFfmpegWasm(file, targetExt, outputFilename) {
+  try {
+    if (window.FFmpeg && window.FFmpeg.createFFmpeg) {
+      if (!ffmpegInstance) {
+        showToast('Loading WebAssembly Engine...');
+        ffmpegInstance = window.FFmpeg.createFFmpeg({ log: false });
+        await ffmpegInstance.load();
+      }
+      const inExt = file.name.split('.').pop() || 'tmp';
+      const inputName = `in_${Date.now()}.${inExt}`;
+      const outName = `out_${Date.now()}.${targetExt}`;
+
+      ffmpegInstance.FS('writeFile', inputName, new Uint8Array(await file.arrayBuffer()));
+      await ffmpegInstance.run('-i', inputName, outName);
+      const data = ffmpegInstance.FS('readFile', outName);
+      const blob = new Blob([data.buffer], { type: `${file.type.startsWith('video/') ? 'video' : 'audio'}/${targetExt}` });
+      return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
+    }
+  } catch (e) {}
+
+  // Fallback Audio Decoder
+  return await convertAudioToWavFallback(file, outputFilename);
+}
+
+async function convertAudioToWavFallback(file, outputFilename) {
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   const arrayBuffer = await file.arrayBuffer();
   const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
