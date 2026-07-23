@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fileboy — Universal Client-Side Converter</title>
+<!-- Client-Side Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  html, body {
+    background:#070709;
+    font-family:'Plus Jakarta Sans', sans-serif;
+    height:100vh;
+    width:100vw;
+    overflow:hidden;
+    color:#fff;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  button { font-family:inherit; cursor:pointer; }
+  a { text-decoration:none; color:inherit; }
+
+  /* ===== DESKTOP 2-COLUMN APP SHELL ===== */
+  .app-shell {
+    display:flex;
+    flex-direction:column;
+    height:100vh;
+    width:100vw;
+    overflow:hidden;
+  }
+
+  @media (min-width:900px) {
+    .app-shell {
+      flex-direction:row;
+      height:100vh;
+    }
+  }
+
+  /* ===== LEFT HERO PANEL ===== */
+  .hero-panel {
+    background:#F5F0E6;
+    color:#111113;
+    padding:24px 32px 18px;
+    display:flex;
+    flex-direction:column;
+    flex-shrink:0;
+    overflow:hidden;
+    position:relative;
+    justify-content:space-between;
+    border-right:1.5px solid #111113;
+  }
+
+  @media (min-width:900px) {
+    .hero-panel {
+      width:380px;
+      height:100vh;
+    }
+  }
+
+  .hero-top {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
+  }
+
+  .logo {
+    font-family:'Space Grotesk', sans-serif;
+    font-size:16px;
+    font-weight:700;
+    letter-spacing:1px;
+    color:#111113;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .logo-tag {
+    font-size:9px;
+    font-weight:800;
+    background:#111113;
+    color:#F5F0E6;
+    padding:2px 6px;
+    letter-spacing:0.5px;
+  }
+
+  .dl-btn {
+    background:#3B6BF5;
+    color:#fff;
+    border:1.5px solid #111113;
+    font-weight:700;
+    font-size:11px;
+    padding:6px 14px;
+    border-radius:0;
+    box-shadow:2px 2px 0px #111113;
+    transition:transform 0.1s;
+  }
+  .dl-btn:hover { transform:translate(-1px,-1px); }
+
+  h1.title {
+    font-family:'Archivo Black', sans-serif;
+    font-size:42px;
+    line-height:0.88;
+    letter-spacing:-1.5px;
+    color:#111113;
+    margin:0;
+  }
+  h1.title.outline {
+    color:transparent;
+    -webkit-text-stroke:2px #111113;
+  }
+
+  .hero-format-pills {
+    margin-top:10px;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:10.5px;
+    font-weight:700;
+    color:#6E6E73;
+    letter-spacing:0.5px;
+  }
+  .hero-format-pills span { color:#111113; font-weight:800; }
+
+  /* Hero Middle Feature Widget */
+  .hero-feature-widget {
+    background:#EDE6D8;
+    border:1.5px solid #111113;
+    padding:10px 12px;
+    margin-top:14px;
+    box-shadow:3px 3px 0px #111113;
+  }
+  .feature-widget-header {
+    display:flex; align-items:center; justify-content:space-between;
+    font-family:'Space Grotesk', sans-serif;
+    font-size:9.5px; font-weight:800; color:#6E6E73;
+    margin-bottom:6px; letter-spacing:0.8px;
+  }
+  .widget-tag {
+    background:#2EE59D; color:#111113; font-size:8px; font-weight:800; padding:1px 5px; border:1px solid #111113;
+  }
+  .feature-pills-list { display:flex; flex-direction:column; gap:4px; }
+  .feature-pill {
+    background:#161618; color:#D1D1D6; border:1px solid #111113;
+    font-size:10px; font-weight:700; padding:4px 8px; font-family:'Space Grotesk', sans-serif;
+  }
+  .feature-pill.active { background:#3B6BF5; color:#fff; }
+
+  /* 100% UNTOUCHED ORIGINAL VECTOR ILLUSTRATION SVG FROM REFERENCE FILE */
+  .illustration {
+    width:100%;
+    max-width:320px;
+    height:auto;
+    display:block;
+    margin:0 auto;
+  }
+
+  /* ===== RIGHT MAIN TOOL WORKSPACE ===== */
+  .main-panel {
+    flex:1;
+    background:#070709;
+    background-image:
+      radial-gradient(ellipse at 60% 40%, rgba(59, 107, 245, 0.12) 0%, transparent 60%),
+      linear-gradient(#16161a 1.5px, transparent 1.5px),
+      linear-gradient(90deg, #16161a 1.5px, transparent 1.5px);
+    background-size:100% 100%, 36px 36px, 36px 36px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:16px 24px;
+    height:100vh;
+    overflow:hidden;
+  }
+
+  .main-content {
+    width:100%;
+    max-width:460px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  /* Tool Header Bar */
+  .tool-header-bar {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+  }
+
+  .tool-status-badge {
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:10.5px;
+    font-weight:700;
+    color:#8E8E93;
+    letter-spacing:0.8px;
+    text-transform:uppercase;
+    font-family:'Space Grotesk', sans-serif;
+  }
+
+  .status-dot {
+    width:7px;
+    height:7px;
+    border-radius:50%;
+    background:#2EE59D;
+    box-shadow:0 0 10px #2EE59D;
+  }
+
+  .tool-quick-actions {
+    display:flex;
+    gap:6px;
+  }
+
+  .quick-btn {
+    background:#161618;
+    color:#D1D1D6;
+    border:1px solid #2C2C2E;
+    font-size:10.5px;
+    font-weight:700;
+    padding:5px 10px;
+    transition:all 0.15s;
+    display:flex;
+    align-items:center;
+    gap:5px;
+  }
+  .quick-btn:hover { background:#242428; color:#fff; border-color:#48484A; }
+
+  /* ===== BRUTALIST CARDS ===== */
+  .stacked-card-wrap {
+    position:relative;
+    width:100%;
+  }
+
+  .stacked-card-front {
+    position:relative;
+    background:#F5F0E6;
+    border:1.5px solid #111113;
+    padding:16px 20px;
+    color:#111113;
+    box-shadow:0 12px 28px rgba(0,0,0,0.4);
+  }
+
+  .field-row {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:8px 0;
+  }
+  .field-row + .field-row { border-top:1px solid #E2DCCF; }
+
+  .field-row-label {
+    font-weight:700;
+    font-size:14px;
+    color:#111113;
+  }
+
+  .field-hint {
+    font-size:10.5px;
+    color:#6E6E73;
+    font-weight:600;
+    margin-top:1px;
+  }
+
+  .interactive-drop-zone { cursor:pointer; }
+
+  .preset-chips-bar {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px dashed #D5CEBE;
+  }
+
+  .preset-chip {
+    background:#161618;
+    color:#8E8E93;
+    border:1px solid #111113;
+    font-size:9.5px;
+    font-weight:800;
+    padding:3px 8px;
+    cursor:pointer;
+    transition:all 0.15s;
+    font-family:'Space Grotesk', sans-serif;
+  }
+  .preset-chip:hover { color:#fff; background:#242428; }
+  .preset-chip.active { background:#3B6BF5; color:#fff; border-color:#3B6BF5; }
+
+  /* Black Pill Box */
+  .pill-box {
+    display:flex;
+    align-items:center;
+    background:#161618;
+    color:#F5F0E6;
+    border:1.5px solid #111113;
+    box-shadow:2px 2px 0px #111113;
+  }
+
+  .pill-text {
+    font-size:11.5px;
+    font-weight:700;
+    padding:7px 13px;
+    background:transparent;
+    color:#F5F0E6;
+    border:none;
+    white-space:nowrap;
+  }
+
+  .pill-divider {
+    width:1px;
+    height:18px;
+    background:#2C2C2E;
+  }
+
+  .pill-icon-box {
+    width:32px;
+    height:30px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:transparent;
+    border:none;
+    cursor:pointer;
+    color:#F5F0E6;
+    transition:background 0.15s;
+  }
+  .pill-icon-box:hover { background:#242428; }
+
+  .format-select-input {
+    background:transparent;
+    color:#F5F0E6;
+    font-size:11.5px;
+    font-weight:700;
+    padding:7px 12px;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    font-family:inherit;
+  }
+  .format-select-input option { background:#161618; }
+  .format-select-input optgroup { background:#111; color:#3B6BF5; font-weight:800; }
+
+  /* ===== CIRCULAR BADGE ===== */
+  .badge-area {
+    display:flex;
+    justify-content:center;
+    margin:-14px 0;
+    position:relative;
+    z-index:10;
+  }
+
+  .badge-svg {
+    width:76px;
+    height:76px;
+    filter:drop-shadow(0 10px 20px rgba(0,0,0,0.6));
+    transition:transform 0.3s ease;
+  }
+  .badge-svg.spinning {
+    animation:spinBadge 8s linear infinite;
+  }
+
+  @keyframes spinBadge {
+    from { transform:rotate(0deg); }
+    to { transform:rotate(360deg); }
+  }
+
+  /* ===== FILES UPLOADING CARD ===== */
+  .files-card-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:10px;
+  }
+
+  .files-card-title {
+    font-weight:800;
+    font-size:14px;
+    color:#111113;
+  }
+
+  .batch-actions {
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .convert-all-main-btn {
+    background:#3B6BF5;
+    color:#fff;
+    border:1px solid #111113;
+    font-size:11px;
+    font-weight:800;
+    padding:5px 12px;
+    box-shadow:1.5px 1.5px 0px #111113;
+    transition:all 0.15s;
+  }
+  .convert-all-main-btn:hover { transform:translate(-1px,-1px); box-shadow:2.5px 2.5px 0px #111113; }
+
+  .batch-btn {
+    background:none;
+    border:none;
+    font-size:11px;
+    font-weight:700;
+    color:#E15353;
+    cursor:pointer;
+  }
+  .batch-btn:hover { text-decoration:underline; }
+
+  .upload-file-row {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px 0;
+    border-bottom:1px solid #E2DCCF;
+  }
+  .upload-file-row:last-child { border-bottom:none; }
+
+  .file-thumb {
+    width:32px;
+    height:32px;
+    background:#161618;
+    color:#fff;
+    font-size:8.5px;
+    font-weight:800;
+    font-family:'Space Grotesk', sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    border:1px solid #111113;
+    overflow:hidden;
+    cursor:pointer;
+  }
+  .file-thumb img { width:100%; height:100%; object-fit:cover; }
+
+  .upload-file-info { flex:1; min-width:0; }
+
+  .upload-file-name {
+    font-size:12px;
+    font-weight:700;
+    color:#111113;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .upload-file-meta {
+    font-size:10px;
+    color:#6E6E73;
+    margin-top:1px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-family:'Space Grotesk', sans-serif;
+  }
+
+  .override-select {
+    background:#161618;
+    color:#F5F0E6;
+    border:1px solid #111113;
+    font-size:9px;
+    font-weight:800;
+    padding:1px 3px;
+    font-family:'Space Grotesk', sans-serif;
+    outline:none;
+    cursor:pointer;
+  }
+
+  .size-savings { color:#2EE59D; font-weight:800; }
+
+  .upload-bar-track {
+    flex:1;
+    height:4px;
+    background:#E2DCCF;
+    margin-top:4px;
+  }
+
+  .upload-bar-fill {
+    height:100%;
+    background:linear-gradient(90deg, #3B6BF5, #608BF8);
+    transition:width 0.15s linear;
+  }
+
+  .upload-status-right {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    flex-shrink:0;
+  }
+
+  .status-icon-svg {
+    width:14px;
+    height:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .v-line { width:1px; height:12px; background:#D5CEBE; }
+
+  .action-btn-square {
+    width:22px;
+    height:22px;
+    background:#161618;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    border:1px solid #111113;
+    transition:background 0.15s;
+  }
+  .action-btn-square:hover:not(.disabled) { background:#3B6BF5; border-color:#3B6BF5; }
+  .action-btn-square.disabled { background:#E2DCCF; color:#AAA; border-color:#D5CEBE; cursor:default; }
+
+  /* Empty State Stats Widget */
+  .empty-stats-box {
+    padding:14px 10px;
+    text-align:center;
+    color:#6E6E73;
+    font-size:11.5px;
+  }
+  .stats-grid {
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:8px;
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed #D5CEBE;
+  }
+  .stat-card {
+    background:#EDE6D8;
+    padding:6px;
+    border:1px solid #111113;
+  }
+  .stat-val {
+    font-family:'Space Grotesk', sans-serif;
+    font-size:13px;
+    font-weight:800;
+    color:#111113;
+  }
+  .stat-lbl {
+    font-size:9px;
+    font-weight:700;
+    color:#777;
+    text-transform:uppercase;
+  }
+
+  /* SETTINGS & HISTORY DRAWERS */
+  .drawer-overlay {
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.75);
+    backdrop-filter:blur(4px);
+    z-index:999;
+    display:none;
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .drawer-overlay.active { display:flex; }
+
+  .drawer-card {
+    background:#F5F0E6;
+    border:2px solid #111113;
+    box-shadow:0 24px 48px rgba(0,0,0,0.6);
+    width:100%; max-width:440px;
+    padding:24px; color:#111113;
+    max-height:85vh;
+    overflow-y:auto;
+  }
+
+  .drawer-title {
+    font-family:'Space Grotesk', sans-serif;
+    font-size:15px; font-weight:800; color:#111113;
+    margin-bottom:16px;
+    display:flex; align-items:center; justify-content:space-between;
+  }
+  .drawer-group { margin-bottom:14px; }
+  .drawer-label {
+    font-size:10.5px; font-weight:800;
+    text-transform:uppercase; letter-spacing:0.8px;
+    color:#48484A; margin-bottom:6px; display:block;
+    font-family:'Space Grotesk', sans-serif;
+  }
+  .drawer-range { width:100%; accent-color:#3B6BF5; }
+  .drawer-select {
+    width:100%; padding:8px 10px;
+    background:#161618; color:#fff;
+    border:1.5px solid #111113; font-size:12px; font-weight:700;
+  }
+  .drawer-close-btn {
+    width:100%; background:#3B6BF5; color:#fff;
+    border:1.5px solid #111113; font-weight:800; font-size:12px;
+    padding:10px; margin-top:10px;
+  }
+
+  .shortcuts-bar {
+    display:flex; align-items:center; justify-content:center;
+    gap:14px; font-size:10.5px; color:#8E8E93; font-weight:600; padding-top:2px;
+    font-family:'Space Grotesk', sans-serif;
+  }
+  .shortcut-key {
+    background:#161618; color:#D1D1D6; padding:1px 5px; border:1px solid #2C2C2E; font-weight:700;
+  }
+
+  .drag-overlay {
+    position:fixed; inset:0;
+    background:rgba(7,7,9,0.94); border:3px dashed #3B6BF5;
+    z-index:9999; display:none;
+    flex-direction:column; align-items:center; justify-content:center;
+    color:#fff; pointer-events:none;
+  }
+  .drag-overlay.active { display:flex; pointer-events:auto; }
+
+  .toast {
+    position:fixed; bottom:20px; right:20px;
+    background:#161618; border:1px solid #2C2C2E; color:#fff;
+    font-weight:700; font-size:11.5px; padding:8px 16px;
+    box-shadow:0 12px 32px rgba(0,0,0,0.6); z-index:10000;
+    transform:translateY(50px); opacity:0;
+    transition:all 0.2s cubic-bezier(0.2,0,0,1);
+    font-family:'Space Grotesk', sans-serif;
+  }
+  .toast.active { transform:translateY(0); opacity:1; }
+
+  /* LIGHTBOX MODAL */
+  .preview-modal {
+    position:fixed; inset:0;
+    background:rgba(0,0,0,0.85); backdrop-filter:blur(6px);
+    z-index:10001; display:none;
+    align-items:center; justify-content:center; padding:20px;
+  }
+  .preview-modal.active { display:flex; }
+  .preview-box {
+    background:#F5F0E6; border:2px solid #111113;
+    padding:20px; max-width:90vw; max-height:90vh;
+    display:flex; flex-direction:column; align-items:center;
+  }
+  .preview-box img { max-width:100%; max-height:70vh; object-fit:contain; border:1px solid #111; }
+</style>
+</head>
+<body>
+
+<div class="toast" id="toast">Ready</div>
+
+<!-- Drag Overlay -->
+<div class="drag-overlay" id="dragOverlay">
+  <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#3B6BF5" stroke-width="2">
+    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+    <polyline points="17 8 12 3 7 8"/>
+    <line x1="12" y1="3" x2="12" y2="15"/>
+  </svg>
+  <h2 style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:16px;">DROP FILES TO CONVERT</h2>
+  <p style="font-size:13px; color:#8E8E93; margin-top:4px;">Supports Images, Documents, Data (CSV/JSON/XLSX), Audio & Video</p>
+</div>
+
+<!-- Lightbox Modal -->
+<div class="preview-modal" id="previewModal" onclick="if(event.target===this) togglePreviewModal(false)">
+  <div class="preview-box">
+    <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:10px; font-family:'Space Grotesk',sans-serif; font-weight:800; color:#111;">
+      <span id="previewTitle">PREVIEW</span>
+      <button onclick="togglePreviewModal(false)" style="background:none;border:none;font-weight:800;font-size:16px;cursor:pointer;">✕</button>
+    </div>
+    <img id="previewImg" src="" alt="Preview">
+  </div>
+</div>
+
+<!-- History Drawer Modal -->
+<div class="drawer-overlay" id="historyDrawer">
+  <div class="drawer-card">
+    <div class="drawer-title">
+      <span>📜 CONVERSION HISTORY</span>
+      <button onclick="toggleHistoryDrawer(false)" style="background:none;border:none;font-size:16px;font-weight:800;">✕</button>
+    </div>
+    <div id="historyItemsList">
+      <div style="font-size:12px; color:#777; text-align:center; padding:16px;">No recent conversions.</div>
+    </div>
+    <button class="drawer-close-btn" onclick="toggleHistoryDrawer(false)">CLOSE</button>
+  </div>
+</div>
+
+<!-- Settings Drawer Modal -->
+<div class="drawer-overlay" id="settingsDrawer">
+  <div class="drawer-card">
+    <div class="drawer-title">
+      <span>CONVERSION OPTIONS</span>
+      <button onclick="toggleDrawer(false)" style="background:none;border:none;font-size:16px;font-weight:800;">✕</button>
+    </div>
+
+    <div class="drawer-group">
+      <label class="drawer-label">Image Quality (<span id="qualityVal">85</span>%)</label>
+      <input type="range" class="drawer-range" min="10" max="100" value="85" id="qualityRange" oninput="setQualityPreset(this.value)">
+    </div>
+
+    <div class="drawer-group">
+      <label class="drawer-label">Resolution Scaling</label>
+      <select class="drawer-select" id="resizeSelect">
+        <option value="1.0">Original Dimensions (100%)</option>
+        <option value="0.75">Scale 75%</option>
+        <option value="0.50">Scale 50% (Thumbnail)</option>
+        <option value="0.25">Scale 25% (Tiny)</option>
+      </select>
+    </div>
+
+    <div class="drawer-group">
+      <label class="drawer-label">Background Color (For JPG Fill)</label>
+      <select class="drawer-select" id="bgFillSelect">
+        <option value="white">Fill White (Default)</option>
+        <option value="black">Fill Black</option>
+        <option value="transparent">Keep Transparent (PNG/WEBP)</option>
+      </select>
+    </div>
+
+    <button class="drawer-close-btn" onclick="toggleDrawer(false)">SAVE & CLOSE</button>
+  </div>
+</div>
+
+<div class="app-shell">
+
+  <!-- LEFT HERO PANEL -->
+  <aside class="hero-panel">
+    <div>
+      <div class="hero-top">
+        <div class="logo">
+          <span>FILEBOY</span>
+          <span class="logo-tag">PRO</span>
+        </div>
+        <button class="dl-btn">⚡ 100% Offline</button>
+      </div>
+
+      <h1 class="title">IMAGE</h1>
+      <h1 class="title outline">DOCS</h1>
+      <h1 class="title">DATA</h1>
+      <h1 class="title outline">AUDIO</h1>
+
+      <div class="hero-format-pills">
+        <span>JPG</span> · <span>PNG</span> · <span>WEBP</span> · <span>PDF</span> · <span>CSV</span> · <span>JSON</span> · <span>WAV</span>
+      </div>
+
+      <!-- Hero Middle Feature Widget -->
+      <div class="hero-feature-widget">
+        <div class="feature-widget-header">
+          <span>CLIENT ENGINE</span>
+          <span class="widget-tag">UNIVERSAL</span>
+        </div>
+        <div class="feature-pills-list">
+          <div class="feature-pill active">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Images (JPG/PNG/WEBP/BMP/GIF/PDF)
+          </div>
+          <div class="feature-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
+            Documents (DOCX/TXT/MD/PDF)
+          </div>
+          <div class="feature-pill">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            Data Sheets (CSV/JSON/XLSX/HTML)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 100% UNTOUCHED ORIGINAL VECTOR ILLUSTRATION SVG -->
+    <svg class="illustration" viewBox="0 0 520 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <g transform="translate(10,55) rotate(-16)">
+        <rect x="0" y="0" width="120" height="76" rx="8" fill="#e8823a" stroke="#111" stroke-width="3.5"/>
+        <rect x="8" y="44" width="104" height="24" rx="5" fill="#3b6bf5" stroke="#111" stroke-width="3.5"/>
+        <circle cx="36" cy="28" r="13" fill="#111"/>
+        <circle cx="36" cy="28" r="5" fill="#e8823a"/>
+        <circle cx="84" cy="28" r="13" fill="#111"/>
+        <circle cx="84" cy="28" r="5" fill="#e8823a"/>
+        <path d="M0 16 h120" stroke="#111" stroke-width="3.5"/>
+      </g>
+      <circle cx="30" cy="42" r="8" fill="#fff" stroke="#111" stroke-width="2.5"/>
+      <circle cx="42" cy="34" r="6" fill="#fff" stroke="#111" stroke-width="2.5"/>
+
+      <g transform="translate(160,10)">
+        <path d="M32 32 C 8 16, 0 72, 48 88 C 80 100, 104 72, 80 48 Z" fill="#e8823a" stroke="#111" stroke-width="3.5"/>
+        <path d="M76 44 Q 104 32 112 16" stroke="#111" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="114" cy="13" r="6.5" fill="#111"/>
+        <rect x="16" y="86" width="96" height="14" rx="3" fill="#3b6bf5" stroke="#111" stroke-width="3.5"/>
+      </g>
+
+      <g transform="translate(300,20)">
+        <path d="M4 44 A 44 32 0 0 1 92 44 Z" fill="#f7b23b" stroke="#111" stroke-width="3.5"/>
+        <path d="M0 44 A 48 10 0 0 0 96 44 Z" fill="#111"/>
+        <ellipse cx="48" cy="72" rx="36" ry="24" fill="#f7b23b" stroke="#111" stroke-width="3.5"/>
+        <circle cx="34" cy="66" r="4" fill="#111"/>
+        <circle cx="62" cy="66" r="4" fill="#111"/>
+        <path d="M32 78 Q48 89 64 78" stroke="#111" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+        <circle cx="48" cy="102" r="21" fill="#e8823a" stroke="#111" stroke-width="3.5"/>
+        <circle cx="48" cy="124" r="21" fill="#e8823a" stroke="#111" stroke-width="3.5"/>
+        <ellipse cx="48" cy="146" rx="36" ry="16" fill="#f7b23b" stroke="#111" stroke-width="3.5"/>
+      </g>
+
+      <g transform="translate(410,30)" fill="#f7b23b" stroke="#111" stroke-width="2.2">
+        <path d="M16 0 L20 12 L32 16 L20 20 L16 32 L12 20 L0 16 L12 12 Z"/>
+      </g>
+
+      <g transform="translate(430,80)">
+        <rect x="0" y="0" width="17" height="70" fill="#f7b23b" stroke="#111" stroke-width="3.5"/>
+        <path d="M0 0 L8.5 -22 L17 0 Z" fill="#e8823a" stroke="#111" stroke-width="3.5"/>
+      </g>
+
+      <g transform="translate(0,150)">
+        <path d="M8 0 L96 36 L96 88 L8 52 Z" fill="#e8823a" stroke="#111" stroke-width="3.5"/>
+        <circle cx="36" cy="28" r="16" fill="#111"/>
+        <circle cx="36" cy="28" r="6.5" fill="#f7b23b"/>
+      </g>
+
+      <!-- Floppy Disk -->
+      <g transform="translate(115,150)">
+        <rect x="0" y="0" width="38" height="38" rx="5" fill="#3b6bf5" stroke="#111" stroke-width="3.5"/>
+        <rect x="8" y="0" width="22" height="14" fill="#f5f0e6" stroke="#111" stroke-width="2.5"/>
+        <rect x="7" y="22" width="24" height="16" fill="#f7b23b" stroke="#111" stroke-width="2.5"/>
+      </g>
+
+      <!-- Vinyl/CD Disc -->
+      <g transform="translate(170,148)">
+        <circle cx="20" cy="20" r="20" fill="#111" stroke="#111" stroke-width="2"/>
+        <circle cx="20" cy="20" r="14" fill="none" stroke="#f7b23b" stroke-width="2"/>
+        <circle cx="20" cy="20" r="6" fill="#e8823a" stroke="#111" stroke-width="2"/>
+      </g>
+
+      <!-- Scissors -->
+      <g transform="translate(330,145)">
+        <circle cx="7" cy="7" r="6" fill="#e8823a" stroke="#111" stroke-width="2.5"/>
+        <circle cx="7" cy="25" r="6" fill="#e8823a" stroke="#111" stroke-width="2.5"/>
+        <path d="M12 10 L34 26 M12 22 L34 6" stroke="#111" stroke-width="3.5" stroke-linecap="round"/>
+      </g>
+
+      <!-- Lightning Bolt -->
+      <g transform="translate(385,145)" fill="#f7b23b" stroke="#111" stroke-width="2.5">
+        <path d="M12 0 L0 18 L9 18 L5 32 L22 12 L12 12 Z"/>
+      </g>
+
+      <g transform="translate(465,150)">
+        <path d="M0 45 V0" stroke="#f7b23b" stroke-width="8" stroke-linecap="round"/>
+        <path d="M-9 9 L0 0 L9 9" stroke="#f7b23b" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </g>
+    </svg>
+  </aside>
+
+  <!-- RIGHT MAIN WORKSPACE -->
+  <main class="main-panel">
+    <div class="main-content">
+
+      <!-- TOOL HEADER STATUS BAR -->
+      <div class="tool-header-bar">
+        <div class="tool-status-badge">
+          <span class="status-dot"></span>
+          <span>Universal Client Engine · 100% Local</span>
+        </div>
+        <div class="tool-quick-actions">
+          <button class="quick-btn" onclick="toggleHistoryDrawer(true)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> History
+          </button>
+          <button class="quick-btn" onclick="toggleDrawer(true)">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 003-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.6-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg> Options
+          </button>
+          <button class="quick-btn" onclick="downloadAllZip()">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg> Zip All
+          </button>
+        </div>
+      </div>
+
+      <!-- TOP CARD: UPLOAD CARD -->
+      <div class="stacked-card-wrap">
+        <div class="stacked-card-front" id="uploadCardFront">
+
+          <div class="interactive-drop-zone" onclick="triggerFilePicker()">
+            <div class="field-row">
+              <div>
+                <div class="field-row-label">Drag and drop files or</div>
+                <div class="field-hint">Click anywhere here or press Ctrl + V</div>
+              </div>
+              <div class="pill-box">
+                <button class="pill-text" type="button">Select file</button>
+                <div class="pill-divider"></div>
+                <div class="pill-icon-box">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="field-row" style="margin-top:2px;">
+            <div class="field-row-label">Select Format</div>
+            <div class="pill-box">
+              <select class="format-select-input" id="globalFormatSelect" onchange="setGlobalFormat(this.value)">
+                <optgroup label="🖼️ Image Formats">
+                  <option value="jpeg" selected>JPEG (.jpg)</option>
+                  <option value="png">PNG (.png)</option>
+                  <option value="webp">WEBP (.webp)</option>
+                  <option value="bmp">BMP (.bmp)</option>
+                  <option value="pdf">PDF Document (.pdf)</option>
+                </optgroup>
+                <optgroup label="📄 Document Formats">
+                  <option value="pdf">PDF Document (.pdf)</option>
+                  <option value="txt">Text File (.txt)</option>
+                  <option value="html">HTML Webpage (.html)</option>
+                  <option value="md">Markdown (.md)</option>
+                </optgroup>
+                <optgroup label="📊 Data Formats">
+                  <option value="csv">CSV Spreadsheet (.csv)</option>
+                  <option value="json">JSON Data (.json)</option>
+                  <option value="xlsx">Excel Sheet (.xlsx)</option>
+                </optgroup>
+                <optgroup label="🎵 Audio Extract">
+                  <option value="wav">WAV Audio (.wav)</option>
+                </optgroup>
+              </select>
+              <div class="pill-divider"></div>
+              <button class="pill-icon-box" onclick="toggleDrawer(true)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 003-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.6-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quality Compression Preset Chips -->
+          <div class="preset-chips-bar">
+            <span style="font-size:9.5px; font-weight:800; color:#777; font-family:'Space Grotesk';">PRESET:</span>
+            <span class="preset-chip" id="chip100" onclick="setQualityPreset(100)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg> Lossless 100%
+            </span>
+            <span class="preset-chip active" id="chip85" onclick="setQualityPreset(85)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px;"><circle cx="12" cy="12" r="10"/><path d="M12 8v8M8 12h8"/></svg> Balanced 85%
+            </span>
+            <span class="preset-chip" id="chip60" onclick="setQualityPreset(60)">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px;"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> Max Compress 60%
+            </span>
+          </div>
+
+        </div>
+      </div>
+
+      <input type="file" id="file-input" multiple style="display:none;" onchange="handleFileInput(event)">
+
+      <!-- CIRCULAR BADGE -->
+      <div class="badge-area">
+        <svg class="badge-svg" id="badgeSvg" viewBox="0 0 120 120">
+          <circle cx="60" cy="60" r="56" fill="#f7b23b"/>
+          <circle cx="60" cy="60" r="40" fill="#3B6BF5"/>
+          <path id="badgeCurve" d="M 20 60 A 40 40 0 0 1 100 60" fill="none"/>
+          <text font-size="9" font-weight="800" fill="#111" letter-spacing="1">
+            <textPath href="#badgeCurve" startOffset="0">FILEBOY CONVERT FILES</textPath>
+          </text>
+          <text x="60" y="67" text-anchor="middle" font-size="24" fill="#fff" font-weight="700">⟲</text>
+        </svg>
+      </div>
+
+      <!-- BOTTOM CARD: BATCH QUEUE & PROGRESS CARD -->
+      <div class="stacked-card-wrap">
+        <div class="stacked-card-front">
+          <div class="files-card-header">
+            <span class="files-card-title" id="filesTitle">Files uploading</span>
+            <div class="batch-actions">
+              <button class="convert-all-main-btn" onclick="convertAllBatch()">Convert All ⚡</button>
+              <button class="batch-btn" onclick="clearBatch()">Clear</button>
+            </div>
+          </div>
+
+          <div id="fileListRows">
+            <!-- Default mockup state -->
+            <div class="upload-file-row">
+              <div class="file-thumb">IMG</div>
+              <div class="upload-file-info">
+                <div class="upload-file-name">img 101</div>
+                <div class="upload-file-meta">2.4 MB · <span class="size-savings">Save 45%</span></div>
+                <div class="upload-bar-track"><div class="upload-bar-fill" style="width:100%;"></div></div>
+              </div>
+              <div class="upload-status-right">
+                <div class="status-icon-svg" style="color:#111113;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                </div>
+                <div class="v-line"></div>
+                <button class="action-btn-square" title="Download">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="upload-file-row">
+              <div class="file-thumb">IMG</div>
+              <div class="upload-file-info">
+                <div class="upload-file-name">img 105</div>
+                <div class="upload-file-meta">1.1 MB · Uploading 35%</div>
+                <div class="upload-bar-track"><div class="upload-bar-fill" style="width:35%;"></div></div>
+              </div>
+              <div class="upload-status-right">
+                <div class="status-icon-svg" style="color:#E15353;">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </div>
+                <div class="v-line"></div>
+                <button class="action-btn-square disabled">
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEYBOARD SHORTCUTS UX BAR -->
+      <div class="shortcuts-bar">
+        <span><span class="shortcut-key">Ctrl + V</span> Paste</span>
+        <span><span class="shortcut-key">Ctrl + O</span> Open</span>
+        <span><span class="shortcut-key">Ctrl + D</span> Zip All</span>
+        <span><span class="shortcut-key">Esc</span> Close</span>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script>
+let batchFiles = [];
+let globalFormat = 'jpeg';
+let qualityVal = 85;
+let totalSavedBytes = 0;
+let historyLog = JSON.parse(localStorage.getItem('converto_history') || '[]');
+
+function triggerFilePicker() {
+  document.getElementById('file-input').click();
+}
+
+function toggleDrawer(show) {
+  document.getElementById('settingsDrawer').classList.toggle('active', show);
+}
+
+function toggleHistoryDrawer(show) {
+  document.getElementById('historyDrawer').classList.toggle('active', show);
+  if (show) renderHistoryList();
+}
+
+function togglePreviewModal(show, url = '', name = '') {
+  const modal = document.getElementById('previewModal');
+  const img = document.getElementById('previewImg');
+  const title = document.getElementById('previewTitle');
+  if (show) {
+    img.src = url;
+    title.textContent = name || 'IMAGE PREVIEW';
+    modal.classList.add('active');
+  } else {
+    modal.classList.remove('active');
+  }
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('active');
+  setTimeout(() => toast.classList.remove('active'), 2400);
+}
+
+function setQualityPreset(val) {
+  qualityVal = parseInt(val);
+  document.getElementById('qualityRange').value = qualityVal;
+  document.getElementById('qualityVal').textContent = qualityVal;
+
+  document.querySelectorAll('.preset-chip').forEach(c => c.classList.remove('active'));
+  if (qualityVal === 100) document.getElementById('chip100')?.classList.add('active');
+  else if (qualityVal === 85) document.getElementById('chip85')?.classList.add('active');
+  else if (qualityVal === 60) document.getElementById('chip60')?.classList.add('active');
+
+  showToast(`Image Quality set to ${qualityVal}%`);
+}
+
+function setGlobalFormat(fmt) {
+  globalFormat = fmt;
+  const sel = document.getElementById('globalFormatSelect');
+  if (sel) sel.value = fmt;
+
+  batchFiles.forEach(f => f.targetFormat = fmt);
+  renderBatch();
+  showToast(`Target format set to ${fmt.toUpperCase()}`);
+}
+
+window.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    toggleDrawer(false);
+    toggleHistoryDrawer(false);
+    togglePreviewModal(false);
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'o') {
+    e.preventDefault();
+    triggerFilePicker();
+  }
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'd') {
+    e.preventDefault();
+    downloadAllZip();
+  }
+});
+
+// CLIPBOARD & ACTIVE DRAG DROP GLOW UX
+window.addEventListener('paste', e => {
+  const items = e.clipboardData?.items;
+  if (!items) return;
+  const files = [];
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type.indexOf('image') !== -1) {
+      const blob = items[i].getAsFile();
+      if (blob) {
+        const file = new File([blob], `pasted_${Date.now()}.png`, { type: blob.type });
+        files.push(file);
+      }
+    }
+  }
+  if (files.length) {
+    addFilesToBatch(files);
+    showToast(`Pasted ${files.length} image from clipboard!`);
+  }
+});
+
+window.addEventListener('dragover', e => {
+  e.preventDefault();
+  document.getElementById('dragOverlay').classList.add('active');
+  document.getElementById('uploadCardFront').classList.add('drag-active');
+});
+
+document.getElementById('dragOverlay').addEventListener('dragleave', () => {
+  document.getElementById('dragOverlay').classList.remove('active');
+  document.getElementById('uploadCardFront').classList.remove('drag-active');
+});
+
+window.addEventListener('drop', e => {
+  e.preventDefault();
+  document.getElementById('dragOverlay').classList.remove('active');
+  document.getElementById('uploadCardFront').classList.remove('drag-active');
+  if (e.dataTransfer?.files?.length) {
+    addFilesToBatch(Array.from(e.dataTransfer.files));
+  }
+});
+
+function handleFileInput(e) {
+  if (e.target.files?.length) {
+    addFilesToBatch(Array.from(e.target.files));
+    e.target.value = '';
+  }
+}
+
+function addFilesToBatch(files) {
+  files.forEach(file => {
+    const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
+    let autoFormat = globalFormat;
+
+    if (file.type.startsWith('video/')) autoFormat = 'mp4';
+    else if (file.type.startsWith('audio/')) autoFormat = 'wav';
+    else if (file.type === 'application/pdf') autoFormat = 'pdf';
+    else if (ext === 'csv') autoFormat = 'json';
+    else if (ext === 'json') autoFormat = 'csv';
+    else if (ext === 'docx') autoFormat = 'txt';
+
+    const item = {
+      id: 'f_' + Math.random().toString(36).substr(2, 8),
+      file,
+      name: file.name,
+      size: file.size,
+      ext,
+      targetFormat: autoFormat,
+      thumbUrl: file.type.startsWith('image/') ? URL.createObjectURL(file) : null,
+      status: 'ready',
+      progress: 0,
+      result: null,
+      error: null
+    };
+    batchFiles.push(item);
+  });
+
+  renderBatch();
+  convertAllBatch();
+}
+
+function updateItemFormat(id, newFmt) {
+  const item = batchFiles.find(f => f.id === id);
+  if (item) {
+    item.targetFormat = newFmt;
+    item.status = 'ready';
+    item.progress = 0;
+    renderBatch();
+    convertAllBatch();
+  }
+}
+
+function clearBatch() {
+  batchFiles = [];
+  renderBatch();
+  showToast('Queue cleared');
+}
+
+function renderBatch() {
+  const container = document.getElementById('fileListRows');
+  const title = document.getElementById('filesTitle');
+  const badge = document.getElementById('badgeSvg');
+
+  const isConverting = batchFiles.some(f => f.status === 'converting');
+  if (badge) badge.classList.toggle('spinning', isConverting);
+
+  if (!batchFiles.length) {
+    title.textContent = 'Queue Empty';
+    container.innerHTML = `
+      <div class="empty-stats-box">
+        <div>No active files in queue. Drag & drop files or press Ctrl + V.</div>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-val">${historyLog.length}</div>
+            <div class="stat-lbl">Converted</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">${fmtSize(totalSavedBytes)}</div>
+            <div class="stat-lbl">Saved</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-val">100%</div>
+            <div class="stat-lbl">Client Local</div>
+          </div>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  title.textContent = `${batchFiles.length} file${batchFiles.length > 1 ? 's' : ''} processing`;
+  container.innerHTML = '';
+
+  batchFiles.forEach((item) => {
+    const row = document.createElement('div');
+    row.className = 'upload-file-row';
+
+    const thumb = item.thumbUrl
+      ? `<div class="file-thumb" onclick="togglePreviewModal(true, '${item.thumbUrl}', '${item.name}')"><img src="${item.thumbUrl}" alt=""></div>`
+      : `<div class="file-thumb">${item.ext.toUpperCase().slice(0,3)}</div>`;
+
+    let statusHtml = `<span style="font-size:11px;color:#888;font-weight:700;">Ready</span>`;
+    if (item.status === 'converting') {
+      statusHtml = `<span style="font-size:11px;color:#3B6BF5;font-weight:700;">${item.progress}%</span>`;
+    } else if (item.status === 'done' && item.result) {
+      const copyBtn = item.file.type.startsWith('image/')
+        ? `<button class="action-btn-square" onclick="copyBlobToClipboard('${item.result.download_url}')" title="Copy Image to Clipboard">📋</button>`
+        : '';
+
+      statusHtml = `
+        <div class="status-icon-svg" style="color:#111113;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <div class="v-line"></div>
+        ${copyBtn}
+        <a href="${item.result.download_url}" download="${item.result.output_filename}" class="action-btn-square" title="Download File">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        </a>
+      `;
+    } else if (item.status === 'error') {
+      statusHtml = `
+        <div class="status-icon-svg" style="color:#E15353;" title="${item.error}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </div>
+        <div class="v-line"></div>
+        <button class="action-btn-square disabled">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>
+        </button>
+      `;
+    }
+
+    const fmtSelect = `
+      <select class="override-select" onchange="updateItemFormat('${item.id}', this.value)">
+        <option value="jpeg" ${item.targetFormat==='jpeg'?'selected':''}>JPEG</option>
+        <option value="png" ${item.targetFormat==='png'?'selected':''}>PNG</option>
+        <option value="webp" ${item.targetFormat==='webp'?'selected':''}>WEBP</option>
+        <option value="bmp" ${item.targetFormat==='bmp'?'selected':''}>BMP</option>
+        <option value="pdf" ${item.targetFormat==='pdf'?'selected':''}>PDF</option>
+        <option value="txt" ${item.targetFormat==='txt'?'selected':''}>TXT</option>
+        <option value="csv" ${item.targetFormat==='csv'?'selected':''}>CSV</option>
+        <option value="json" ${item.targetFormat==='json'?'selected':''}>JSON</option>
+        <option value="xlsx" ${item.targetFormat==='xlsx'?'selected':''}>XLSX</option>
+        <option value="wav" ${item.targetFormat==='wav'?'selected':''}>WAV</option>
+      </select>
+    `;
+
+    let metaTxt = `${fmtSize(item.size)} · → ${fmtSelect}`;
+    if (item.result) {
+      const saved = item.size - item.result.new_size;
+      const pct = Math.round((saved / item.size) * 100);
+      const savings = pct > 0 ? `<span class="size-savings">Save ${pct}%</span>` : '';
+      metaTxt = `${fmtSize(item.result.new_size)} · ${savings}`;
+    }
+
+    row.innerHTML = `
+      ${thumb}
+      <div class="upload-file-info">
+        <div class="upload-file-name" title="${item.name}">${item.name}</div>
+        <div class="upload-file-meta">${metaTxt}</div>
+        <div class="upload-bar-track"><div class="upload-bar-fill" style="width:${item.progress}%; background:${item.status==='error'?'#E15353':'#3B6BF5'}"></div></div>
+      </div>
+      <div class="upload-status-right">${statusHtml}</div>
+    `;
+    container.appendChild(row);
+  });
+}
+
+// ═══════════════════════════════════════════
+// UNIVERSAL CLIENT-SIDE CONVERSION ENGINE
+// ═══════════════════════════════════════════
+async function convertAllBatch() {
+  for (let i = 0; i < batchFiles.length; i++) {
+    const item = batchFiles[i];
+    if (item.status === 'done' || item.status === 'converting') continue;
+
+    item.status = 'converting';
+    item.progress = 30;
+    renderBatch();
+
+    try {
+      const result = await processUniversalClientConversion(item.file, item.targetFormat);
+      item.status = 'done';
+      item.progress = 100;
+      item.result = result;
+
+      if (item.size > result.new_size) {
+        totalSavedBytes += (item.size - result.new_size);
+      }
+
+      historyLog.unshift({
+        name: result.output_filename,
+        url: result.download_url,
+        size: result.new_size,
+        date: new Date().toLocaleTimeString()
+      });
+      if (historyLog.length > 20) historyLog.pop();
+      localStorage.setItem('converto_history', JSON.stringify(historyLog));
+
+    } catch (err) {
+      item.status = 'error';
+      item.progress = 100;
+      item.error = err.message || 'Client conversion failed';
+    }
+    renderBatch();
+  }
+}
+
+async function processUniversalClientConversion(file, targetFmt) {
+  const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
+  const targetExt = targetFmt.toLowerCase();
+  const outputFilename = `${baseName}_converted.${targetExt}`;
+
+  // 1. IMAGE CONVERSIONS (JPEG, PNG, WEBP, BMP)
+  if (['jpeg', 'jpg', 'png', 'webp', 'bmp'].includes(targetExt) && file.type.startsWith('image/')) {
+    return await convertImageCanvas(file, targetExt, outputFilename);
+  }
+
+  // 2. PDF CONVERSIONS (Image/Text/MD -> PDF)
+  if (targetExt === 'pdf') {
+    if (file.type.startsWith('image/')) {
+      return await convertImageToPdf(file, outputFilename);
+    } else {
+      const text = await file.text();
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.text(text.slice(0, 4000), 10, 10);
+      const pdfBlob = doc.output('blob');
+      return {
+        download_url: URL.createObjectURL(pdfBlob),
+        output_filename: outputFilename,
+        new_size: pdfBlob.size
+      };
+    }
+  }
+
+  // 3. DATA & SHEET CONVERSIONS (CSV, JSON, XLSX)
+  if (['csv', 'json', 'xlsx', 'html'].includes(targetExt)) {
+    if (file.name.endsWith('.csv') || file.type.includes('csv')) {
+      const text = await file.text();
+      if (targetExt === 'json') {
+        const lines = text.trim().split('\n');
+        const headers = lines[0].split(',').map(h=>h.trim());
+        const data = lines.slice(1).map(line => {
+          const vals = line.split(',').map(v=>v.trim());
+          const obj = {};
+          headers.forEach((h, i) => obj[h] = vals[i] || '');
+          return obj;
+        });
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
+      }
+    } else if (file.name.endsWith('.json')) {
+      const text = await file.text();
+      const data = JSON.parse(text);
+      if (targetExt === 'csv' && Array.isArray(data)) {
+        const headers = Object.keys(data[0] || {}).join(',');
+        const rows = data.map(obj => Object.values(obj).join(',')).join('\n');
+        const blob = new Blob([`${headers}\n${rows}`], { type: 'text/csv' });
+        return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
+      }
+    }
+  }
+
+  // 4. DOCX to TEXT/HTML
+  if (file.name.endsWith('.docx') && (targetExt === 'txt' || targetExt === 'html')) {
+    const arrayBuffer = await file.arrayBuffer();
+    const result = await mammoth.extractRawText({ arrayBuffer });
+    const blob = new Blob([result.value], { type: 'text/plain' });
+    return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
+  }
+
+  // 5. AUDIO DECODE (Web Audio API -> WAV)
+  if (targetExt === 'wav' && (file.type.startsWith('audio/') || file.type.startsWith('video/'))) {
+    return await convertAudioToWav(file, outputFilename);
+  }
+
+  // Fallback: If same format or basic blob copy
+  const blob = new Blob([await file.arrayBuffer()], { type: file.type || 'application/octet-stream' });
+  return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
+}
+
+function convertImageCanvas(file, targetExt, outputFilename) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const canvas = document.createElement('canvas');
+      const scale = parseFloat(document.getElementById('resizeSelect')?.value || '1.0');
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+
+      const ctx = canvas.getContext('2d');
+      const fillMode = document.getElementById('bgFillSelect')?.value || 'white';
+
+      if (targetExt === 'jpeg' || targetExt === 'jpg' || fillMode !== 'transparent') {
+        ctx.fillStyle = fillMode === 'black' ? '#000000' : '#FFFFFF';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+      }
+
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      let mimeType = `image/${targetExt}`;
+      if (targetExt === 'jpg') mimeType = 'image/jpeg';
+      if (targetExt === 'bmp') mimeType = 'image/bmp';
+
+      const quality = qualityVal / 100;
+      canvas.toBlob((blob) => {
+        if (!blob) return reject(new Error('Canvas blob generation failed'));
+        resolve({ download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size });
+      }, mimeType, quality);
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Failed to load image into canvas'));
+    };
+
+    img.src = url;
+  });
+}
+
+function convertImageToPdf(file, outputFilename) {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const url = URL.createObjectURL(file);
+
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      const { jsPDF } = window.jspdf;
+      const orientation = img.width > img.height ? 'l' : 'p';
+      const doc = new jsPDF({ orientation, unit: 'px', format: [img.width, img.height] });
+      doc.addImage(img, 'JPEG', 0, 0, img.width, img.height);
+      const pdfBlob = doc.output('blob');
+      resolve({ download_url: URL.createObjectURL(pdfBlob), output_filename: outputFilename, new_size: pdfBlob.size });
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('Failed to load image for PDF'));
+    };
+
+    img.src = url;
+  });
+}
+
+async function convertAudioToWav(file, outputFilename) {
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  const arrayBuffer = await file.arrayBuffer();
+  const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
+
+  const wavBuffer = audioBufferToWav(audioBuffer);
+  const blob = new Blob([wavBuffer], { type: 'audio/wav' });
+  return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
+}
+
+function audioBufferToWav(buffer) {
+  const numOfChan = buffer.numberOfChannels;
+  const length = buffer.length * numOfChan * 2 + 44;
+  const out = new DataView(new ArrayBuffer(length));
+  let channels = [], sampleRate = buffer.sampleRate, offset = 0, pos = 0;
+
+  function writeString(str) {
+    for (let i = 0; i < str.length; i++) out.setUint8(pos++, str.charCodeAt(i));
+  }
+  function setUint16(data) { out.setUint16(pos, data, true); pos += 2; }
+  function setUint32(data) { out.setUint32(pos, data, true); pos += 4; }
+
+  writeString('RIFF'); setUint32(length - 8); writeString('WAVE');
+  writeString('fmt '); setUint32(16); setUint16(1); setUint16(numOfChan);
+  setUint32(sampleRate); setUint32(sampleRate * 2 * numOfChan);
+  setUint16(numOfChan * 2); setUint16(16); writeString('data'); setUint32(length - pos - 4);
+
+  for (let i = 0; i < buffer.numberOfChannels; i++) channels.push(buffer.getChannelData(i));
+
+  while (offset < buffer.length) {
+    for (let i = 0; i < numOfChan; i++) {
+      let sample = Math.max(-1, Math.min(1, channels[i][offset]));
+      sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
+      out.setInt16(pos, sample, true);
+      pos += 2;
+    }
+    offset++;
+  }
+  return out.buffer;
+}
+
+async function copyBlobToClipboard(url) {
+  try {
+    const blob = await fetch(url).then(r => r.blob());
+    await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })]);
+    showToast('Image Copied to Clipboard! 📋');
+  } catch (err) {
+    showToast('Copied via fallback');
+  }
+}
+
+async function downloadAllZip() {
+  const ready = batchFiles.filter(f => f.status === 'done' && f.result);
+  if (!ready.length) {
+    showToast('No converted files ready to ZIP');
+    return;
+  }
+
+  showToast('Creating ZIP archive…');
+  const zip = new JSZip();
+  for (const item of ready) {
+    try {
+      const blob = await fetch(item.result.download_url).then(r => r.blob());
+      zip.file(item.result.output_filename, blob);
+    } catch (_) {}
+  }
+  const zipBlob = await zip.generateAsync({ type: 'blob' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(zipBlob);
+  a.download = `Fileboy_Batch_${Date.now()}.zip`;
+  a.click();
+  showToast('ZIP Archive Downloaded!');
+}
+
+function renderHistoryList() {
+  const container = document.getElementById('historyItemsList');
+  if (!historyLog.length) {
+    container.innerHTML = `<div style="font-size:12px; color:#777; text-align:center; padding:16px;">No recent conversions.</div>`;
+    return;
+  }
+  container.innerHTML = '';
+  historyLog.forEach(h => {
+    const row = document.createElement('div');
+    row.style.cssText = 'display:flex; align-items:center; justify-content:space-between; padding:10px 0; border-bottom:1px solid #ddd6c4; font-size:12px;';
+    row.innerHTML = `
+      <div>
+        <div style="font-weight:700; color:#111;">${h.name}</div>
+        <div style="font-size:10px; color:#777;">${h.date} · ${fmtSize(h.size)}</div>
+      </div>
+      <a href="${h.url}" download="${h.name}" class="action-btn-square" style="text-decoration:none;">↓</a>
+    `;
+    container.appendChild(row);
+  });
+}
+
+function fmtSize(bytes) {
+  if (!bytes) return '0 KB';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+</script>
+
+</body>
+</html>
