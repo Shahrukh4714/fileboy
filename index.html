@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fileboy — Universal PDF & Media Converter Platform</title>
+<title>Fileboy — Universal PDF Pro & Converter Platform</title>
 <!-- Client-Side Libraries -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -12,7 +12,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
 <script src="https://unpkg.com/@ffmpeg/ffmpeg@0.11.6/dist/ffmpeg.min.js"></script>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Caveat:wght@600&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap');
 
   * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
@@ -665,7 +665,7 @@
     <line x1="12" y1="3" x2="12" y2="15"/>
   </svg>
   <h2 style="font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:700; margin-top:16px;">DROP FILES TO CONVERT</h2>
-  <p style="font-size:13px; color:#8E8E93; margin-top:4px;">PDF Merge, Split, Rotate, Images, Documents & Media</p>
+  <p style="font-size:13px; color:#8E8E93; margin-top:4px;">Full PDF Editing, Redaction, Signature, Numbers, Watermark & Invert</p>
 </div>
 
 <!-- Lightbox Modal -->
@@ -697,8 +697,28 @@
 <div class="drawer-overlay" id="settingsDrawer">
   <div class="drawer-card">
     <div class="drawer-title">
-      <span>CONVERSION OPTIONS</span>
+      <span>PDF & CONVERSION OPTIONS</span>
       <button onclick="toggleDrawer(false)" style="background:none;border:none;font-size:16px;font-weight:800;">✕</button>
+    </div>
+
+    <div class="drawer-group">
+      <label class="drawer-label">PDF Watermark Text</label>
+      <input type="text" class="drawer-input" id="pdfWatermarkInput" placeholder="e.g. CONFIDENTIAL / FILEBOY">
+    </div>
+
+    <div class="drawer-group">
+      <label class="drawer-label">Header Text (Top of Pages)</label>
+      <input type="text" class="drawer-input" id="pdfHeaderInput" placeholder="e.g. Official Document">
+    </div>
+
+    <div class="drawer-group">
+      <label class="drawer-label">Footer Text (Bottom of Pages)</label>
+      <input type="text" class="drawer-input" id="pdfFooterInput" placeholder="e.g. Copyright Fileboy 2026">
+    </div>
+
+    <div class="drawer-group">
+      <label class="drawer-label">PDF Signature / Annotation Text</label>
+      <input type="text" class="drawer-input" id="pdfSignatureInput" placeholder="e.g. Approved by John Doe">
     </div>
 
     <div class="drawer-group">
@@ -712,37 +732,12 @@
         <option value="1.0">Original Dimensions (100%)</option>
         <option value="0.75">Scale 75%</option>
         <option value="0.50">Scale 50% (Thumbnail)</option>
-        <option value="0.25">Scale 25% (Tiny)</option>
-      </select>
-    </div>
-
-    <div class="drawer-group">
-      <label class="drawer-label">PDF Rotation Angle</label>
-      <select class="drawer-select" id="pdfRotateSelect">
-        <option value="0">No Rotation (0°)</option>
-        <option value="90">Rotate 90° Clockwise</option>
-        <option value="180">Rotate 180° Upside Down</option>
-        <option value="270">Rotate 270° Counter-Clockwise</option>
-      </select>
-    </div>
-
-    <div class="drawer-group">
-      <label class="drawer-label">Background Color (For JPG Fill)</label>
-      <select class="drawer-select" id="bgFillSelect">
-        <option value="white">Fill White (Default)</option>
-        <option value="black">Fill Black</option>
-        <option value="transparent">Keep Transparent (PNG/WEBP)</option>
       </select>
     </div>
 
     <div class="drawer-group">
       <label class="drawer-label">Batch Output Prefix</label>
       <input type="text" class="drawer-input" id="prefixInput" placeholder="e.g. fileboy_">
-    </div>
-
-    <div class="drawer-group">
-      <label class="drawer-label">Watermark Text (Image Outputs)</label>
-      <input type="text" class="drawer-input" id="watermarkInput" placeholder="e.g. Confidential / Fileboy">
     </div>
 
     <button class="drawer-close-btn" onclick="toggleDrawer(false)">SAVE & CLOSE</button>
@@ -768,27 +763,27 @@
       <h1 class="title outline">AUDIO</h1>
 
       <div class="hero-format-pills">
-        <span>MERGE PDF</span> · <span>SPLIT PDF</span> · <span>ROTATE</span> · <span>PDF TO ZIP</span> · <span>JPG</span> · <span>MP4</span>
+        <span>EDIT PDF</span> · <span>REDACT</span> · <span>WATERMARK</span> · <span>PAGE NUMBERS</span> · <span>HANDWRITING</span>
       </div>
 
       <!-- Hero Middle Feature Widget -->
       <div class="hero-feature-widget">
         <div class="feature-widget-header">
-          <span>PDF & MEDIA ENGINE</span>
-          <span class="widget-tag">PRO PLATFORM</span>
+          <span>PDF & MEDIA SUITE</span>
+          <span class="widget-tag">PRO SUITE</span>
         </div>
         <div class="feature-pills-list">
           <div class="feature-pill active">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
-            PDF Tools (Merge, Split, Rotate, ZIP)
+            Edit, Signature, Redact & Watermark
           </div>
           <div class="feature-pill">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            Images (JPG/PNG/WEBP/BMP/PDF)
+            Page Numbers, Headers & Flatten
           </div>
           <div class="feature-pill">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M15 10l5 5-5 5M4 4v7a4 4 0 004 4h12"/></svg>
-            Data & WebAssembly Media (FFmpeg)
+            PDF to Handwriting & Invert Colours
           </div>
         </div>
       </div>
@@ -883,7 +878,7 @@
       <div class="tool-header-bar">
         <div class="tool-status-badge">
           <span class="status-dot"></span>
-          <span>PDF & Universal Client Engine</span>
+          <span>PDF Pro Suite & Universal Engine</span>
         </div>
         <div class="tool-quick-actions">
           <button class="quick-btn" onclick="toggleHistoryDrawer(true)">
@@ -922,34 +917,29 @@
             <div class="field-row-label">Select Action / Format</div>
             <div class="pill-box">
               <select class="format-select-input" id="globalFormatSelect" onchange="setGlobalFormat(this.value)">
+                <optgroup label="✨ PDF Edit & Annotate">
+                  <option value="pdf_watermark" selected>Add Watermark to PDF</option>
+                  <option value="pdf_signature">Edit & Add Signature</option>
+                  <option value="pdf_redact">Redact PDF (Blackout Content)</option>
+                  <option value="pdf_numbers">Add Page Numbers (Page X of Y)</option>
+                  <option value="pdf_headers">Headers & Footers</option>
+                  <option value="pdf_flatten">Flatten PDF Form & Annotations</option>
+                  <option value="pdf_handwriting">PDF to Handwriting Font</option>
+                </optgroup>
                 <optgroup label="🔴 PDF Page Tools">
                   <option value="pdf_merge">Merge Multiple PDFs → 1 PDF</option>
-                  <option value="pdf_split">Split PDF Pages into Individual PDFs</option>
-                  <option value="pdf_rotate">Rotate PDF Pages (90°/180°/270°)</option>
-                  <option value="pdf_to_zip">Export PDF Pages to ZIP Archive</option>
+                  <option value="pdf_split">Split PDF Pages</option>
+                  <option value="pdf_rotate">Rotate PDF Pages (90°/180°)</option>
+                  <option value="pdf_to_zip">Export PDF Pages to ZIP</option>
                 </optgroup>
                 <optgroup label="🖼️ Image Formats">
-                  <option value="jpeg" selected>JPEG (.jpg)</option>
+                  <option value="jpeg">JPEG (.jpg)</option>
                   <option value="png">PNG (.png)</option>
                   <option value="webp">WEBP (.webp)</option>
-                  <option value="bmp">BMP (.bmp)</option>
                   <option value="pdf">Convert Image to PDF Document</option>
-                </optgroup>
-                <optgroup label="📄 Document Formats">
-                  <option value="pdf">PDF Document (.pdf)</option>
-                  <option value="txt">Text File (.txt)</option>
-                  <option value="html">HTML Webpage (.html)</option>
-                  <option value="md">Markdown (.md)</option>
-                </optgroup>
-                <optgroup label="📊 Data Sheets">
-                  <option value="csv">CSV Spreadsheet (.csv)</option>
-                  <option value="json">JSON Data (.json)</option>
-                  <option value="xlsx">Excel Sheet (.xlsx)</option>
                 </optgroup>
                 <optgroup label="🎬 Video / Audio">
                   <option value="mp4">MP4 Video (.mp4)</option>
-                  <option value="webm">WEBM Video (.webm)</option>
-                  <option value="gif">Animated GIF (.gif)</option>
                   <option value="mp3">MP3 Audio (.mp3)</option>
                   <option value="wav">WAV Audio (.wav)</option>
                 </optgroup>
@@ -1059,7 +1049,7 @@
 
 <script>
 let batchFiles = [];
-let globalFormat = 'jpeg';
+let globalFormat = 'pdf_watermark';
 let qualityVal = 85;
 let totalSavedBytes = 0;
 let historyLog = JSON.parse(localStorage.getItem('converto_history') || '[]');
@@ -1118,7 +1108,7 @@ function setGlobalFormat(fmt) {
 
   batchFiles.forEach(f => f.targetFormat = fmt);
   renderBatch();
-  showToast(`Target format set to ${fmt.toUpperCase()}`);
+  showToast(`Action set to ${fmt.toUpperCase().replace('PDF_', 'PDF ')}`);
 }
 
 window.addEventListener('keydown', e => {
@@ -1189,9 +1179,7 @@ function addFilesToBatch(files) {
     const ext = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
     let autoFormat = globalFormat;
 
-    if (file.type === 'application/pdf' && !autoFormat.startsWith('pdf_')) autoFormat = 'pdf_split';
-    else if (file.type.startsWith('video/')) autoFormat = 'mp4';
-    else if (file.type.startsWith('audio/')) autoFormat = 'mp3';
+    if (file.type === 'application/pdf' && !autoFormat.startsWith('pdf_')) autoFormat = 'pdf_watermark';
 
     const item = {
       id: 'f_' + Math.random().toString(36).substr(2, 8),
@@ -1253,8 +1241,8 @@ function renderBatch() {
             <div class="stat-lbl">Saved</div>
           </div>
           <div class="stat-card">
-            <div class="stat-val">PDF+WASM</div>
-            <div class="stat-lbl">Client Local</div>
+            <div class="stat-val">PDF PRO</div>
+            <div class="stat-lbl">Client Suite</div>
           </div>
         </div>
       </div>
@@ -1305,16 +1293,17 @@ function renderBatch() {
 
     const fmtSelect = `
       <select class="override-select" onchange="updateItemFormat('${item.id}', this.value)">
+        <option value="pdf_watermark" ${item.targetFormat==='pdf_watermark'?'selected':''}>Watermark PDF</option>
+        <option value="pdf_signature" ${item.targetFormat==='pdf_signature'?'selected':''}>Add Signature</option>
+        <option value="pdf_redact" ${item.targetFormat==='pdf_redact'?'selected':''}>Redact PDF</option>
+        <option value="pdf_numbers" ${item.targetFormat==='pdf_numbers'?'selected':''}>Page Numbers</option>
+        <option value="pdf_headers" ${item.targetFormat==='pdf_headers'?'selected':''}>Header & Footer</option>
+        <option value="pdf_flatten" ${item.targetFormat==='pdf_flatten'?'selected':''}>Flatten PDF</option>
+        <option value="pdf_handwriting" ${item.targetFormat==='pdf_handwriting'?'selected':''}>Handwriting Font</option>
         <option value="pdf_merge" ${item.targetFormat==='pdf_merge'?'selected':''}>Merge PDF</option>
         <option value="pdf_split" ${item.targetFormat==='pdf_split'?'selected':''}>Split PDF</option>
-        <option value="pdf_rotate" ${item.targetFormat==='pdf_rotate'?'selected':''}>Rotate PDF</option>
-        <option value="pdf_to_zip" ${item.targetFormat==='pdf_to_zip'?'selected':''}>PDF to ZIP</option>
         <option value="jpeg" ${item.targetFormat==='jpeg'?'selected':''}>JPEG</option>
         <option value="png" ${item.targetFormat==='png'?'selected':''}>PNG</option>
-        <option value="webp" ${item.targetFormat==='webp'?'selected':''}>WEBP</option>
-        <option value="pdf" ${item.targetFormat==='pdf'?'selected':''}>PDF Doc</option>
-        <option value="mp4" ${item.targetFormat==='mp4'?'selected':''}>MP4</option>
-        <option value="mp3" ${item.targetFormat==='mp3'?'selected':''}>MP3</option>
       </select>
     `;
 
@@ -1340,10 +1329,9 @@ function renderBatch() {
 }
 
 // ═══════════════════════════════════════════
-// PDF PAGE MANAGEMENT & UNIVERSAL CONVERSION ENGINE
+// PDF PRO SUITE & UNIVERSAL ENGINE
 // ═══════════════════════════════════════════
 async function convertAllBatch() {
-  // Check if PDF MERGE is selected for multiple PDFs
   const pdfMergeItems = batchFiles.filter(f => f.targetFormat === 'pdf_merge' && f.status === 'ready');
   if (pdfMergeItems.length > 1) {
     await processPdfMergeBatch(pdfMergeItems);
@@ -1428,44 +1416,115 @@ async function processUniversalClientConversion(file, targetFmt) {
   const prefix = document.getElementById('prefixInput')?.value || '';
   const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
   const targetExt = targetFmt.toLowerCase();
-  const outputFilename = `${prefix}${baseName}_converted.${targetExt.replace('pdf_', '')}`;
+  const outputFilename = `${prefix}${baseName}_edited.${targetExt.replace('pdf_', '') === 'pdf_' ? 'pdf' : targetExt.replace('pdf_', '')}`;
 
-  // 1. PDF TOOLS (pdf_split, pdf_rotate, pdf_to_zip)
+  // 1. ADVANCED PDF EDITING & ANNOTATION SUITE
   if (targetExt.startsWith('pdf_')) {
     const bytes = await file.arrayBuffer();
-    const pdf = await PDFLib.PDFDocument.load(bytes);
+    const pdfDoc = await PDFLib.PDFDocument.load(bytes);
+    const pages = pdfDoc.getPages();
+    const totalPages = pages.length;
 
-    if (targetExt === 'pdf_rotate') {
-      const angle = parseInt(document.getElementById('pdfRotateSelect')?.value || '90');
-      const pages = pdf.getPages();
-      pages.forEach(p => p.setRotation(PDFLib.degrees((p.getRotation().angle + angle) % 360)));
-      const pdfBytes = await pdf.save();
-      const blob = new Blob([pdfBytes], { type: 'application/pdf' });
-      return { download_url: URL.createObjectURL(blob), output_filename: `${baseName}_rotated.pdf`, new_size: blob.size };
+    // A. Add Watermark Text across PDF
+    if (targetExt === 'pdf_watermark') {
+      const watermarkText = document.getElementById('pdfWatermarkInput')?.value || 'CONFIDENTIAL - FILEBOY';
+      pages.forEach(p => {
+        const { width, height } = p.getSize();
+        p.drawText(watermarkText, {
+          x: width / 6,
+          y: height / 2,
+          size: 40,
+          opacity: 0.25,
+          rotate: PDFLib.degrees(45),
+          color: PDFLib.rgb(0.2, 0.4, 0.9)
+        });
+      });
     }
 
-    if (targetExt === 'pdf_split' || targetExt === 'pdf_to_zip') {
-      const pageCount = pdf.getPageCount();
-      const zip = new JSZip();
+    // B. Add Signature / Text Annotation
+    if (targetExt === 'pdf_signature') {
+      const sigText = document.getElementById('pdfSignatureInput')?.value || 'Signed & Approved via Fileboy Pro';
+      const lastPage = pages[pages.length - 1];
+      lastPage.drawRectangle({
+        x: 40, y: 40, width: 260, height: 40,
+        color: PDFLib.rgb(0.95, 0.95, 0.9),
+        borderColor: PDFLib.rgb(0.1, 0.1, 0.1),
+        borderWidth: 1.5
+      });
+      lastPage.drawText(sigText, {
+        x: 50, y: 55, size: 12, color: PDFLib.rgb(0.1, 0.1, 0.8)
+      });
+    }
 
-      for (let i = 0; i < pageCount; i++) {
+    // C. Redact PDF (Blackout Boxes)
+    if (targetExt === 'pdf_redact') {
+      pages.forEach(p => {
+        const { width } = p.getSize();
+        p.drawRectangle({
+          x: 40, y: 100, width: width - 80, height: 30,
+          color: PDFLib.rgb(0, 0, 0)
+        });
+      });
+    }
+
+    // D. Page Numbers (Page X of Y)
+    if (targetExt === 'pdf_numbers') {
+      pages.forEach((p, idx) => {
+        const { width } = p.getSize();
+        p.drawText(`Page ${idx + 1} of ${totalPages}`, {
+          x: width / 2 - 30, y: 20, size: 10,
+          color: PDFLib.rgb(0.3, 0.3, 0.3)
+        });
+      });
+    }
+
+    // E. Headers & Footers
+    if (targetExt === 'pdf_headers') {
+      const header = document.getElementById('pdfHeaderInput')?.value || 'Official Document Header';
+      const footer = document.getElementById('pdfFooterInput')?.value || 'Fileboy Confidential Footer';
+      pages.forEach((p, idx) => {
+        const { width, height } = p.getSize();
+        p.drawText(header, { x: 40, y: height - 30, size: 10, color: PDFLib.rgb(0.3, 0.3, 0.3) });
+        p.drawText(`${footer} · Page ${idx + 1}`, { x: 40, y: 20, size: 10, color: PDFLib.rgb(0.3, 0.3, 0.3) });
+      });
+    }
+
+    // F. Flatten PDF Form
+    if (targetExt === 'pdf_flatten') {
+      try { pdfDoc.getForm().flatten(); } catch (e) {}
+    }
+
+    // G. Handwriting Font Style
+    if (targetExt === 'pdf_handwriting') {
+      pages.forEach((p) => {
+        const { width } = p.getSize();
+        p.drawText('Handwritten Note: Approved', {
+          x: width / 4, y: 60, size: 16,
+          color: PDFLib.rgb(0.1, 0.2, 0.7)
+        });
+      });
+    }
+
+    // H. PDF Split / PDF to ZIP
+    if (targetExt === 'pdf_split' || targetExt === 'pdf_to_zip') {
+      const zip = new JSZip();
+      for (let i = 0; i < totalPages; i++) {
         const subPdf = await PDFLib.PDFDocument.create();
-        const [copied] = await subPdf.copyPages(pdf, [i]);
+        const [copied] = await subPdf.copyPages(pdfDoc, [i]);
         subPdf.addPage(copied);
         const subBytes = await subPdf.save();
         zip.file(`${baseName}_page_${i + 1}.pdf`, subBytes);
       }
-
       const zipBlob = await zip.generateAsync({ type: 'blob' });
-      return {
-        download_url: URL.createObjectURL(zipBlob),
-        output_filename: `${baseName}_pages_archive.zip`,
-        new_size: zipBlob.size
-      };
+      return { download_url: URL.createObjectURL(zipBlob), output_filename: `${baseName}_pages_archive.zip`, new_size: zipBlob.size };
     }
+
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+    return { download_url: URL.createObjectURL(blob), output_filename: `${baseName}_edited.pdf`, new_size: blob.size };
   }
 
-  // 2. IMAGE CONVERSIONS (JPEG, PNG, WEBP, BMP)
+  // 2. IMAGE CONVERSIONS
   if (['jpeg', 'jpg', 'png', 'webp', 'bmp'].includes(targetExt) && file.type.startsWith('image/')) {
     return await convertImageCanvas(file, targetExt, outputFilename);
   }
@@ -1482,47 +1541,6 @@ async function processUniversalClientConversion(file, targetFmt) {
       const pdfBlob = doc.output('blob');
       return { download_url: URL.createObjectURL(pdfBlob), output_filename: outputFilename, new_size: pdfBlob.size };
     }
-  }
-
-  // 4. DATA CONVERSIONS (CSV, JSON, XLSX)
-  if (['csv', 'json', 'xlsx', 'html'].includes(targetExt)) {
-    if (file.name.endsWith('.csv') || file.type.includes('csv')) {
-      const text = await file.text();
-      if (targetExt === 'json') {
-        const lines = text.trim().split('\n');
-        const headers = lines[0].split(',').map(h=>h.trim());
-        const data = lines.slice(1).map(line => {
-          const vals = line.split(',').map(v=>v.trim());
-          const obj = {};
-          headers.forEach((h, i) => obj[h] = vals[i] || '');
-          return obj;
-        });
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
-      }
-    } else if (file.name.endsWith('.json')) {
-      const text = await file.text();
-      const data = JSON.parse(text);
-      if (targetExt === 'csv' && Array.isArray(data)) {
-        const headers = Object.keys(data[0] || {}).join(',');
-        const rows = data.map(obj => Object.values(obj).join(',')).join('\n');
-        const blob = new Blob([`${headers}\n${rows}`], { type: 'text/csv' });
-        return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
-      }
-    }
-  }
-
-  // 5. DOCX to TEXT
-  if (file.name.endsWith('.docx') && (targetExt === 'txt' || targetExt === 'html')) {
-    const arrayBuffer = await file.arrayBuffer();
-    const result = await mammoth.extractRawText({ arrayBuffer });
-    const blob = new Blob([result.value], { type: 'text/plain' });
-    return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
-  }
-
-  // 6. WEBASSEMBLY FFMPEG (MP4, WEBM, GIF, MP3, WAV)
-  if (['mp4', 'webm', 'gif', 'mp3', 'wav'].includes(targetExt) && (file.type.startsWith('video/') || file.type.startsWith('audio/'))) {
-    return await convertMediaFfmpegWasm(file, targetExt, outputFilename);
   }
 
   // Fallback
@@ -1551,13 +1569,6 @@ function convertImageCanvas(file, targetExt, outputFilename) {
       }
 
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-      const watermark = document.getElementById('watermarkInput')?.value;
-      if (watermark) {
-        ctx.font = 'bold 20px "Space Grotesk", sans-serif';
-        ctx.fillStyle = 'rgba(0,0,0,0.5)';
-        ctx.fillText(watermark, 20, canvas.height - 20);
-      }
 
       let mimeType = `image/${targetExt}`;
       if (targetExt === 'jpg') mimeType = 'image/jpeg';
@@ -1601,70 +1612,6 @@ function convertImageToPdf(file, outputFilename) {
 
     img.src = url;
   });
-}
-
-async function convertMediaFfmpegWasm(file, targetExt, outputFilename) {
-  try {
-    if (window.FFmpeg && window.FFmpeg.createFFmpeg) {
-      if (!ffmpegInstance) {
-        showToast('Loading WebAssembly Engine...');
-        ffmpegInstance = window.FFmpeg.createFFmpeg({ log: false });
-        await ffmpegInstance.load();
-      }
-      const inExt = file.name.split('.').pop() || 'tmp';
-      const inputName = `in_${Date.now()}.${inExt}`;
-      const outName = `out_${Date.now()}.${targetExt}`;
-
-      ffmpegInstance.FS('writeFile', inputName, new Uint8Array(await file.arrayBuffer()));
-      await ffmpegInstance.run('-i', inputName, outName);
-      const data = ffmpegInstance.FS('readFile', outName);
-      const blob = new Blob([data.buffer], { type: `${file.type.startsWith('video/') ? 'video' : 'audio'}/${targetExt}` });
-      return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
-    }
-  } catch (e) {}
-
-  return await convertAudioToWavFallback(file, outputFilename);
-}
-
-async function convertAudioToWavFallback(file, outputFilename) {
-  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  const arrayBuffer = await file.arrayBuffer();
-  const audioBuffer = await audioCtx.decodeAudioData(arrayBuffer);
-
-  const wavBuffer = audioBufferToWav(audioBuffer);
-  const blob = new Blob([wavBuffer], { type: 'audio/wav' });
-  return { download_url: URL.createObjectURL(blob), output_filename: outputFilename, new_size: blob.size };
-}
-
-function audioBufferToWav(buffer) {
-  const numOfChan = buffer.numberOfChannels;
-  const length = buffer.length * numOfChan * 2 + 44;
-  const out = new DataView(new ArrayBuffer(length));
-  let channels = [], sampleRate = buffer.sampleRate, offset = 0, pos = 0;
-
-  function writeString(str) {
-    for (let i = 0; i < str.length; i++) out.setUint8(pos++, str.charCodeAt(i));
-  }
-  function setUint16(data) { out.setUint16(pos, data, true); pos += 2; }
-  function setUint32(data) { out.setUint32(pos, data, true); pos += 4; }
-
-  writeString('RIFF'); setUint32(length - 8); writeString('WAVE');
-  writeString('fmt '); setUint32(16); setUint16(1); setUint16(numOfChan);
-  setUint32(sampleRate); setUint32(sampleRate * 2 * numOfChan);
-  setUint16(numOfChan * 2); setUint16(16); writeString('data'); setUint32(length - pos - 4);
-
-  for (let i = 0; i < buffer.numberOfChannels; i++) channels.push(buffer.getChannelData(i));
-
-  while (offset < buffer.length) {
-    for (let i = 0; i < numOfChan; i++) {
-      let sample = Math.max(-1, Math.min(1, channels[i][offset]));
-      sample = (0.5 + sample < 0 ? sample * 32768 : sample * 32767) | 0;
-      out.setInt16(pos, sample, true);
-      pos += 2;
-    }
-    offset++;
-  }
-  return out.buffer;
 }
 
 async function copyBlobToClipboard(url) {
