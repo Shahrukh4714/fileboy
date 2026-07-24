@@ -1,13 +1,13 @@
-const CACHE_NAME = 'fileboy-pwa-v2';
+const CACHE_NAME = 'fileboy-pwa-v1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
   'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js',
+  'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js',
-  'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js',
   'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js',
-  'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js',
-  'https://cdn.jsdelivr.net/npm/marked/marked.min.js'
+  'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js',
+  'https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js'
 ];
 
 self.addEventListener('install', (event) => {
