@@ -1502,7 +1502,7 @@ function addFilesToBatch(files) {
   });
 
   renderBatch();
-  convertAllBatch();
+  showToast(`${files.length} file${files.length > 1 ? 's' : ''} added to queue ⚡`);
 }
 
 function updateItemFormat(id, newFmt) {
@@ -1512,7 +1512,6 @@ function updateItemFormat(id, newFmt) {
     item.status = 'ready';
     item.progress = 0;
     renderBatch();
-    convertAllBatch();
   }
 }
 
@@ -1569,7 +1568,7 @@ function renderBatch() {
     return;
   }
 
-  title.textContent = `${batchFiles.length} file${batchFiles.length > 1 ? 's' : ''} processing`;
+  title.textContent = `${batchFiles.length} file${batchFiles.length > 1 ? 's' : ''} queued`;
   container.innerHTML = '';
 
   batchFiles.forEach((item) => {
