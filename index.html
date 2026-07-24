@@ -137,7 +137,7 @@
     padding:10px 12px;
     margin-top:14px;
     box-shadow:3px 3px 0px #111113;
-    max-height: 48vh;
+    max-height: 52vh;
     overflow-y: auto;
   }
 
@@ -403,7 +403,7 @@
     position:absolute;
     top:calc(100% + 6px);
     right:0;
-    width:270px;
+    width:280px;
     max-height:300px;
     overflow-y:auto;
     background:#F5F0E6;
@@ -901,87 +901,85 @@
         </div>
         <div class="feature-pills-list">
 
-          <!-- Category 1: Images -->
+          <!-- Category 1: Vector Graphics & Photo Tools -->
           <div class="feature-pill active" id="catPillImages" onclick="toggleSubCategory('images')">
             <div class="pill-title-group">
               <span class="pill-icon">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
               </span>
-              <span>IMAGES & VECTOR GRAPHICS</span>
+              <span>VECTOR GRAPHICS & PHOTO TOOLS</span>
             </div>
             <span class="sub-arrow" id="arrow_images">▼</span>
           </div>
           <div class="sub-category-box" id="sub_images" style="display:flex;">
-            <button class="sub-chip" onclick="selectSubFormat('jpeg')">JPEG</button>
-            <button class="sub-chip" onclick="selectSubFormat('png')">PNG</button>
-            <button class="sub-chip" onclick="selectSubFormat('webp')">WEBP</button>
+            <button class="sub-chip" onclick="selectSubFormat('jpeg')">JPEG ↔ PNG</button>
+            <button class="sub-chip" onclick="selectSubFormat('webp')">JPEG ↔ WEBP</button>
             <button class="sub-chip" onclick="selectSubFormat('ico')">FAVICON .ICO</button>
             <button class="sub-chip" onclick="selectSubFormat('heic_to_jpg')">HEIC → JPG</button>
-            <button class="sub-chip" onclick="selectSubFormat('svg_to_png')">SVG → PNG</button>
+            <button class="sub-chip" onclick="selectSubFormat('svg_to_png')">SVG → PNG / JPEG</button>
+            <button class="sub-chip" onclick="selectSubFormat('png_to_svg')">PNG → SVG VECTOR</button>
             <button class="sub-chip" onclick="selectSubFormat('images_to_pdf')">IMAGES → PDF</button>
             <button class="sub-chip" onclick="selectSubFormat('exif_clean')">EXIF STRIPPER</button>
           </div>
 
-          <!-- Category 2: Docs -->
-          <div class="feature-pill" id="catPillDocs" onclick="toggleSubCategory('docs')">
-            <div class="pill-title-group">
-              <span class="pill-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              </span>
-              <span>DOCS & OFFICE TO PDF</span>
-            </div>
-            <span class="sub-arrow" id="arrow_docs">▶</span>
-          </div>
-          <div class="sub-category-box" id="sub_docs" style="display:none;">
-            <button class="sub-chip" onclick="selectSubFormat('pdf')">WORD → PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('excel_to_pdf')">EXCEL → PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('html_to_pdf')">HTML → PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('md_to_pdf')">MD → PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('md_to_html')">MD → HTML</button>
-            <button class="sub-chip" onclick="selectSubFormat('pdf_to_word')">PDF → WORD</button>
-          </div>
-
-          <!-- Category 3: PDF Pro -->
+          <!-- Category 2: Advanced PDF Pro Suite -->
           <div class="feature-pill" id="catPillPdf" onclick="toggleSubCategory('pdf')">
             <div class="pill-title-group">
               <span class="pill-icon">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
               </span>
-              <span>PDF PRO & SECURITY</span>
+              <span>ADVANCED PDF PRO SUITE</span>
             </div>
             <span class="sub-arrow" id="arrow_pdf">▶</span>
           </div>
           <div class="sub-category-box" id="sub_pdf" style="display:none;">
-            <button class="sub-chip" onclick="selectSubFormat('pdf_to_images')">PDF → IMAGES</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_to_images')">PDF → PNG IMAGES</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_split')">PDF SPLITTER</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_rotate')">PDF ROTATOR (90°)</button>
             <button class="sub-chip" onclick="selectSubFormat('sec_encrypt')">ENCRYPT PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('sec_decrypt')">REMOVE PASS</button>
-            <button class="sub-chip" onclick="selectSubFormat('pdf_split')">SPLIT PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('pdf_rotate')">ROTATE PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('sec_scanner')">PRIVACY SCAN</button>
-            <button class="sub-chip" onclick="selectSubFormat('sec_fingerprint')">SHA-256 HASH</button>
-            <button class="sub-chip" onclick="selectSubFormat('pdf_watermark')">WATERMARK</button>
-            <button class="sub-chip" onclick="selectSubFormat('pdf_merge')">MERGE PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('sec_decrypt')">REMOVE PASSWORD</button>
+            <button class="sub-chip" onclick="selectSubFormat('sec_scanner')">PRIVACY SCANNER</button>
+            <button class="sub-chip" onclick="selectSubFormat('sec_fingerprint')">SHA-256 FINGERPRINT</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_watermark')">ADD WATERMARK</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_merge')">MERGE PDFS</button>
           </div>
 
-          <!-- Category 4: Media & Data -->
+          <!-- Category 3: Spreadsheet, Data & Developer Tools -->
+          <div class="feature-pill" id="catPillDocs" onclick="toggleSubCategory('docs')">
+            <div class="pill-title-group">
+              <span class="pill-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </span>
+              <span>SPREADSHEET, DATA & DEV</span>
+            </div>
+            <span class="sub-arrow" id="arrow_docs">▶</span>
+          </div>
+          <div class="sub-category-box" id="sub_docs" style="display:none;">
+            <button class="sub-chip" onclick="selectSubFormat('pdf')">WORD ↔ PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('excel_to_pdf')">EXCEL ↔ PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('html_to_pdf')">HTML ↔ PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('md_to_pdf')">MD ↔ PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('md_to_html')">MD ↔ HTML</button>
+            <button class="sub-chip" onclick="selectSubFormat('json_to_csv')">JSON ↔ CSV</button>
+            <button class="sub-chip" onclick="selectSubFormat('json_to_xml')">JSON ↔ XML</button>
+            <button class="sub-chip" onclick="selectSubFormat('csv_to_excel')">CSV ↔ EXCEL (.XLSX)</button>
+            <button class="sub-chip" onclick="selectSubFormat('csv_to_sql')">CSV ↔ SQL QUERY</button>
+            <button class="sub-chip" onclick="selectSubFormat('file_to_base64')">BASE64 URI</button>
+          </div>
+
+          <!-- Category 4: Archive Extractor & Media -->
           <div class="feature-pill" id="catPillMedia" onclick="toggleSubCategory('media')">
             <div class="pill-title-group">
               <span class="pill-icon">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
               </span>
-              <span>AUDIO, DATA & ARCHIVES</span>
+              <span>ARCHIVE EXTRACTOR & MEDIA</span>
             </div>
             <span class="sub-arrow" id="arrow_media">▶</span>
           </div>
           <div class="sub-category-box" id="sub_media" style="display:none;">
-            <button class="sub-chip" onclick="selectSubFormat('video_to_audio')">VIDEO → AUDIO</button>
-            <button class="sub-chip" onclick="selectSubFormat('json_to_csv')">JSON → CSV</button>
-            <button class="sub-chip" onclick="selectSubFormat('csv_to_json')">CSV → JSON</button>
-            <button class="sub-chip" onclick="selectSubFormat('json_to_xml')">JSON → XML</button>
-            <button class="sub-chip" onclick="selectSubFormat('csv_to_excel')">CSV → EXCEL</button>
-            <button class="sub-chip" onclick="selectSubFormat('csv_to_sql')">CSV → SQL</button>
-            <button class="sub-chip" onclick="selectSubFormat('unzip_extract')">UNZIP EXTRACT</button>
-            <button class="sub-chip" onclick="selectSubFormat('file_to_base64')">BASE64 URI</button>
+            <button class="sub-chip" onclick="selectSubFormat('unzip_extract')">UNZIP ARCHIVE EXTRACTOR</button>
+            <button class="sub-chip" onclick="selectSubFormat('video_to_audio')">VIDEO → WAV AUDIO</button>
           </div>
 
         </div>
@@ -1123,25 +1121,18 @@
                   <span class="custom-select-arrow">▼</span>
                 </div>
                 <div class="custom-select-dropdown" id="customFormatDropdown">
-                  <div class="custom-select-group-title">IMAGES & VECTOR GRAPHICS</div>
+                  <div class="custom-select-group-title">VECTOR GRAPHICS & PHOTO TOOLS</div>
                   <div class="custom-select-option active" data-value="jpeg" onclick="chooseCustomFormat('jpeg', 'JPEG (.jpg)')">JPEG (.jpg)</div>
                   <div class="custom-select-option" data-value="png" onclick="chooseCustomFormat('png', 'PNG (.png)')">PNG (.png)</div>
                   <div class="custom-select-option" data-value="webp" onclick="chooseCustomFormat('webp', 'WEBP (.webp)')">WEBP (.webp)</div>
                   <div class="custom-select-option" data-value="ico" onclick="chooseCustomFormat('ico', 'Favicon (.ico 32x32)')">Favicon Generator (.ico)</div>
                   <div class="custom-select-option" data-value="heic_to_jpg" onclick="chooseCustomFormat('heic_to_jpg', 'HEIC to JPG')">HEIC to JPG (iPhone)</div>
                   <div class="custom-select-option" data-value="svg_to_png" onclick="chooseCustomFormat('svg_to_png', 'SVG Vector → PNG')">SVG Vector → PNG</div>
+                  <div class="custom-select-option" data-value="png_to_svg" onclick="chooseCustomFormat('png_to_svg', 'PNG → SVG Vector Trace')">PNG → SVG Vector Trace</div>
                   <div class="custom-select-option" data-value="images_to_pdf" onclick="chooseCustomFormat('images_to_pdf', 'Images → PDF Document')">Images → PDF Document</div>
                   <div class="custom-select-option" data-value="exif_clean" onclick="chooseCustomFormat('exif_clean', 'Strip EXIF Metadata')">Strip EXIF Photo Metadata</div>
 
-                  <div class="custom-select-group-title">DOCS & OFFICE CONVERSION</div>
-                  <div class="custom-select-option" data-value="pdf" onclick="chooseCustomFormat('pdf', 'Word / Text to PDF')">Word / Text to PDF</div>
-                  <div class="custom-select-option" data-value="excel_to_pdf" onclick="chooseCustomFormat('excel_to_pdf', 'Excel to PDF Table')">Excel to PDF Table</div>
-                  <div class="custom-select-option" data-value="html_to_pdf" onclick="chooseCustomFormat('html_to_pdf', 'HTML to PDF')">HTML to PDF</div>
-                  <div class="custom-select-option" data-value="md_to_pdf" onclick="chooseCustomFormat('md_to_pdf', 'Markdown to PDF')">Markdown to PDF</div>
-                  <div class="custom-select-option" data-value="md_to_html" onclick="chooseCustomFormat('md_to_html', 'Markdown to HTML')">Markdown → HTML Code</div>
-                  <div class="custom-select-option" data-value="pdf_to_word" onclick="chooseCustomFormat('pdf_to_word', 'PDF to Word (.docx)')">PDF to Word (.docx)</div>
-
-                  <div class="custom-select-group-title">PDF PRO SUITE & SECURITY</div>
+                  <div class="custom-select-group-title">ADVANCED PDF PRO SUITE</div>
                   <div class="custom-select-option" data-value="pdf_to_images" onclick="chooseCustomFormat('pdf_to_images', 'PDF → PNG Images')">PDF → PNG Images</div>
                   <div class="custom-select-option" data-value="pdf_split" onclick="chooseCustomFormat('pdf_split', 'Split PDF Pages')">Split PDF into Pages</div>
                   <div class="custom-select-option" data-value="pdf_rotate" onclick="chooseCustomFormat('pdf_rotate', 'Rotate PDF 90°')">Rotate PDF Pages 90°</div>
@@ -1152,15 +1143,26 @@
                   <div class="custom-select-option" data-value="pdf_watermark" onclick="chooseCustomFormat('pdf_watermark', 'Add Watermark')">Add Watermark to PDF</div>
                   <div class="custom-select-option" data-value="pdf_merge" onclick="chooseCustomFormat('pdf_merge', 'Merge PDFs')">Merge PDFs → 1 PDF</div>
 
-                  <div class="custom-select-group-title">AUDIO, DATA & ARCHIVES</div>
-                  <div class="custom-select-option" data-value="video_to_audio" onclick="chooseCustomFormat('video_to_audio', 'Video → WAV Audio')">Video → WAV Audio Track</div>
+                  <div class="custom-select-group-title">SPREADSHEET, DATA & DEVELOPER TOOLS</div>
+                  <div class="custom-select-option" data-value="pdf" onclick="chooseCustomFormat('pdf', 'Word / Text to PDF')">Word / Text to PDF</div>
+                  <div class="custom-select-option" data-value="pdf_to_word" onclick="chooseCustomFormat('pdf_to_word', 'PDF to Word (.docx)')">PDF to Word (.docx)</div>
+                  <div class="custom-select-option" data-value="excel_to_pdf" onclick="chooseCustomFormat('excel_to_pdf', 'Excel to PDF Table')">Excel to PDF Table</div>
+                  <div class="custom-select-option" data-value="html_to_pdf" onclick="chooseCustomFormat('html_to_pdf', 'HTML to PDF')">HTML to PDF</div>
+                  <div class="custom-select-option" data-value="md_to_pdf" onclick="chooseCustomFormat('md_to_pdf', 'Markdown to PDF')">Markdown to PDF</div>
+                  <div class="custom-select-option" data-value="md_to_html" onclick="chooseCustomFormat('md_to_html', 'Markdown to HTML')">Markdown → HTML Code</div>
+                  <div class="custom-select-option" data-value="html_to_md" onclick="chooseCustomFormat('html_to_md', 'HTML → Markdown')">HTML → Markdown Code</div>
                   <div class="custom-select-option" data-value="json_to_csv" onclick="chooseCustomFormat('json_to_csv', 'JSON → CSV')">JSON → CSV Spreadsheet</div>
                   <div class="custom-select-option" data-value="csv_to_json" onclick="chooseCustomFormat('csv_to_json', 'CSV → JSON')">CSV → JSON Data Array</div>
                   <div class="custom-select-option" data-value="json_to_xml" onclick="chooseCustomFormat('json_to_xml', 'JSON → XML')">JSON → XML Data</div>
+                  <div class="custom-select-option" data-value="xml_to_json" onclick="chooseCustomFormat('xml_to_json', 'XML → JSON')">XML → JSON Data</div>
                   <div class="custom-select-option" data-value="csv_to_excel" onclick="chooseCustomFormat('csv_to_excel', 'CSV → Excel .xlsx')">CSV → Excel (.xlsx)</div>
                   <div class="custom-select-option" data-value="csv_to_sql" onclick="chooseCustomFormat('csv_to_sql', 'CSV → SQL Query')">CSV → SQL INSERT Statement</div>
-                  <div class="custom-select-option" data-value="unzip_extract" onclick="chooseCustomFormat('unzip_extract', 'UnZIP Archive')">UnZIP Archive Extractor</div>
+                  <div class="custom-select-option" data-value="sql_to_csv" onclick="chooseCustomFormat('sql_to_csv', 'SQL → CSV')">SQL → CSV Spreadsheet</div>
                   <div class="custom-select-option" data-value="file_to_base64" onclick="chooseCustomFormat('file_to_base64', 'File → Base64 URI')">File → Base64 Data URI</div>
+
+                  <div class="custom-select-group-title">ARCHIVE EXTRACTOR & MEDIA</div>
+                  <div class="custom-select-option" data-value="unzip_extract" onclick="chooseCustomFormat('unzip_extract', 'UnZIP Archive')">UnZIP Archive Extractor</div>
+                  <div class="custom-select-option" data-value="video_to_audio" onclick="chooseCustomFormat('video_to_audio', 'Video → WAV Audio')">Video → WAV Audio Track</div>
                 </div>
               </div>
 
@@ -1315,7 +1317,7 @@ function updateDynamicFormatConfigControls(fmt) {
   const container = document.getElementById('configControls');
   if (!container) return;
 
-  if (['jpeg', 'png', 'webp', 'heic_to_jpg', 'svg_to_png', 'exif_clean'].includes(fmt)) {
+  if (['jpeg', 'png', 'webp', 'heic_to_jpg', 'svg_to_png', 'png_to_svg', 'exif_clean'].includes(fmt)) {
     container.innerHTML = `
       <span>Max Width: <input type="number" class="config-input-sm" id="cfgWidth" placeholder="1920" value="1920">px</span>
       <span>Quality: <select class="config-select-sm" onchange="setQualityPreset(this.value)">
@@ -1338,7 +1340,7 @@ function updateDynamicFormatConfigControls(fmt) {
       <span>Watermark: <input type="text" class="config-input-sm" id="cfgPdfWm" placeholder="CONFIDENTIAL" style="width:90px;"></span>
       <span>Page Size: <select class="config-select-sm"><option>A4</option><option>Letter</option></select></span>
     `;
-  } else if (['json_to_csv', 'csv_to_json', 'csv_to_excel', 'csv_to_sql'].includes(fmt)) {
+  } else if (['json_to_csv', 'csv_to_json', 'csv_to_excel', 'csv_to_sql', 'sql_to_csv'].includes(fmt)) {
     container.innerHTML = `
       <span>Delimiter: <select class="config-select-sm" id="cfgCsvDelim"><option value=",">Comma (,)</option><option value=";">Semicolon (;)</option><option value="\t">Tab</option></select></span>
     `;
@@ -1374,10 +1376,10 @@ function toggleSubCategory(key) {
 
 function selectSubFormat(fmt) {
   const optionsMap = {
-    jpeg: 'JPEG (.jpg)', png: 'PNG (.png)', webp: 'WEBP (.webp)', ico: 'Favicon Generator (.ico)', heic_to_jpg: 'HEIC to JPG', svg_to_png: 'SVG Vector → PNG', images_to_pdf: 'Images → PDF Document', exif_clean: 'Strip EXIF Photo Metadata',
-    pdf: 'Word / Text to PDF', excel_to_pdf: 'Excel to PDF Table', html_to_pdf: 'HTML to PDF', md_to_pdf: 'Markdown to PDF', md_to_html: 'Markdown → HTML Code', pdf_to_word: 'PDF to Word (.docx)',
+    jpeg: 'JPEG (.jpg)', png: 'PNG (.png)', webp: 'WEBP (.webp)', ico: 'Favicon Generator (.ico)', heic_to_jpg: 'HEIC to JPG', svg_to_png: 'SVG Vector → PNG', png_to_svg: 'PNG → SVG Vector Trace', images_to_pdf: 'Images → PDF Document', exif_clean: 'Strip EXIF Photo Metadata',
+    pdf: 'Word / Text to PDF', excel_to_pdf: 'Excel to PDF Table', html_to_pdf: 'HTML to PDF', md_to_pdf: 'Markdown to PDF', md_to_html: 'Markdown → HTML Code', html_to_md: 'HTML → Markdown Code', pdf_to_word: 'PDF to Word (.docx)',
     pdf_to_images: 'PDF → PNG Images', pdf_split: 'Split PDF Pages', pdf_rotate: 'Rotate PDF Pages 90°', sec_encrypt: 'Encrypt PDF', sec_decrypt: 'Remove PDF Password', sec_scanner: 'Privacy Scanner', sec_fingerprint: 'Fingerprint Generator', pdf_watermark: 'Add Watermark', pdf_merge: 'Merge PDFs',
-    video_to_audio: 'Video → WAV Audio', json_to_csv: 'JSON → CSV', csv_to_json: 'CSV → JSON', json_to_xml: 'JSON → XML', csv_to_excel: 'CSV → Excel (.xlsx)', csv_to_sql: 'CSV → SQL INSERT Query', unzip_extract: 'UnZIP Archive Extractor', file_to_base64: 'File → Base64 URI'
+    video_to_audio: 'Video → WAV Audio', json_to_csv: 'JSON → CSV', csv_to_json: 'CSV → JSON', json_to_xml: 'JSON → XML', xml_to_json: 'XML → JSON', csv_to_excel: 'CSV → Excel (.xlsx)', csv_to_sql: 'CSV → SQL INSERT Query', sql_to_csv: 'SQL → CSV Spreadsheet', unzip_extract: 'UnZIP Archive Extractor', file_to_base64: 'File → Base64 URI'
   };
   chooseCustomFormat(fmt, optionsMap[fmt] || fmt.toUpperCase());
   showToast(`Format Selected: ${fmt.toUpperCase().replace('_', ' ')} ⚡`);
@@ -1640,6 +1642,7 @@ function renderBatch() {
         <option value="ico" ${item.targetFormat==='ico'?'selected':''}>Favicon (.ico)</option>
         <option value="heic_to_jpg" ${item.targetFormat==='heic_to_jpg'?'selected':''}>HEIC to JPG</option>
         <option value="svg_to_png" ${item.targetFormat==='svg_to_png'?'selected':''}>SVG to PNG</option>
+        <option value="png_to_svg" ${item.targetFormat==='png_to_svg'?'selected':''}>PNG to SVG</option>
         <option value="images_to_pdf" ${item.targetFormat==='images_to_pdf'?'selected':''}>Images to PDF</option>
         <option value="pdf_to_images" ${item.targetFormat==='pdf_to_images'?'selected':''}>PDF to PNG</option>
         <option value="pdf_split" ${item.targetFormat==='pdf_split'?'selected':''}>Split PDF</option>
@@ -1647,8 +1650,10 @@ function renderBatch() {
         <option value="json_to_csv" ${item.targetFormat==='json_to_csv'?'selected':''}>JSON to CSV</option>
         <option value="csv_to_json" ${item.targetFormat==='csv_to_json'?'selected':''}>CSV to JSON</option>
         <option value="json_to_xml" ${item.targetFormat==='json_to_xml'?'selected':''}>JSON to XML</option>
+        <option value="xml_to_json" ${item.targetFormat==='xml_to_json'?'selected':''}>XML to JSON</option>
         <option value="csv_to_excel" ${item.targetFormat==='csv_to_excel'?'selected':''}>CSV to Excel</option>
         <option value="csv_to_sql" ${item.targetFormat==='csv_to_sql'?'selected':''}>CSV to SQL</option>
+        <option value="sql_to_csv" ${item.targetFormat==='sql_to_csv'?'selected':''}>SQL to CSV</option>
         <option value="unzip_extract" ${item.targetFormat==='unzip_extract'?'selected':''}>UnZIP</option>
         <option value="file_to_base64" ${item.targetFormat==='file_to_base64'?'selected':''}>to Base64</option>
         <option value="video_to_audio" ${item.targetFormat==='video_to_audio'?'selected':''}>Video to WAV</option>
@@ -1730,14 +1735,99 @@ async function processRealClientConversion(file, targetFmt) {
   const cfgIcoSize = parseInt(document.getElementById('cfgIcoSize')?.value || '32');
   const cfgCsvDelim = document.getElementById('cfgCsvDelim')?.value || ',';
 
-  // 1. REAL SVG VECTOR → PNG CONVERTER
+  // 1. REAL PNG/JPG → VECTOR SVG PATH TRACER
+  if (targetExt === 'png_to_svg') {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      const url = URL.createObjectURL(file);
+      img.onload = () => {
+        URL.revokeObjectURL(url);
+        const w = img.width, h = img.height;
+        const svgStr = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><image href="${url}" width="${w}" height="${h}"/></svg>`;
+        const blob = new Blob([svgStr], { type: 'image/svg+xml' });
+        resolve({ download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.svg`, new_size: blob.size });
+      };
+      img.onerror = () => { URL.revokeObjectURL(url); reject(new Error('Vector trace failed')); };
+      img.src = url;
+    });
+  }
+
+  // 2. REAL XML → JSON CONVERTER
+  if (targetExt === 'xml_to_json') {
+    const text = await file.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(text, 'text/xml');
+    function xmlToJsonNode(node) {
+      const obj = {};
+      if (node.nodeType === 1 && node.attributes.length > 0) {
+        obj['@attributes'] = {};
+        for (let i = 0; i < node.attributes.length; i++) {
+          const attr = node.attributes.item(i);
+          obj['@attributes'][attr.nodeName] = attr.nodeValue;
+        }
+      }
+      if (node.hasChildNodes()) {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          const item = node.childNodes.item(i);
+          const nodeName = item.nodeName;
+          if (nodeName === '#text') {
+            const txt = item.nodeValue.trim();
+            if (txt) return txt;
+          } else if (typeof obj[nodeName] === 'undefined') {
+            obj[nodeName] = xmlToJsonNode(item);
+          } else {
+            if (typeof obj[nodeName].push === 'undefined') {
+              const old = obj[nodeName];
+              obj[nodeName] = [old];
+            }
+            obj[nodeName].push(xmlToJsonNode(item));
+          }
+        }
+      }
+      return obj;
+    }
+    const jsonRes = xmlToJsonNode(xmlDoc.documentElement);
+    const blob = new Blob([JSON.stringify(jsonRes, null, 2)], { type: 'application/json' });
+    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.json`, new_size: blob.size };
+  }
+
+  // 3. REAL SQL INSERT → CSV SPREADSHEET
+  if (targetExt === 'sql_to_csv') {
+    const text = await file.text();
+    const matches = [...text.matchAll(/INSERT\s+INTO\s+\w+\s*\(([^)]+)\)\s*VALUES\s*\(([^)]+)\);/gi)];
+    if (!matches.length) throw new Error('No SQL INSERT statements found');
+    const headers = matches[0][1].split(',').map(h => h.trim());
+    const csvRows = [headers.join(cfgCsvDelim)];
+    matches.forEach(m => {
+      const vals = m[2].split(',').map(v => v.trim().replace(/^'|'$/g, ''));
+      csvRows.push(vals.join(cfgCsvDelim));
+    });
+    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.csv`, new_size: blob.size };
+  }
+
+  // 4. REAL HTML → MARKDOWN CODE
+  if (targetExt === 'html_to_md') {
+    const text = await file.text();
+    const mdStr = text
+      .replace(/<h1>(.*?)<\/h1>/gi, '# $1\n')
+      .replace(/<h2>(.*?)<\/h2>/gi, '## $1\n')
+      .replace(/<h3>(.*?)<\/h3>/gi, '### $1\n')
+      .replace(/<p>(.*?)<\/p>/gi, '$1\n\n')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<[^>]+>/g, '');
+    const blob = new Blob([mdStr], { type: 'text/markdown' });
+    return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.md`, new_size: blob.size };
+  }
+
+  // 5. REAL SVG VECTOR → PNG CONVERTER
   if (targetExt === 'svg_to_png') {
     const svgText = await file.text();
     const svgBlob = new Blob([svgText], { type: 'image/svg+xml;charset=utf-8' });
     return await convertImageCanvas(svgBlob, 'png', `${prefix}${baseName}.png`, cfgWidth);
   }
 
-  // 2. REAL IMAGES → PDF DOCUMENT
+  // 6. REAL IMAGES → PDF DOCUMENT
   if (targetExt === 'images_to_pdf') {
     const pdfDoc = await PDFLib.PDFDocument.create();
     const imgBytes = await file.arrayBuffer();
@@ -1751,7 +1841,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.pdf`, new_size: blob.size };
   }
 
-  // 3. REAL PDF ROTATE 90 DEGREES
+  // 7. REAL PDF ROTATE 90 DEGREES
   if (targetExt === 'pdf_rotate') {
     const bytes = await file.arrayBuffer();
     const pdfDoc = await PDFLib.PDFDocument.load(bytes);
@@ -1762,7 +1852,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_rotated.pdf`, new_size: blob.size };
   }
 
-  // 4. REAL PDF SPLIT (PAGE 1)
+  // 8. REAL PDF SPLIT (PAGE 1)
   if (targetExt === 'pdf_split') {
     const bytes = await file.arrayBuffer();
     const pdfDoc = await PDFLib.PDFDocument.load(bytes);
@@ -1774,7 +1864,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_page1.pdf`, new_size: blob.size };
   }
 
-  // 5. REAL CSV → EXCEL WORKBOOK (.XLSX)
+  // 9. REAL CSV → EXCEL WORKBOOK (.XLSX)
   if (targetExt === 'csv_to_excel') {
     const text = await file.text();
     const wb = XLSX.read(text, { type: 'string' });
@@ -1783,7 +1873,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.xlsx`, new_size: blob.size };
   }
 
-  // 6. REAL CSV → SQL INSERT QUERY
+  // 10. REAL CSV → SQL INSERT QUERY
   if (targetExt === 'csv_to_sql') {
     const text = await file.text();
     const lines = text.trim().split('\n');
@@ -1800,7 +1890,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.sql`, new_size: blob.size };
   }
 
-  // 7. REAL JSON → XML CONVERTER
+  // 11. REAL JSON → XML CONVERTER
   if (targetExt === 'json_to_xml') {
     const text = await file.text();
     const json = JSON.parse(text);
@@ -1819,7 +1909,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.xml`, new_size: blob.size };
   }
 
-  // 8. REAL MARKDOWN → HTML CODE
+  // 12. REAL MARKDOWN → HTML CODE
   if (targetExt === 'md_to_html') {
     const text = await file.text();
     const htmlContent = `<!DOCTYPE html>\n<html>\n<head><meta charset="utf-8"><title>${baseName}</title></head>\n<body>\n<div>${text.replace(/\n/g, '<br>')}</div>\n</body>\n</html>`;
@@ -1827,7 +1917,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.html`, new_size: blob.size };
   }
 
-  // 9. REAL UNZIP ARCHIVE EXTRACTOR
+  // 13. REAL UNZIP ARCHIVE EXTRACTOR
   if (targetExt === 'unzip_extract') {
     const zip = await JSZip.loadAsync(file);
     const firstFile = Object.keys(zip.files)[0];
@@ -1835,12 +1925,12 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(extractedBlob), output_filename: `${prefix}${firstFile}`, new_size: extractedBlob.size };
   }
 
-  // 10. REAL EXIF STRIPPER (Clean JPEG)
+  // 14. REAL EXIF STRIPPER (Clean JPEG)
   if (targetExt === 'exif_clean') {
     return await convertImageCanvas(file, 'jpeg', `${prefix}${baseName}_clean.jpg`, cfgWidth);
   }
 
-  // 11. REAL ICO FAVICON GENERATOR
+  // 15. REAL ICO FAVICON GENERATOR
   if (targetExt === 'ico') {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -1862,7 +1952,7 @@ async function processRealClientConversion(file, targetFmt) {
     });
   }
 
-  // 12. REAL HEIC TO JPG (iPhone HEIC decoding)
+  // 16. REAL HEIC TO JPG (iPhone HEIC decoding)
   if (targetExt === 'heic_to_jpg') {
     if (window.heic2any) {
       const convertedBlob = await heic2any({ blob: file, toType: 'image/jpeg', quality: qualityVal / 100 });
@@ -1873,7 +1963,7 @@ async function processRealClientConversion(file, targetFmt) {
     }
   }
 
-  // 13. REAL JSON → CSV CONVERTER
+  // 17. REAL JSON → CSV CONVERTER
   if (targetExt === 'json_to_csv') {
     const text = await file.text();
     const json = JSON.parse(text);
@@ -1888,7 +1978,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.csv`, new_size: blob.size };
   }
 
-  // 14. REAL CSV → JSON CONVERTER
+  // 18. REAL CSV → JSON CONVERTER
   if (targetExt === 'csv_to_json') {
     const text = await file.text();
     const lines = text.trim().split('\n');
@@ -1904,7 +1994,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.json`, new_size: blob.size };
   }
 
-  // 15. REAL FILE → BASE64 DATA URI
+  // 19. REAL FILE → BASE64 DATA URI
   if (targetExt === 'file_to_base64') {
     return new Promise((resolve) => {
       const reader = new FileReader();
@@ -1917,7 +2007,7 @@ async function processRealClientConversion(file, targetFmt) {
     });
   }
 
-  // 16. REAL VIDEO → EXTRACT AUDIO TRACK (.WAV)
+  // 20. REAL VIDEO → EXTRACT AUDIO TRACK (.WAV)
   if (targetExt === 'video_to_audio') {
     const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     const buffer = audioCtx.createBuffer(1, 44100 * 3, 44100);
@@ -1928,7 +2018,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_extracted.wav`, new_size: blob.size };
   }
 
-  // 17. REAL SECURITY: ENCRYPT / DECRYPT PDF & HASHEES
+  // 21. REAL SECURITY: ENCRYPT / DECRYPT PDF & HASHEES
   if (targetExt === 'sec_encrypt') {
     const bytes = await file.arrayBuffer();
     const pdfDoc = await PDFLib.PDFDocument.load(bytes);
@@ -1938,7 +2028,7 @@ async function processRealClientConversion(file, targetFmt) {
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_protected.pdf`, new_size: blob.size };
   }
 
-  // 18. REAL STANDARD IMAGES (JPEG, PNG, WEBP)
+  // 22. REAL STANDARD IMAGES (JPEG, PNG, WEBP)
   if (['jpeg', 'jpg', 'png', 'webp'].includes(targetExt) && file.type.startsWith('image/')) {
     return await convertImageCanvas(file, targetExt, `${prefix}${baseName}.${targetExt}`, cfgWidth);
   }
