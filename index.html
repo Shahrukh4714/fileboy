@@ -150,9 +150,12 @@
   .feature-pills-list { display:flex; flex-direction:column; gap:4px; }
   .feature-pill {
     background:#161618; color:#D1D1D6; border:1px solid #111113;
-    font-size:10px; font-weight:700; padding:4px 8px; font-family:'Space Grotesk', sans-serif;
+    font-size:10.5px; font-weight:700; padding:6px 10px; font-family:'Space Grotesk', sans-serif;
+    cursor:pointer; transition:all 0.15s ease; user-select:none;
+    display:flex; align-items:center; gap:6px;
   }
-  .feature-pill.active { background:#3B6BF5; color:#fff; }
+  .feature-pill:hover { background:#242428; color:#fff; }
+  .feature-pill.active { background:#3B6BF5; color:#fff; border-color:#111113; }
 
   /* 100% UNTOUCHED ORIGINAL VECTOR ILLUSTRATION SVG FROM REFERENCE FILE */
   .illustration {
@@ -748,24 +751,28 @@
         <span>WEBP</span> · <span>PNG</span> · <span>PDF</span> · <span>JPG</span> · <span>SVG</span> · <span>DOCX</span>
       </div>
 
-      <!-- Hero Middle Feature Widget -->
+      <!-- Hero Middle Feature Category Drawer Widget -->
       <div class="hero-feature-widget">
         <div class="feature-widget-header">
-          <span>CONVERTO PRO ENGINE</span>
-          <span class="widget-tag">PRO SUITE</span>
+          <span>TOOL CATEGORY SUITES</span>
+          <span class="widget-tag">CLICK TO SWITCH</span>
         </div>
         <div class="feature-pills-list">
-          <div class="feature-pill active">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/></svg>
-            PDF Page Tools, Security & Privacy
+          <div class="feature-pill active" id="catPillImages" onclick="selectCategorySuite('images')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            1. Images & Favicons (HEIC, ICO, JPG)
           </div>
-          <div class="feature-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            Convert to PDF & Export to Word/Excel
+          <div class="feature-pill" id="catPillDocs" onclick="selectCategorySuite('docs')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            2. Docs & Office (Word, Excel, PPT → PDF)
           </div>
-          <div class="feature-pill">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M15 10l5 5-5 5M4 4v7a4 4 0 004 4h12"/></svg>
-            Real HEIC, ICO, JSON, Base64 & Audio Extractor
+          <div class="feature-pill" id="catPillPdf" onclick="selectCategorySuite('pdf')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            3. PDF Pro Suite (Encrypt, Watermark, Merge)
+          </div>
+          <div class="feature-pill" id="catPillMedia" onclick="selectCategorySuite('media')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            4. Audio, Media & Data (JSON, Base64, Audio)
           </div>
         </div>
       </div>
@@ -899,40 +906,34 @@
             <div class="field-row-label">Select Action / Format</div>
             <div class="pill-box">
               <select class="format-select-input" id="globalFormatSelect" onchange="setGlobalFormat(this.value)">
-                <optgroup label="🖼️ Images & Favicons">
-                  <option value="ico" selected>Favicon Generator (.ico 32x32)</option>
-                  <option value="heic_to_jpg">HEIC to JPG (iPhone Photo)</option>
-                  <option value="jpeg">JPEG (.jpg)</option>
+                <optgroup label="🖼️ Images & Favicons" id="optgroupImages">
+                  <option value="jpeg" selected>JPEG (.jpg)</option>
                   <option value="png">PNG (.png)</option>
                   <option value="webp">WEBP (.webp)</option>
+                  <option value="ico">Favicon Generator (.ico 32x32)</option>
+                  <option value="heic_to_jpg">HEIC to JPG (iPhone Photo)</option>
                 </optgroup>
-                <optgroup label="🛠️ Developer & Data">
-                  <option value="json_to_csv">JSON → CSV Spreadsheet</option>
-                  <option value="csv_to_json">CSV → JSON Data Array</option>
-                  <option value="file_to_base64">File → Base64 Data URI</option>
-                  <option value="base64_to_file">Base64 → Binary File</option>
+                <optgroup label="📄 Docs & Office Conversion" id="optgroupDocs">
+                  <option value="pdf">Word / Text to PDF</option>
+                  <option value="excel_to_pdf">Excel to PDF Table</option>
+                  <option value="html_to_pdf">HTML to PDF</option>
+                  <option value="md_to_pdf">Markdown to PDF</option>
+                  <option value="pdf_to_word">PDF to Word (.docx)</option>
                 </optgroup>
-                <optgroup label="🎵 Audio & Media">
-                  <option value="video_to_audio">Video → Extract WAV Audio Track</option>
-                  <option value="mp3">MP3 Audio (.mp3)</option>
-                  <option value="wav">WAV Audio (.wav)</option>
-                </optgroup>
-                <optgroup label="🔒 Security & Privacy">
+                <optgroup label="🔒 PDF Pro Suite & Security" id="optgroupPdf">
                   <option value="sec_encrypt">Encrypt PDF (Set Password)</option>
                   <option value="sec_decrypt">Remove PDF Password</option>
                   <option value="sec_scanner">Privacy Scanner (Scan PII)</option>
                   <option value="sec_fingerprint">Fingerprint Generator (SHA-256)</option>
+                  <option value="pdf_watermark">Add Watermark to PDF</option>
+                  <option value="pdf_merge">Merge PDFs → 1 PDF</option>
                 </optgroup>
-                <optgroup label="🔁 Convert PDF → Other">
-                  <option value="pdf_to_word">PDF to Word (.docx)</option>
-                  <option value="pdf_to_jpg">PDF to JPG</option>
-                  <option value="pdf_to_excel">PDF to Excel</option>
-                  <option value="pdf_to_ppt">PDF to PowerPoint</option>
-                </optgroup>
-                <optgroup label="📄 Convert → PDF">
-                  <option value="pdf">Word / Text to PDF</option>
-                  <option value="img_to_pdf">Images to PDF</option>
-                  <option value="excel_to_pdf">Excel to PDF Table</option>
+                <optgroup label="🎵 Audio, Media & Data" id="optgroupMedia">
+                  <option value="video_to_audio">Video → Extract WAV Audio Track</option>
+                  <option value="json_to_csv">JSON → CSV Spreadsheet</option>
+                  <option value="csv_to_json">CSV → JSON Data Array</option>
+                  <option value="file_to_base64">File → Base64 Data URI</option>
+                  <option value="mp3">MP3 Audio (.mp3)</option>
                 </optgroup>
               </select>
               <div class="pill-divider"></div>
@@ -1040,10 +1041,32 @@
 
 <script>
 let batchFiles = [];
-let globalFormat = 'ico';
+let globalFormat = 'jpeg';
 let qualityVal = 85;
 let totalSavedBytes = 0;
 let historyLog = JSON.parse(localStorage.getItem('converto_history') || '[]');
+
+function selectCategorySuite(suiteKey) {
+  document.querySelectorAll('.feature-pill').forEach(p => p.classList.remove('active'));
+
+  if (suiteKey === 'images') {
+    document.getElementById('catPillImages')?.classList.add('active');
+    setGlobalFormat('jpeg');
+    showToast('Switched to Images & Favicon Suite 🖼️');
+  } else if (suiteKey === 'docs') {
+    document.getElementById('catPillDocs')?.classList.add('active');
+    setGlobalFormat('pdf');
+    showToast('Switched to Docs & Office Suite 📄');
+  } else if (suiteKey === 'pdf') {
+    document.getElementById('catPillPdf')?.classList.add('active');
+    setGlobalFormat('sec_encrypt');
+    showToast('Switched to PDF Pro Suite & Security 🔴');
+  } else if (suiteKey === 'media') {
+    document.getElementById('catPillMedia')?.classList.add('active');
+    setGlobalFormat('video_to_audio');
+    showToast('Switched to Audio, Media & Data Suite 🎵');
+  }
+}
 
 function triggerFilePicker() {
   document.getElementById('file-input').click();
@@ -1098,7 +1121,6 @@ function setGlobalFormat(fmt) {
 
   batchFiles.forEach(f => f.targetFormat = fmt);
   renderBatch();
-  showToast(`Action set to ${fmt.toUpperCase()}`);
 }
 
 window.addEventListener('keydown', e => {
