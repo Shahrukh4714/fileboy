@@ -130,60 +130,67 @@
   }
   .hero-format-pills span { color:#111113; font-weight:800; }
 
-  /* Hero Middle Feature Widget */
+  /* ===== HERO WIDGET & SLEEK CATEGORY DRAWER ===== */
   .hero-feature-widget {
     background:#EDE6D8;
     border:1.5px solid #111113;
     padding:10px 12px;
     margin-top:14px;
     box-shadow:3px 3px 0px #111113;
-    max-height:220px;
-    overflow-y:auto;
   }
+
   .feature-widget-header {
     display:flex; align-items:center; justify-content:space-between;
     font-family:'Space Grotesk', sans-serif;
     font-size:9.5px; font-weight:800; color:#6E6E73;
-    margin-bottom:6px; letter-spacing:0.8px;
+    margin-bottom:8px; letter-spacing:0.8px;
   }
+
   .widget-tag {
     background:#2EE59D; color:#111113; font-size:8px; font-weight:800; padding:1px 5px; border:1px solid #111113;
   }
+
   .feature-pills-list { display:flex; flex-direction:column; gap:5px; }
 
   .feature-pill {
-    background:#161618; color:#D1D1D6; border:1px solid #111113;
-    font-size:10.5px; font-weight:700; padding:6px 10px; font-family:'Space Grotesk', sans-serif;
+    background:#161618; color:#D1D1D6; border:1.5px solid #111113;
+    font-size:10px; font-weight:800; padding:7px 10px; font-family:'Space Grotesk', sans-serif;
     cursor:pointer; transition:all 0.15s ease; user-select:none;
     display:flex; align-items:center; justify-content:space-between;
+    letter-spacing:0.3px;
   }
   .feature-pill:hover { background:#242428; color:#fff; }
   .feature-pill.active { background:#3B6BF5; color:#fff; border-color:#111113; }
 
-  .sub-arrow { font-size:8px; transition:transform 0.2s; }
+  .pill-title-group { display:flex; align-items:center; gap:8px; }
+  .pill-icon { display:flex; align-items:center; justify-content:center; }
+
+  .sub-arrow { font-size:9px; font-weight:800; transition:transform 0.2s; }
 
   .sub-category-box {
     display:none;
-    grid-template-columns:repeat(2, 1fr);
+    flex-wrap:wrap;
     gap:4px;
     padding:6px;
-    background:#F5F0E6;
-    border:1px solid #111113;
-    margin-top:-2px;
-    margin-bottom:4px;
-  }
-  .sub-chip {
     background:#161618;
-    color:#D1D1D6;
-    border:1px solid #111113;
-    font-size:9px;
-    font-weight:700;
-    padding:4px 6px;
-    font-family:'Space Grotesk', sans-serif;
-    text-align:center;
-    transition:all 0.15s;
+    border:1.5px solid #111113;
+    margin-top:-2px;
+    margin-bottom:3px;
   }
-  .sub-chip:hover { background:#3B6BF5; color:#fff; }
+
+  .sub-chip {
+    background:#242428;
+    color:#F5F0E6;
+    border:1px solid #3A3A3C;
+    font-size:8.5px;
+    font-weight:800;
+    padding:4px 8px;
+    font-family:'Space Grotesk', sans-serif;
+    cursor:pointer;
+    transition:all 0.15s;
+    letter-spacing:0.2px;
+  }
+  .sub-chip:hover { background:#3B6BF5; color:#fff; border-color:#3B6BF5; }
 
   /* 100% UNTOUCHED ORIGINAL VECTOR ILLUSTRATION SVG FROM REFERENCE FILE */
   .illustration {
@@ -782,61 +789,81 @@
       <!-- Hero Middle Feature Expandable Category Drawer Widget -->
       <div class="hero-feature-widget">
         <div class="feature-widget-header">
-          <span>TOOL CATEGORIES & FORMATS</span>
-          <span class="widget-tag">CLICK TO EXPAND</span>
+          <span>CONVERTO PRO ENGINE</span>
+          <span class="widget-tag">PRO SUITE</span>
         </div>
         <div class="feature-pills-list">
 
           <!-- Category 1: Images -->
           <div class="feature-pill active" id="catPillImages" onclick="toggleSubCategory('images')">
-            <span>🖼️ 1. Images & Favicons</span>
+            <div class="pill-title-group">
+              <span class="pill-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </span>
+              <span>IMAGES & FAVICONS</span>
+            </div>
             <span class="sub-arrow" id="arrow_images">▼</span>
           </div>
-          <div class="sub-category-box" id="sub_images" style="display:grid;">
-            <button class="sub-chip" onclick="selectSubFormat('jpeg')">JPEG (.jpg)</button>
-            <button class="sub-chip" onclick="selectSubFormat('png')">PNG (.png)</button>
-            <button class="sub-chip" onclick="selectSubFormat('webp')">WEBP (.webp)</button>
-            <button class="sub-chip" onclick="selectSubFormat('ico')">Favicon (.ico)</button>
-            <button class="sub-chip" onclick="selectSubFormat('heic_to_jpg')" style="grid-column:span 2;">HEIC → JPG (iPhone)</button>
+          <div class="sub-category-box" id="sub_images" style="display:flex;">
+            <button class="sub-chip" onclick="selectSubFormat('jpeg')">JPEG</button>
+            <button class="sub-chip" onclick="selectSubFormat('png')">PNG</button>
+            <button class="sub-chip" onclick="selectSubFormat('webp')">WEBP</button>
+            <button class="sub-chip" onclick="selectSubFormat('ico')">FAVICON .ICO</button>
+            <button class="sub-chip" onclick="selectSubFormat('heic_to_jpg')">HEIC → JPG</button>
           </div>
 
           <!-- Category 2: Docs -->
           <div class="feature-pill" id="catPillDocs" onclick="toggleSubCategory('docs')">
-            <span>📄 2. Docs & Office to PDF</span>
+            <div class="pill-title-group">
+              <span class="pill-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </span>
+              <span>DOCS & OFFICE TO PDF</span>
+            </div>
             <span class="sub-arrow" id="arrow_docs">▶</span>
           </div>
           <div class="sub-category-box" id="sub_docs" style="display:none;">
-            <button class="sub-chip" onclick="selectSubFormat('pdf')">Word → PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('excel_to_pdf')">Excel → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf')">WORD → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('excel_to_pdf')">EXCEL → PDF</button>
             <button class="sub-chip" onclick="selectSubFormat('html_to_pdf')">HTML → PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('md_to_pdf')">Markdown → PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('pdf_to_word')" style="grid-column:span 2;">PDF → Word (.docx)</button>
+            <button class="sub-chip" onclick="selectSubFormat('md_to_pdf')">MD → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_to_word')">PDF → WORD</button>
           </div>
 
           <!-- Category 3: PDF Pro -->
           <div class="feature-pill" id="catPillPdf" onclick="toggleSubCategory('pdf')">
-            <span>🔴 3. PDF Pro Suite & Security</span>
+            <div class="pill-title-group">
+              <span class="pill-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+              </span>
+              <span>PDF PRO & SECURITY</span>
+            </div>
             <span class="sub-arrow" id="arrow_pdf">▶</span>
           </div>
           <div class="sub-category-box" id="sub_pdf" style="display:none;">
-            <button class="sub-chip" onclick="selectSubFormat('sec_encrypt')">Encrypt PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('sec_decrypt')">Remove Pass</button>
-            <button class="sub-chip" onclick="selectSubFormat('sec_scanner')">Privacy Scan</button>
-            <button class="sub-chip" onclick="selectSubFormat('sec_fingerprint')">SHA-256 Hash</button>
-            <button class="sub-chip" onclick="selectSubFormat('pdf_watermark')">Watermark</button>
-            <button class="sub-chip" onclick="selectSubFormat('pdf_merge')">Merge PDFs</button>
+            <button class="sub-chip" onclick="selectSubFormat('sec_encrypt')">ENCRYPT PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('sec_decrypt')">REMOVE PASS</button>
+            <button class="sub-chip" onclick="selectSubFormat('sec_scanner')">PRIVACY SCAN</button>
+            <button class="sub-chip" onclick="selectSubFormat('sec_fingerprint')">SHA-256 HASH</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_watermark')">WATERMARK</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_merge')">MERGE PDF</button>
           </div>
 
           <!-- Category 4: Media & Data -->
           <div class="feature-pill" id="catPillMedia" onclick="toggleSubCategory('media')">
-            <span>🎵 4. Audio, Media & Data</span>
+            <div class="pill-title-group">
+              <span class="pill-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+              </span>
+              <span>AUDIO, MEDIA & DATA</span>
+            </div>
             <span class="sub-arrow" id="arrow_media">▶</span>
           </div>
           <div class="sub-category-box" id="sub_media" style="display:none;">
-            <button class="sub-chip" onclick="selectSubFormat('video_to_audio')" style="grid-column:span 2;">Video → WAV Audio Track</button>
+            <button class="sub-chip" onclick="selectSubFormat('video_to_audio')">VIDEO → AUDIO</button>
             <button class="sub-chip" onclick="selectSubFormat('json_to_csv')">JSON → CSV</button>
             <button class="sub-chip" onclick="selectSubFormat('csv_to_json')">CSV → JSON</button>
-            <button class="sub-chip" onclick="selectSubFormat('file_to_base64')" style="grid-column:span 2;">File → Base64 Data URI</button>
+            <button class="sub-chip" onclick="selectSubFormat('file_to_base64')">BASE64 URI</button>
           </div>
 
         </div>
@@ -1119,8 +1146,8 @@ function toggleSubCategory(key) {
     const pill = document.getElementById(`catPill${c.charAt(0).toUpperCase() + c.slice(1)}`);
 
     if (c === key) {
-      const isVisible = box.style.display === 'grid';
-      box.style.display = isVisible ? 'none' : 'grid';
+      const isVisible = box.style.display === 'flex';
+      box.style.display = isVisible ? 'none' : 'flex';
       if (arrow) arrow.textContent = isVisible ? '▶' : '▼';
       pill.classList.toggle('active', !isVisible);
     } else {
@@ -1133,7 +1160,7 @@ function toggleSubCategory(key) {
 
 function selectSubFormat(fmt) {
   setGlobalFormat(fmt);
-  showToast(`Tool Selected: ${fmt.toUpperCase().replace('_', ' ')} ⚡`);
+  showToast(`Format Selected: ${fmt.toUpperCase().replace('_', ' ')} ⚡`);
 }
 
 function triggerFilePicker() {
