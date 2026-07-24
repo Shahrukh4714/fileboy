@@ -1132,6 +1132,13 @@
 </div>
 
 <script>
+// PWA SERVICE WORKER REGISTRATION
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+
 let batchFiles = [];
 let globalFormat = 'jpeg';
 let qualityVal = 85;
@@ -1318,9 +1325,14 @@ function updateItemFormat(id, newFmt) {
 }
 
 function clearBatch() {
+  // EXPLICIT BLOB OBJECT URL MEMORY GARBAGE COLLECTION
+  batchFiles.forEach(item => {
+    if (item.thumbUrl) URL.revokeObjectURL(item.thumbUrl);
+    if (item.result?.download_url) URL.revokeObjectURL(item.result.download_url);
+  });
   batchFiles = [];
   renderBatch();
-  showToast('Queue cleared');
+  showToast('Queue & Memory Revoked');
 }
 
 function renderBatch() {
@@ -1443,6 +1455,9 @@ async function convertAllBatch() {
     renderBatch();
 
     try {
+      // NON-BLOCKING ASYNC YIELD FOR UI RESPONSIVENESS
+      await new Promise(r => setTimeout(r, 20));
+
       const result = await processRealClientConversion(item.file, item.targetFormat);
       item.status = 'done';
       item.progress = 100;
