@@ -137,6 +137,8 @@
     padding:10px 12px;
     margin-top:14px;
     box-shadow:3px 3px 0px #111113;
+    max-height:220px;
+    overflow-y:auto;
   }
   .feature-widget-header {
     display:flex; align-items:center; justify-content:space-between;
@@ -147,15 +149,41 @@
   .widget-tag {
     background:#2EE59D; color:#111113; font-size:8px; font-weight:800; padding:1px 5px; border:1px solid #111113;
   }
-  .feature-pills-list { display:flex; flex-direction:column; gap:4px; }
+  .feature-pills-list { display:flex; flex-direction:column; gap:5px; }
+
   .feature-pill {
     background:#161618; color:#D1D1D6; border:1px solid #111113;
     font-size:10.5px; font-weight:700; padding:6px 10px; font-family:'Space Grotesk', sans-serif;
     cursor:pointer; transition:all 0.15s ease; user-select:none;
-    display:flex; align-items:center; gap:6px;
+    display:flex; align-items:center; justify-content:space-between;
   }
   .feature-pill:hover { background:#242428; color:#fff; }
   .feature-pill.active { background:#3B6BF5; color:#fff; border-color:#111113; }
+
+  .sub-arrow { font-size:8px; transition:transform 0.2s; }
+
+  .sub-category-box {
+    display:none;
+    grid-template-columns:repeat(2, 1fr);
+    gap:4px;
+    padding:6px;
+    background:#F5F0E6;
+    border:1px solid #111113;
+    margin-top:-2px;
+    margin-bottom:4px;
+  }
+  .sub-chip {
+    background:#161618;
+    color:#D1D1D6;
+    border:1px solid #111113;
+    font-size:9px;
+    font-weight:700;
+    padding:4px 6px;
+    font-family:'Space Grotesk', sans-serif;
+    text-align:center;
+    transition:all 0.15s;
+  }
+  .sub-chip:hover { background:#3B6BF5; color:#fff; }
 
   /* 100% UNTOUCHED ORIGINAL VECTOR ILLUSTRATION SVG FROM REFERENCE FILE */
   .illustration {
@@ -751,29 +779,66 @@
         <span>WEBP</span> · <span>PNG</span> · <span>PDF</span> · <span>JPG</span> · <span>SVG</span> · <span>DOCX</span>
       </div>
 
-      <!-- Hero Middle Feature Category Drawer Widget -->
+      <!-- Hero Middle Feature Expandable Category Drawer Widget -->
       <div class="hero-feature-widget">
         <div class="feature-widget-header">
-          <span>TOOL CATEGORY SUITES</span>
-          <span class="widget-tag">CLICK TO SWITCH</span>
+          <span>TOOL CATEGORIES & FORMATS</span>
+          <span class="widget-tag">CLICK TO EXPAND</span>
         </div>
         <div class="feature-pills-list">
-          <div class="feature-pill active" id="catPillImages" onclick="selectCategorySuite('images')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            1. Images & Favicons (HEIC, ICO, JPG)
+
+          <!-- Category 1: Images -->
+          <div class="feature-pill active" id="catPillImages" onclick="toggleSubCategory('images')">
+            <span>🖼️ 1. Images & Favicons</span>
+            <span class="sub-arrow" id="arrow_images">▼</span>
           </div>
-          <div class="feature-pill" id="catPillDocs" onclick="selectCategorySuite('docs')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            2. Docs & Office (Word, Excel, PPT → PDF)
+          <div class="sub-category-box" id="sub_images" style="display:grid;">
+            <button class="sub-chip" onclick="selectSubFormat('jpeg')">JPEG (.jpg)</button>
+            <button class="sub-chip" onclick="selectSubFormat('png')">PNG (.png)</button>
+            <button class="sub-chip" onclick="selectSubFormat('webp')">WEBP (.webp)</button>
+            <button class="sub-chip" onclick="selectSubFormat('ico')">Favicon (.ico)</button>
+            <button class="sub-chip" onclick="selectSubFormat('heic_to_jpg')" style="grid-column:span 2;">HEIC → JPG (iPhone)</button>
           </div>
-          <div class="feature-pill" id="catPillPdf" onclick="selectCategorySuite('pdf')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-            3. PDF Pro Suite (Encrypt, Watermark, Merge)
+
+          <!-- Category 2: Docs -->
+          <div class="feature-pill" id="catPillDocs" onclick="toggleSubCategory('docs')">
+            <span>📄 2. Docs & Office to PDF</span>
+            <span class="sub-arrow" id="arrow_docs">▶</span>
           </div>
-          <div class="feature-pill" id="catPillMedia" onclick="selectCategorySuite('media')">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-            4. Audio, Media & Data (JSON, Base64, Audio)
+          <div class="sub-category-box" id="sub_docs" style="display:none;">
+            <button class="sub-chip" onclick="selectSubFormat('pdf')">Word → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('excel_to_pdf')">Excel → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('html_to_pdf')">HTML → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('md_to_pdf')">Markdown → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_to_word')" style="grid-column:span 2;">PDF → Word (.docx)</button>
           </div>
+
+          <!-- Category 3: PDF Pro -->
+          <div class="feature-pill" id="catPillPdf" onclick="toggleSubCategory('pdf')">
+            <span>🔴 3. PDF Pro Suite & Security</span>
+            <span class="sub-arrow" id="arrow_pdf">▶</span>
+          </div>
+          <div class="sub-category-box" id="sub_pdf" style="display:none;">
+            <button class="sub-chip" onclick="selectSubFormat('sec_encrypt')">Encrypt PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('sec_decrypt')">Remove Pass</button>
+            <button class="sub-chip" onclick="selectSubFormat('sec_scanner')">Privacy Scan</button>
+            <button class="sub-chip" onclick="selectSubFormat('sec_fingerprint')">SHA-256 Hash</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_watermark')">Watermark</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_merge')">Merge PDFs</button>
+          </div>
+
+          <!-- Category 4: Media & Data -->
+          <div class="feature-pill" id="catPillMedia" onclick="toggleSubCategory('media')">
+            <span>🎵 4. Audio, Media & Data</span>
+            <span class="sub-arrow" id="arrow_media">▶</span>
+          </div>
+          <div class="sub-category-box" id="sub_media" style="display:none;">
+            <button class="sub-chip" onclick="selectSubFormat('video_to_audio')" style="grid-column:span 2;">Video → WAV Audio Track</button>
+            <button class="sub-chip" onclick="selectSubFormat('json_to_csv')">JSON → CSV</button>
+            <button class="sub-chip" onclick="selectSubFormat('csv_to_json')">CSV → JSON</button>
+            <button class="sub-chip" onclick="selectSubFormat('file_to_base64')" style="grid-column:span 2;">File → Base64 Data URI</button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -906,21 +971,21 @@
             <div class="field-row-label">Select Action / Format</div>
             <div class="pill-box">
               <select class="format-select-input" id="globalFormatSelect" onchange="setGlobalFormat(this.value)">
-                <optgroup label="🖼️ Images & Favicons" id="optgroupImages">
+                <optgroup label="🖼️ Images & Favicons">
                   <option value="jpeg" selected>JPEG (.jpg)</option>
                   <option value="png">PNG (.png)</option>
                   <option value="webp">WEBP (.webp)</option>
                   <option value="ico">Favicon Generator (.ico 32x32)</option>
                   <option value="heic_to_jpg">HEIC to JPG (iPhone Photo)</option>
                 </optgroup>
-                <optgroup label="📄 Docs & Office Conversion" id="optgroupDocs">
+                <optgroup label="📄 Docs & Office Conversion">
                   <option value="pdf">Word / Text to PDF</option>
                   <option value="excel_to_pdf">Excel to PDF Table</option>
                   <option value="html_to_pdf">HTML to PDF</option>
                   <option value="md_to_pdf">Markdown to PDF</option>
                   <option value="pdf_to_word">PDF to Word (.docx)</option>
                 </optgroup>
-                <optgroup label="🔒 PDF Pro Suite & Security" id="optgroupPdf">
+                <optgroup label="🔒 PDF Pro Suite & Security">
                   <option value="sec_encrypt">Encrypt PDF (Set Password)</option>
                   <option value="sec_decrypt">Remove PDF Password</option>
                   <option value="sec_scanner">Privacy Scanner (Scan PII)</option>
@@ -928,7 +993,7 @@
                   <option value="pdf_watermark">Add Watermark to PDF</option>
                   <option value="pdf_merge">Merge PDFs → 1 PDF</option>
                 </optgroup>
-                <optgroup label="🎵 Audio, Media & Data" id="optgroupMedia">
+                <optgroup label="🎵 Audio, Media & Data">
                   <option value="video_to_audio">Video → Extract WAV Audio Track</option>
                   <option value="json_to_csv">JSON → CSV Spreadsheet</option>
                   <option value="csv_to_json">CSV → JSON Data Array</option>
@@ -1046,26 +1111,29 @@ let qualityVal = 85;
 let totalSavedBytes = 0;
 let historyLog = JSON.parse(localStorage.getItem('converto_history') || '[]');
 
-function selectCategorySuite(suiteKey) {
-  document.querySelectorAll('.feature-pill').forEach(p => p.classList.remove('active'));
+function toggleSubCategory(key) {
+  const cats = ['images', 'docs', 'pdf', 'media'];
+  cats.forEach(c => {
+    const box = document.getElementById(`sub_${c}`);
+    const arrow = document.getElementById(`arrow_${c}`);
+    const pill = document.getElementById(`catPill${c.charAt(0).toUpperCase() + c.slice(1)}`);
 
-  if (suiteKey === 'images') {
-    document.getElementById('catPillImages')?.classList.add('active');
-    setGlobalFormat('jpeg');
-    showToast('Switched to Images & Favicon Suite 🖼️');
-  } else if (suiteKey === 'docs') {
-    document.getElementById('catPillDocs')?.classList.add('active');
-    setGlobalFormat('pdf');
-    showToast('Switched to Docs & Office Suite 📄');
-  } else if (suiteKey === 'pdf') {
-    document.getElementById('catPillPdf')?.classList.add('active');
-    setGlobalFormat('sec_encrypt');
-    showToast('Switched to PDF Pro Suite & Security 🔴');
-  } else if (suiteKey === 'media') {
-    document.getElementById('catPillMedia')?.classList.add('active');
-    setGlobalFormat('video_to_audio');
-    showToast('Switched to Audio, Media & Data Suite 🎵');
-  }
+    if (c === key) {
+      const isVisible = box.style.display === 'grid';
+      box.style.display = isVisible ? 'none' : 'grid';
+      if (arrow) arrow.textContent = isVisible ? '▶' : '▼';
+      pill.classList.toggle('active', !isVisible);
+    } else {
+      box.style.display = 'none';
+      if (arrow) arrow.textContent = '▶';
+      pill.classList.remove('active');
+    }
+  });
+}
+
+function selectSubFormat(fmt) {
+  setGlobalFormat(fmt);
+  showToast(`Tool Selected: ${fmt.toUpperCase().replace('_', ' ')} ⚡`);
 }
 
 function triggerFilePicker() {
