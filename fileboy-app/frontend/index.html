@@ -808,19 +808,19 @@
     position:fixed; inset:0;
     background:rgba(0,0,0,0.85); backdrop-filter:blur(6px);
     z-index:10001; display:none;
-    align-items:center; justify-content:center; padding:20px;
+    align-items:center; justify-content:center; padding:16px;
   }
   .preview-modal.active { display:flex; }
   
-  /* ENLARGED PREVIEW & VISUAL PDF BUILDER BOX */
+  /* FLUID FULL-SCREEN PDF & MEDIA STUDIO MODAL */
   .preview-box {
-    background:#F5F0E6; border:2px solid #111113;
-    padding:20px; max-width:960px; width:92vw; max-height:88vh;
+    background:#F5F0E6; border:2.5px solid #111113;
+    padding:20px; width:95vw; max-width:1240px; height:92vh;
     display:flex; flex-direction:column; align-items:center;
-    overflow-y:auto;
-    box-shadow:0 24px 48px rgba(0,0,0,0.7);
+    overflow:hidden;
+    box-shadow:0 28px 60px rgba(0,0,0,0.8);
   }
-  .preview-box img { max-width:100%; max-height:70vh; object-fit:contain; border:1px solid #111; }
+  .preview-box img { max-width:100%; max-height:75vh; object-fit:contain; border:1px solid #111; }
 </style>
 </head>
 <body>
@@ -841,11 +841,11 @@
 <!-- Lightbox & Visual Builder Modal -->
 <div class="preview-modal" id="previewModal" onclick="if(event.target===this) togglePreviewModal(false)">
   <div class="preview-box" id="previewModalBox">
-    <div style="width:100%; display:flex; justify-content:space-between; margin-bottom:10px; font-family:'Space Grotesk',sans-serif; font-weight:800; color:#111;">
-      <span id="previewTitle">PREVIEW</span>
-      <button onclick="togglePreviewModal(false)" style="background:none;border:none;font-weight:800;font-size:16px;cursor:pointer;" aria-label="Close preview">✕</button>
+    <div style="width:100%; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; font-family:'Space Grotesk',sans-serif; font-weight:800; color:#111;">
+      <span id="previewTitle" style="font-size:16px; letter-spacing:0.5px;">PREVIEW</span>
+      <button onclick="togglePreviewModal(false)" style="background:none;border:none;font-weight:800;font-size:20px;cursor:pointer;" aria-label="Close preview">✕</button>
     </div>
-    <div id="previewModalContent" style="width:100%;">
+    <div id="previewModalContent" style="width:100%; height:calc(100% - 40px); display:flex; flex-direction:column; align-items:center; overflow:hidden;">
       <img id="previewImg" src="" alt="Preview">
     </div>
   </div>
@@ -1291,6 +1291,7 @@ let historyLog = JSON.parse(localStorage.getItem('converto_history') || '[]');
 
 let pdfBuilderPages = [];
 let currentPdfFile = null;
+let pdfCardSize = 'medium'; // 'small', 'medium', 'large'
 
 function escapeHtml(str) {
   if (!str) return '';
@@ -1501,7 +1502,7 @@ function selectSubFormat(fmt) {
     pdf_to_images: 'PDF → PNG Images', pdf_split: 'Split PDF Pages', pdf_rotate: 'Rotate PDF Pages 90°', sec_encrypt: 'Encrypt PDF (Metadata)', pdf_watermark: 'Add Watermark', pdf_merge: 'Merge PDFs',
     video_to_audio: 'Video → WAV Audio', json_to_csv: 'JSON → CSV', csv_to_json: 'CSV → JSON', json_to_xml: 'JSON → XML', xml_to_json: 'XML → JSON', csv_to_excel: 'CSV → Excel (.xlsx)', csv_to_sql: 'CSV → SQL INSERT Query', sql_to_csv: 'SQL → CSV Spreadsheet', unzip_extract: 'UnZIP Archive Extractor', file_to_base64: 'File → Base64 URI'
   };
-  chooseCustomFormat(fmt, optionsMap[fmt] || fmt.toUpperCase());
+  chooseCustomFormat(fmt, optionsMap[fmt] || fmttoUpperCase());
   showToast(`Format Selected: ${fmt.toUpperCase().replace('_', ' ')} ⚡`);
 }
 
@@ -1525,7 +1526,7 @@ function togglePreviewModal(show, url = '', name = '') {
 
   if (show) {
     if (url) {
-      content.innerHTML = `<div style="text-align:center;"><img id="previewImg" src="${url}" alt="Preview" style="max-height:70vh; object-fit:contain;"></div>`;
+      content.innerHTML = `<div style="text-align:center; width:100%;"><img id="previewImg" src="${url}" alt="Preview" style="max-height:75vh; object-fit:contain; border:2px solid #111;"></div>`;
       title.textContent = name || 'IMAGE PREVIEW';
     }
     modal.classList.add('active');
@@ -1534,7 +1535,7 @@ function togglePreviewModal(show, url = '', name = '') {
   }
 }
 
-// ENLARGED FULL-FEATURED PDF PAGE BUILDER MODAL
+// WORLD-CLASS FLUID PDF PRO STUDIO BUILDER MODAL
 async function openPdfPageBuilder(file) {
   currentPdfFile = file;
   const modal = document.getElementById('previewModal');
@@ -1542,35 +1543,45 @@ async function openPdfPageBuilder(file) {
   const title = document.getElementById('previewTitle');
   if (!modal || !content) return;
 
-  title.textContent = `PDF PRO BUILDER — ${file.name}`;
+  title.textContent = `PDF STUDIO PRO — ${file.name}`;
   content.innerHTML = `
-    <div style="width:100%; font-family:'Space Grotesk',sans-serif; color:#111;">
+    <div style="width:100%; height:100%; display:flex; flex-direction:column; font-family:'Space Grotesk',sans-serif; color:#111;">
 
-      <!-- PDF TOOLBAR -->
-      <div style="display:flex; flex-wrap:wrap; align-items:center; justify-space-between; gap:8px; padding:10px 12px; background:#EDE6D8; border:1.5px solid #111; margin-bottom:10px; box-shadow:2px 2px 0px #111;">
+      <!-- STUDIO TOOLBAR -->
+      <div style="display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; padding:10px 14px; background:#EDE6D8; border:2px solid #111; margin-bottom:12px; box-shadow:3px 3px 0px #111;">
         <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-          <button class="quick-btn" onclick="rotateAllPdfBuilderPages(90)" title="Rotate All Pages 90° Clockwise">↻ Rotate All</button>
-          <button class="quick-btn" onclick="reversePdfBuilderPages()" title="Reverse Entire Page Order">⇄ Reverse Order</button>
-          <button class="quick-btn" onclick="resetPdfBuilderPages()" title="Reset All Changes">⟲ Reset</button>
+          <button class="quick-btn" onclick="rotateAllPdfBuilderPages(90)" title="Rotate All Pages 90°">↻ Rotate All</button>
+          <button class="quick-btn" onclick="reversePdfBuilderPages()" title="Reverse Page Sequence">⇄ Reverse Order</button>
+          <button class="quick-btn" onclick="resetPdfBuilderPages()" title="Reset Original Document">⟲ Reset</button>
         </div>
-        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-          <span style="font-size:10.5px; font-weight:800;">Watermark:</span>
-          <input type="text" class="config-input-sm" id="builderWmInput" placeholder="CONFIDENTIAL" style="width:110px;">
+
+        <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:4px; background:#161618; color:#fff; padding:3px 8px; border:1px solid #111;">
+            <span style="font-size:10px; font-weight:800; font-family:'Space Grotesk';">VIEW SIZE:</span>
+            <button class="sub-chip" onclick="setPdfCardSize('small')">Compact</button>
+            <button class="sub-chip" onclick="setPdfCardSize('medium')">Medium</button>
+            <button class="sub-chip" onclick="setPdfCardSize('large')">Large Crisp</button>
+          </div>
+
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span style="font-size:10.5px; font-weight:800;">Watermark:</span>
+            <input type="text" class="config-input-sm" id="builderWmInput" placeholder="CONFIDENTIAL" style="width:120px; font-size:11px; padding:4px 6px;">
+          </div>
         </div>
       </div>
 
-      <!-- LARGE CRISP PAGE GRID CONTAINER -->
-      <div id="pdfPagesContainer" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:14px; max-height:60vh; overflow-y:auto; width:100%; padding:14px; background:#161618; border:1.5px solid #111;">
-        <div style="text-align:center; grid-column:1/-1; padding:30px; font-weight:800; color:#F5F0E6; font-size:14px;">Rendering high-resolution PDF pages...</div>
+      <!-- WARMS CANVASES FLUID PAGE CONTAINER GRID -->
+      <div id="pdfPagesContainer" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(280px, 1fr)); gap:18px; flex:1; overflow-y:auto; width:100%; padding:20px; background:#EDE6D8; border:2px solid #111; box-shadow:inset 0 2px 8px rgba(0,0,0,0.15);">
+        <div style="text-align:center; grid-column:1/-1; padding:40px; font-weight:800; color:#111; font-size:16px;">Rendering high-definition PDF document pages...</div>
       </div>
 
-      <!-- FOOTER CONTROL BAR -->
-      <div style="margin-top:12px; width:100%; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-        <div style="display:flex; align-items:center; gap:12px;">
-          <span style="font-size:12px; font-weight:800; color:#111;" id="pdfPageCountStatus">Pages: 0</span>
-          <span style="font-size:10.5px; font-weight:700; color:#4A4A4F;">Rotate, delete, reorder or watermark pages</span>
+      <!-- FOOTER ACTION BAR -->
+      <div style="margin-top:12px; width:100%; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div style="display:flex; align-items:center; gap:14px;">
+          <span style="font-size:13px; font-weight:800; color:#111; background:#2EE59D; padding:3px 8px; border:1px solid #111;" id="pdfPageCountStatus">Pages: 0</span>
+          <span style="font-size:11px; font-weight:700; color:#4A4A4F;">Drag & Drop cards naturally or use row controls</span>
         </div>
-        <button class="convert-all-main-btn" onclick="savePdfPageBuilderOutput()" style="padding:7px 18px; font-size:12px;">Save Customized PDF ⚡</button>
+        <button class="convert-all-main-btn" onclick="savePdfPageBuilderOutput()" style="padding:9px 22px; font-size:13px;">Save & Export Customized PDF ⚡</button>
       </div>
 
     </div>
@@ -1585,7 +1596,7 @@ async function openPdfPageBuilder(file) {
 
     for (let i = 1; i <= numPages; i++) {
       const page = await pdfDoc.getPage(i);
-      const viewport = page.getViewport({ scale: 0.55 });
+      const viewport = page.getViewport({ scale: 0.9 });
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       canvas.width = viewport.width;
@@ -1601,6 +1612,11 @@ async function openPdfPageBuilder(file) {
   }
 }
 
+function setPdfCardSize(size) {
+  pdfCardSize = size;
+  renderPdfBuilderPages();
+}
+
 function renderPdfBuilderPages() {
   const container = document.getElementById('pdfPagesContainer');
   const status = document.getElementById('pdfPageCountStatus');
@@ -1608,31 +1624,77 @@ function renderPdfBuilderPages() {
 
   if (status) status.textContent = `Pages: ${pdfBuilderPages.length}`;
   if (!pdfBuilderPages.length) {
-    container.innerHTML = `<div style="text-align:center; grid-column:1/-1; padding:30px; font-weight:800; color:#E15353; font-size:14px;">All pages removed.</div>`;
+    container.innerHTML = `<div style="text-align:center; grid-column:1/-1; padding:40px; font-weight:800; color:#E15353; font-size:16px;">All pages removed from PDF sequence.</div>`;
     return;
   }
 
+  let minWidth = '280px';
+  let imgHeight = '320px';
+
+  if (pdfCardSize === 'small') {
+    minWidth = '200px';
+    imgHeight = '220px';
+  } else if (pdfCardSize === 'large') {
+    minWidth = '360px';
+    imgHeight = '440px';
+  }
+
+  container.style.gridTemplateColumns = `repeat(auto-fill, minmax(${minWidth}, 1fr))`;
   container.innerHTML = '';
+
   pdfBuilderPages.forEach((p, idx) => {
     const card = document.createElement('div');
-    card.style.cssText = 'background:#F5F0E6; border:1.5px solid #111; padding:10px; display:flex; flex-direction:column; align-items:center; gap:8px; position:relative; box-shadow:3px 3px 0px #111; transition:transform 0.15s;';
+    card.className = 'pdf-page-card';
+    card.draggable = true;
+    card.style.cssText = 'background:#F5F0E6; border:2px solid #111113; padding:12px; display:flex; flex-direction:column; align-items:center; gap:10px; position:relative; box-shadow:4px 4px 0px #111113; transition:transform 0.15s, opacity 0.15s; cursor:grab;';
+
     card.innerHTML = `
-      <div style="font-size:11px; font-weight:800; font-family:'Space Grotesk'; color:#111; width:100%; display:flex; justify-content:space-between;">
+      <div style="font-size:12px; font-weight:800; font-family:'Space Grotesk'; color:#111; width:100%; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #D5CEBE; padding-bottom:6px;">
         <span>Page ${idx + 1}</span>
-        <span style="color:#3B6BF5;">${p.rotation}°</span>
+        <span style="background:#161618; color:#fff; padding:1px 6px; font-size:9.5px; font-weight:800;">${p.rotation}°</span>
       </div>
-      <div style="width:100%; height:210px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fff; border:1.5px solid #111;">
+      <div style="width:100%; height:${imgHeight}; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fff; border:1.5px solid #111113; cursor:zoom-in;" onclick="togglePreviewModal(true, '${p.thumbUrl}', 'Page ${idx+1}')" title="Click to view full page">
         <img src="${p.thumbUrl}" style="max-width:100%; max-height:100%; transform:rotate(${p.rotation}deg); transition:transform 0.2s;" alt="Page ${idx+1}">
       </div>
-      <div style="display:flex; gap:4px; width:100%; justify-content:center; margin-top:2px;">
-        <button class="action-btn-square" style="width:26px; height:26px; font-size:12px;" onclick="rotatePdfBuilderPage(${idx}, -90)" title="Rotate Left 90°">↺</button>
-        <button class="action-btn-square" style="width:26px; height:26px; font-size:12px;" onclick="rotatePdfBuilderPage(${idx}, 90)" title="Rotate Right 90°">↻</button>
-        <button class="action-btn-square" style="width:26px; height:26px; font-size:12px;" onclick="movePdfBuilderPage(${idx}, -1)" title="Move Page Left">◀</button>
-        <button class="action-btn-square" style="width:26px; height:26px; font-size:12px;" onclick="movePdfBuilderPage(${idx}, 1)" title="Move Page Right">▶</button>
-        <button class="action-btn-square" style="width:26px; height:26px; font-size:12px; color:#E15353;" onclick="removePdfBuilderPage(${idx})" title="Delete Page">✕</button>
+      <div style="display:flex; gap:6px; width:100%; justify-content:center; margin-top:4px;">
+        <button class="action-btn-square" style="width:30px; height:30px; font-size:13px;" onclick="rotatePdfBuilderPage(${idx}, -90)" title="Rotate Left 90°">↺</button>
+        <button class="action-btn-square" style="width:30px; height:30px; font-size:13px;" onclick="rotatePdfBuilderPage(${idx}, 90)" title="Rotate Right 90°">↻</button>
+        <button class="action-btn-square" style="width:30px; height:30px; font-size:13px;" onclick="movePdfBuilderPage(${idx}, -1)" title="Move Left">◀</button>
+        <button class="action-btn-square" style="width:30px; height:30px; font-size:13px;" onclick="movePdfBuilderPage(${idx}, 1)" title="Move Right">▶</button>
+        <button class="action-btn-square" style="width:30px; height:30px; font-size:13px; color:#E15353;" onclick="removePdfBuilderPage(${idx})" title="Delete Page">✕</button>
       </div>
     `;
     container.appendChild(card);
+  });
+
+  enableDragAndDropPdfPages();
+}
+
+function enableDragAndDropPdfPages() {
+  const cards = document.querySelectorAll('.pdf-page-card');
+  let draggedIdx = null;
+
+  cards.forEach((card, idx) => {
+    card.addEventListener('dragstart', (e) => {
+      draggedIdx = idx;
+      card.style.opacity = '0.4';
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    card.addEventListener('dragend', () => {
+      card.style.opacity = '1';
+    });
+    card.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    });
+    card.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (draggedIdx !== null && draggedIdx !== idx) {
+        const item = pdfBuilderPages.splice(draggedIdx, 1)[0];
+        pdfBuilderPages.splice(idx, 0, item);
+        renderPdfBuilderPages();
+      }
+    });
   });
 }
 
@@ -1960,7 +2022,7 @@ function renderBatch() {
     if (item.thumbUrl) {
       thumb = `<div class="file-thumb" onclick="togglePreviewModal(true, '${item.thumbUrl}', '${safeName}')"><img src="${item.thumbUrl}" alt="Thumb"></div>`;
     } else if (item.ext === 'pdf') {
-      thumb = `<div class="file-thumb" onclick="openPdfPageBuilder(batchFiles.find(f=>f.id==='${item.id}').file)" title="Open PDF Visual Builder" style="background:#3B6BF5; border-color:#111;">PDF ✏️</div>`;
+      thumb = `<div class="file-thumb" onclick="openPdfPageBuilder(batchFiles.find(f=>f.id==='${item.id}').file)" title="Open PDF Visual Studio" style="background:#3B6BF5; border-color:#111;">PDF ✏️</div>`;
     } else {
       thumb = `<div class="file-thumb">${item.ext.toUpperCase().slice(0,3)}</div>`;
     }
