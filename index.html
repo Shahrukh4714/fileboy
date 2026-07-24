@@ -811,11 +811,14 @@
     align-items:center; justify-content:center; padding:20px;
   }
   .preview-modal.active { display:flex; }
+  
+  /* ENLARGED PREVIEW & VISUAL PDF BUILDER BOX */
   .preview-box {
     background:#F5F0E6; border:2px solid #111113;
-    padding:20px; max-width:90vw; max-height:90vh;
+    padding:20px; max-width:960px; width:92vw; max-height:88vh;
     display:flex; flex-direction:column; align-items:center;
     overflow-y:auto;
+    box-shadow:0 24px 48px rgba(0,0,0,0.7);
   }
   .preview-box img { max-width:100%; max-height:70vh; object-fit:contain; border:1px solid #111; }
 </style>
@@ -842,7 +845,7 @@
       <span id="previewTitle">PREVIEW</span>
       <button onclick="togglePreviewModal(false)" style="background:none;border:none;font-weight:800;font-size:16px;cursor:pointer;" aria-label="Close preview">✕</button>
     </div>
-    <div id="previewModalContent">
+    <div id="previewModalContent" style="width:100%;">
       <img id="previewImg" src="" alt="Preview">
     </div>
   </div>
@@ -1522,7 +1525,7 @@ function togglePreviewModal(show, url = '', name = '') {
 
   if (show) {
     if (url) {
-      content.innerHTML = `<img id="previewImg" src="${url}" alt="Preview">`;
+      content.innerHTML = `<div style="text-align:center;"><img id="previewImg" src="${url}" alt="Preview" style="max-height:70vh; object-fit:contain;"></div>`;
       title.textContent = name || 'IMAGE PREVIEW';
     }
     modal.classList.add('active');
@@ -1531,7 +1534,7 @@ function togglePreviewModal(show, url = '', name = '') {
   }
 }
 
-// INTERACTIVE VISUAL PDF PAGE BUILDER MODAL
+// ENLARGED FULL-FEATURED PDF PAGE BUILDER MODAL
 async function openPdfPageBuilder(file) {
   currentPdfFile = file;
   const modal = document.getElementById('previewModal');
@@ -1539,16 +1542,37 @@ async function openPdfPageBuilder(file) {
   const title = document.getElementById('previewTitle');
   if (!modal || !content) return;
 
-  title.textContent = `PDF PAGE BUILDER — ${file.name}`;
+  title.textContent = `PDF PRO BUILDER — ${file.name}`;
   content.innerHTML = `
     <div style="width:100%; font-family:'Space Grotesk',sans-serif; color:#111;">
-      <div id="pdfPagesContainer" style="display:flex; flex-wrap:wrap; gap:10px; max-height:55vh; overflow-y:auto; width:100%; padding:10px; background:#EDE6D8; border:1.5px solid #111;">
-        <div style="text-align:center; width:100%; padding:20px; font-weight:700; color:#666;">Loading PDF pages...</div>
+
+      <!-- PDF TOOLBAR -->
+      <div style="display:flex; flex-wrap:wrap; align-items:center; justify-space-between; gap:8px; padding:10px 12px; background:#EDE6D8; border:1.5px solid #111; margin-bottom:10px; box-shadow:2px 2px 0px #111;">
+        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <button class="quick-btn" onclick="rotateAllPdfBuilderPages(90)" title="Rotate All Pages 90° Clockwise">↻ Rotate All</button>
+          <button class="quick-btn" onclick="reversePdfBuilderPages()" title="Reverse Entire Page Order">⇄ Reverse Order</button>
+          <button class="quick-btn" onclick="resetPdfBuilderPages()" title="Reset All Changes">⟲ Reset</button>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+          <span style="font-size:10.5px; font-weight:800;">Watermark:</span>
+          <input type="text" class="config-input-sm" id="builderWmInput" placeholder="CONFIDENTIAL" style="width:110px;">
+        </div>
       </div>
-      <div style="margin-top:12px; width:100%; display:flex; justify-content:space-between; align-items:center;">
-        <span style="font-size:11px; font-weight:800; color:#4A4A4F;" id="pdfPageCountStatus">Pages: 0</span>
-        <button class="convert-all-main-btn" onclick="savePdfPageBuilderOutput()">Save Customized PDF ⚡</button>
+
+      <!-- LARGE CRISP PAGE GRID CONTAINER -->
+      <div id="pdfPagesContainer" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:14px; max-height:60vh; overflow-y:auto; width:100%; padding:14px; background:#161618; border:1.5px solid #111;">
+        <div style="text-align:center; grid-column:1/-1; padding:30px; font-weight:800; color:#F5F0E6; font-size:14px;">Rendering high-resolution PDF pages...</div>
       </div>
+
+      <!-- FOOTER CONTROL BAR -->
+      <div style="margin-top:12px; width:100%; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-size:12px; font-weight:800; color:#111;" id="pdfPageCountStatus">Pages: 0</span>
+          <span style="font-size:10.5px; font-weight:700; color:#4A4A4F;">Rotate, delete, reorder or watermark pages</span>
+        </div>
+        <button class="convert-all-main-btn" onclick="savePdfPageBuilderOutput()" style="padding:7px 18px; font-size:12px;">Save Customized PDF ⚡</button>
+      </div>
+
     </div>
   `;
   modal.classList.add('active');
@@ -1561,7 +1585,7 @@ async function openPdfPageBuilder(file) {
 
     for (let i = 1; i <= numPages; i++) {
       const page = await pdfDoc.getPage(i);
-      const viewport = page.getViewport({ scale: 0.25 });
+      const viewport = page.getViewport({ scale: 0.55 });
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       canvas.width = viewport.width;
@@ -1573,7 +1597,7 @@ async function openPdfPageBuilder(file) {
     }
     renderPdfBuilderPages();
   } catch (err) {
-    document.getElementById('pdfPagesContainer').innerHTML = `<div style="color:#E15353; padding:20px; font-weight:700;">Could not render PDF pages: ${escapeHtml(err.message)}</div>`;
+    document.getElementById('pdfPagesContainer').innerHTML = `<div style="color:#E15353; grid-column:1/-1; padding:20px; font-weight:700; text-align:center;">Could not render PDF pages: ${escapeHtml(err.message)}</div>`;
   }
 }
 
@@ -1584,25 +1608,28 @@ function renderPdfBuilderPages() {
 
   if (status) status.textContent = `Pages: ${pdfBuilderPages.length}`;
   if (!pdfBuilderPages.length) {
-    container.innerHTML = `<div style="text-align:center; width:100%; padding:20px; font-weight:700; color:#E15353;">All pages removed.</div>`;
+    container.innerHTML = `<div style="text-align:center; grid-column:1/-1; padding:30px; font-weight:800; color:#E15353; font-size:14px;">All pages removed.</div>`;
     return;
   }
 
   container.innerHTML = '';
   pdfBuilderPages.forEach((p, idx) => {
     const card = document.createElement('div');
-    card.style.cssText = 'background:#F5F0E6; border:1.5px solid #111; padding:6px; display:flex; flex-direction:column; align-items:center; gap:4px; width:120px; position:relative; box-shadow:2px 2px 0px #111;';
+    card.style.cssText = 'background:#F5F0E6; border:1.5px solid #111; padding:10px; display:flex; flex-direction:column; align-items:center; gap:8px; position:relative; box-shadow:3px 3px 0px #111; transition:transform 0.15s;';
     card.innerHTML = `
-      <div style="font-size:10px; font-weight:800; font-family:'Space Grotesk'; color:#111;">Page ${idx + 1}</div>
-      <div style="width:90px; height:110px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fff; border:1px solid #111;">
+      <div style="font-size:11px; font-weight:800; font-family:'Space Grotesk'; color:#111; width:100%; display:flex; justify-content:space-between;">
+        <span>Page ${idx + 1}</span>
+        <span style="color:#3B6BF5;">${p.rotation}°</span>
+      </div>
+      <div style="width:100%; height:210px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#fff; border:1.5px solid #111;">
         <img src="${p.thumbUrl}" style="max-width:100%; max-height:100%; transform:rotate(${p.rotation}deg); transition:transform 0.2s;" alt="Page ${idx+1}">
       </div>
-      <div style="display:flex; gap:2px; margin-top:2px;">
-        <button class="action-btn-square" onclick="rotatePdfBuilderPage(${idx}, -90)" title="Rotate Left">↺</button>
-        <button class="action-btn-square" onclick="rotatePdfBuilderPage(${idx}, 90)" title="Rotate Right">↻</button>
-        <button class="action-btn-square" onclick="movePdfBuilderPage(${idx}, -1)" title="Move Left">◀</button>
-        <button class="action-btn-square" onclick="movePdfBuilderPage(${idx}, 1)" title="Move Right">▶</button>
-        <button class="action-btn-square" onclick="removePdfBuilderPage(${idx})" style="color:#E15353;" title="Delete Page">✕</button>
+      <div style="display:flex; gap:4px; width:100%; justify-content:center; margin-top:2px;">
+        <button class="action-btn-square" style="width:26px; height:26px; font-size:12px;" onclick="rotatePdfBuilderPage(${idx}, -90)" title="Rotate Left 90°">↺</button>
+        <button class="action-btn-square" style="width:26px; height:26px; font-size:12px;" onclick="rotatePdfBuilderPage(${idx}, 90)" title="Rotate Right 90°">↻</button>
+        <button class="action-btn-square" style="width:26px; height:26px; font-size:12px;" onclick="movePdfBuilderPage(${idx}, -1)" title="Move Page Left">◀</button>
+        <button class="action-btn-square" style="width:26px; height:26px; font-size:12px;" onclick="movePdfBuilderPage(${idx}, 1)" title="Move Page Right">▶</button>
+        <button class="action-btn-square" style="width:26px; height:26px; font-size:12px; color:#E15353;" onclick="removePdfBuilderPage(${idx})" title="Delete Page">✕</button>
       </div>
     `;
     container.appendChild(card);
@@ -1614,6 +1641,20 @@ function rotatePdfBuilderPage(idx, deg) {
     pdfBuilderPages[idx].rotation = (pdfBuilderPages[idx].rotation + deg) % 360;
     renderPdfBuilderPages();
   }
+}
+
+function rotateAllPdfBuilderPages(deg) {
+  pdfBuilderPages.forEach(p => p.rotation = (p.rotation + deg) % 360);
+  renderPdfBuilderPages();
+}
+
+function reversePdfBuilderPages() {
+  pdfBuilderPages.reverse();
+  renderPdfBuilderPages();
+}
+
+function resetPdfBuilderPages() {
+  if (currentPdfFile) openPdfPageBuilder(currentPdfFile);
 }
 
 function movePdfBuilderPage(idx, dir) {
@@ -1640,12 +1681,30 @@ async function savePdfPageBuilderOutput() {
     const bytes = await currentPdfFile.arrayBuffer();
     const srcDoc = await PDFLib.PDFDocument.load(bytes);
     const newDoc = await PDFLib.PDFDocument.create();
+    const wmText = document.getElementById('builderWmInput')?.value || '';
+
+    let font;
+    if (wmText) {
+      font = await newDoc.embedFont(PDFLib.StandardFonts.HelveticaBold);
+    }
 
     for (const p of pdfBuilderPages) {
       const [copiedPage] = await newDoc.copyPages(srcDoc, [p.pageIndex]);
       if (p.rotation !== 0) {
         const currentRot = copiedPage.getRotation().angle;
         copiedPage.setRotation(PDFLib.degrees((currentRot + p.rotation) % 360));
+      }
+      if (wmText) {
+        const { width, height } = copiedPage.getSize();
+        copiedPage.drawText(wmText, {
+          x: width / 5,
+          y: height / 2,
+          size: 38,
+          font,
+          color: PDFLib.rgb(0.7, 0.7, 0.7),
+          opacity: 0.35,
+          rotate: PDFLib.degrees(45)
+        });
       }
       newDoc.addPage(copiedPage);
     }
@@ -1901,7 +1960,7 @@ function renderBatch() {
     if (item.thumbUrl) {
       thumb = `<div class="file-thumb" onclick="togglePreviewModal(true, '${item.thumbUrl}', '${safeName}')"><img src="${item.thumbUrl}" alt="Thumb"></div>`;
     } else if (item.ext === 'pdf') {
-      thumb = `<div class="file-thumb" onclick="openPdfPageBuilder(batchFiles.find(f=>f.id==='${item.id}').file)" title="Open PDF Page Builder">PDF</div>`;
+      thumb = `<div class="file-thumb" onclick="openPdfPageBuilder(batchFiles.find(f=>f.id==='${item.id}').file)" title="Open PDF Visual Builder" style="background:#3B6BF5; border-color:#111;">PDF ✏️</div>`;
     } else {
       thumb = `<div class="file-thumb">${item.ext.toUpperCase().slice(0,3)}</div>`;
     }
