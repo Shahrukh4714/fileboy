@@ -912,8 +912,9 @@
             <span class="sub-arrow" id="arrow_images">▼</span>
           </div>
           <div class="sub-category-box" id="sub_images" style="display:flex;">
-            <button class="sub-chip" onclick="selectSubFormat('jpeg')">JPEG ↔ PNG</button>
-            <button class="sub-chip" onclick="selectSubFormat('webp')">JPEG ↔ WEBP</button>
+            <button class="sub-chip" onclick="selectSubFormat('jpeg')">JPEG (.jpg)</button>
+            <button class="sub-chip" onclick="selectSubFormat('png')">PNG (.png)</button>
+            <button class="sub-chip" onclick="selectSubFormat('webp')">WEBP (.webp)</button>
             <button class="sub-chip" onclick="selectSubFormat('ico')">FAVICON .ICO</button>
             <button class="sub-chip" onclick="selectSubFormat('heic_to_jpg')">HEIC → JPG</button>
             <button class="sub-chip" onclick="selectSubFormat('svg_to_png')">SVG → PNG / JPEG</button>
@@ -955,15 +956,20 @@
             <span class="sub-arrow" id="arrow_docs">▶</span>
           </div>
           <div class="sub-category-box" id="sub_docs" style="display:none;">
-            <button class="sub-chip" onclick="selectSubFormat('pdf')">WORD ↔ PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('excel_to_pdf')">EXCEL ↔ PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('html_to_pdf')">HTML ↔ PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('md_to_pdf')">MD ↔ PDF</button>
-            <button class="sub-chip" onclick="selectSubFormat('md_to_html')">MD ↔ HTML</button>
-            <button class="sub-chip" onclick="selectSubFormat('json_to_csv')">JSON ↔ CSV</button>
-            <button class="sub-chip" onclick="selectSubFormat('json_to_xml')">JSON ↔ XML</button>
-            <button class="sub-chip" onclick="selectSubFormat('csv_to_excel')">CSV ↔ EXCEL (.XLSX)</button>
-            <button class="sub-chip" onclick="selectSubFormat('csv_to_sql')">CSV ↔ SQL QUERY</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf')">WORD → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('pdf_to_word')">PDF → WORD (.DOCX)</button>
+            <button class="sub-chip" onclick="selectSubFormat('excel_to_pdf')">EXCEL → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('html_to_pdf')">HTML → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('md_to_pdf')">MD → PDF</button>
+            <button class="sub-chip" onclick="selectSubFormat('md_to_html')">MD → HTML</button>
+            <button class="sub-chip" onclick="selectSubFormat('html_to_md')">HTML → MARKDOWN</button>
+            <button class="sub-chip" onclick="selectSubFormat('json_to_csv')">JSON → CSV</button>
+            <button class="sub-chip" onclick="selectSubFormat('csv_to_json')">CSV → JSON</button>
+            <button class="sub-chip" onclick="selectSubFormat('json_to_xml')">JSON → XML</button>
+            <button class="sub-chip" onclick="selectSubFormat('xml_to_json')">XML → JSON</button>
+            <button class="sub-chip" onclick="selectSubFormat('csv_to_excel')">CSV → EXCEL (.XLSX)</button>
+            <button class="sub-chip" onclick="selectSubFormat('csv_to_sql')">CSV → SQL QUERY</button>
+            <button class="sub-chip" onclick="selectSubFormat('sql_to_csv')">SQL → CSV</button>
             <button class="sub-chip" onclick="selectSubFormat('file_to_base64')">BASE64 URI</button>
           </div>
 
