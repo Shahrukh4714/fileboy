@@ -343,6 +343,7 @@
     color:#F5F0E6;
     border:1.5px solid #111113;
     box-shadow:2px 2px 0px #111113;
+    position:relative;
   }
 
   .pill-text {
@@ -375,19 +376,74 @@
   }
   .pill-icon-box:hover { background:#242428; }
 
-  .format-select-input {
-    background:transparent;
+  /* CUSTOM NEO-BRUTALIST FORMAT SELECTOR */
+  .custom-brutalist-select {
+    position:relative;
+    min-width:170px;
+  }
+
+  .custom-select-trigger {
+    background:#161618;
     color:#F5F0E6;
     font-size:11.5px;
     font-weight:700;
     padding:7px 12px;
-    border:none;
-    outline:none;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:8px;
     cursor:pointer;
-    font-family:inherit;
+    user-select:none;
+    font-family:'Space Grotesk', sans-serif;
   }
-  .format-select-input option { background:#161618; }
-  .format-select-input optgroup { background:#111; color:#3B6BF5; font-weight:800; }
+
+  .custom-select-dropdown {
+    position:absolute;
+    top:calc(100% + 6px);
+    right:0;
+    width:260px;
+    max-height:280px;
+    overflow-y:auto;
+    background:#F5F0E6;
+    border:1.5px solid #111113;
+    box-shadow:4px 4px 0px #111113;
+    z-index:9999;
+    display:none;
+    padding:4px 0;
+  }
+  .custom-select-dropdown.active { display:block; }
+
+  .custom-select-group-title {
+    font-family:'Space Grotesk', sans-serif;
+    font-size:8.5px;
+    font-weight:800;
+    color:#6E6E73;
+    background:#E2DCCF;
+    padding:4px 10px;
+    letter-spacing:0.8px;
+    border-top:1px solid #111113;
+    border-bottom:1px solid #111113;
+    margin-top:2px;
+  }
+  .custom-select-group-title:first-child { border-top:none; margin-top:0; }
+
+  .custom-select-option {
+    font-family:'Space Grotesk', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    color:#111113;
+    padding:6px 12px;
+    cursor:pointer;
+    transition:all 0.1s;
+  }
+  .custom-select-option:hover {
+    background:#3B6BF5;
+    color:#fff;
+  }
+  .custom-select-option.active {
+    background:#161618;
+    color:#fff;
+  }
 
   /* ===== CIRCULAR BADGE ===== */
   .badge-area {
@@ -997,37 +1053,45 @@
           <div class="field-row" style="margin-top:2px;">
             <div class="field-row-label">Select Action / Format</div>
             <div class="pill-box">
-              <select class="format-select-input" id="globalFormatSelect" onchange="setGlobalFormat(this.value)">
-                <optgroup label="🖼️ Images & Favicons">
-                  <option value="jpeg" selected>JPEG (.jpg)</option>
-                  <option value="png">PNG (.png)</option>
-                  <option value="webp">WEBP (.webp)</option>
-                  <option value="ico">Favicon Generator (.ico 32x32)</option>
-                  <option value="heic_to_jpg">HEIC to JPG (iPhone Photo)</option>
-                </optgroup>
-                <optgroup label="📄 Docs & Office Conversion">
-                  <option value="pdf">Word / Text to PDF</option>
-                  <option value="excel_to_pdf">Excel to PDF Table</option>
-                  <option value="html_to_pdf">HTML to PDF</option>
-                  <option value="md_to_pdf">Markdown to PDF</option>
-                  <option value="pdf_to_word">PDF to Word (.docx)</option>
-                </optgroup>
-                <optgroup label="🔒 PDF Pro Suite & Security">
-                  <option value="sec_encrypt">Encrypt PDF (Set Password)</option>
-                  <option value="sec_decrypt">Remove PDF Password</option>
-                  <option value="sec_scanner">Privacy Scanner (Scan PII)</option>
-                  <option value="sec_fingerprint">Fingerprint Generator (SHA-256)</option>
-                  <option value="pdf_watermark">Add Watermark to PDF</option>
-                  <option value="pdf_merge">Merge PDFs → 1 PDF</option>
-                </optgroup>
-                <optgroup label="🎵 Audio, Media & Data">
-                  <option value="video_to_audio">Video → Extract WAV Audio Track</option>
-                  <option value="json_to_csv">JSON → CSV Spreadsheet</option>
-                  <option value="csv_to_json">CSV → JSON Data Array</option>
-                  <option value="file_to_base64">File → Base64 Data URI</option>
-                  <option value="mp3">MP3 Audio (.mp3)</option>
-                </optgroup>
-              </select>
+
+              <!-- CUSTOM NEO-BRUTALIST FORMAT DROPDOWN -->
+              <div class="custom-brutalist-select" id="customFormatSelect">
+                <div class="custom-select-trigger" onclick="toggleCustomFormatDropdown(event)">
+                  <span id="customSelectLabel">JPEG (.jpg)</span>
+                  <span class="custom-select-arrow">▼</span>
+                </div>
+                <div class="custom-select-dropdown" id="customFormatDropdown">
+                  <div class="custom-select-group-title">IMAGES & FAVICONS</div>
+                  <div class="custom-select-option active" data-value="jpeg" onclick="chooseCustomFormat('jpeg', 'JPEG (.jpg)')">JPEG (.jpg)</div>
+                  <div class="custom-select-option" data-value="png" onclick="chooseCustomFormat('png', 'PNG (.png)')">PNG (.png)</div>
+                  <div class="custom-select-option" data-value="webp" onclick="chooseCustomFormat('webp', 'WEBP (.webp)')">WEBP (.webp)</div>
+                  <div class="custom-select-option" data-value="ico" onclick="chooseCustomFormat('ico', 'Favicon (.ico 32x32)')">Favicon Generator (.ico)</div>
+                  <div class="custom-select-option" data-value="heic_to_jpg" onclick="chooseCustomFormat('heic_to_jpg', 'HEIC to JPG')">HEIC to JPG (iPhone)</div>
+
+                  <div class="custom-select-group-title">DOCS & OFFICE CONVERSION</div>
+                  <div class="custom-select-option" data-value="pdf" onclick="chooseCustomFormat('pdf', 'Word / Text to PDF')">Word / Text to PDF</div>
+                  <div class="custom-select-option" data-value="excel_to_pdf" onclick="chooseCustomFormat('excel_to_pdf', 'Excel to PDF Table')">Excel to PDF Table</div>
+                  <div class="custom-select-option" data-value="html_to_pdf" onclick="chooseCustomFormat('html_to_pdf', 'HTML to PDF')">HTML to PDF</div>
+                  <div class="custom-select-option" data-value="md_to_pdf" onclick="chooseCustomFormat('md_to_pdf', 'Markdown to PDF')">Markdown to PDF</div>
+                  <div class="custom-select-option" data-value="pdf_to_word" onclick="chooseCustomFormat('pdf_to_word', 'PDF to Word (.docx)')">PDF to Word (.docx)</div>
+
+                  <div class="custom-select-group-title">PDF PRO SUITE & SECURITY</div>
+                  <div class="custom-select-option" data-value="sec_encrypt" onclick="chooseCustomFormat('sec_encrypt', 'Encrypt PDF')">Encrypt PDF (Set Password)</div>
+                  <div class="custom-select-option" data-value="sec_decrypt" onclick="chooseCustomFormat('sec_decrypt', 'Remove PDF Password')">Remove PDF Password</div>
+                  <div class="custom-select-option" data-value="sec_scanner" onclick="chooseCustomFormat('sec_scanner', 'Privacy Scanner')">Privacy Scanner (Scan PII)</div>
+                  <div class="custom-select-option" data-value="sec_fingerprint" onclick="chooseCustomFormat('sec_fingerprint', 'Fingerprint Generator')">SHA-256 Fingerprint</div>
+                  <div class="custom-select-option" data-value="pdf_watermark" onclick="chooseCustomFormat('pdf_watermark', 'Add Watermark')">Add Watermark to PDF</div>
+                  <div class="custom-select-option" data-value="pdf_merge" onclick="chooseCustomFormat('pdf_merge', 'Merge PDFs')">Merge PDFs → 1 PDF</div>
+
+                  <div class="custom-select-group-title">AUDIO, MEDIA & DATA</div>
+                  <div class="custom-select-option" data-value="video_to_audio" onclick="chooseCustomFormat('video_to_audio', 'Video → WAV Audio')">Video → WAV Audio Track</div>
+                  <div class="custom-select-option" data-value="json_to_csv" onclick="chooseCustomFormat('json_to_csv', 'JSON → CSV')">JSON → CSV Spreadsheet</div>
+                  <div class="custom-select-option" data-value="csv_to_json" onclick="chooseCustomFormat('csv_to_json', 'CSV → JSON')">CSV → JSON Data Array</div>
+                  <div class="custom-select-option" data-value="file_to_base64" onclick="chooseCustomFormat('file_to_base64', 'File → Base64 URI')">File → Base64 Data URI</div>
+                  <div class="custom-select-option" data-value="mp3" onclick="chooseCustomFormat('mp3', 'MP3 Audio')">MP3 Audio (.mp3)</div>
+                </div>
+              </div>
+
               <div class="pill-divider"></div>
               <button class="pill-icon-box" onclick="toggleDrawer(true)">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 003-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.6-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
@@ -1145,6 +1209,28 @@ let qualityVal = 85;
 let totalSavedBytes = 0;
 let historyLog = JSON.parse(localStorage.getItem('converto_history') || '[]');
 
+// CUSTOM DROPDOWN INTERACTION
+function toggleCustomFormatDropdown(e) {
+  if (e) e.stopPropagation();
+  const menu = document.getElementById('customFormatDropdown');
+  menu.classList.toggle('active');
+}
+
+function chooseCustomFormat(val, label) {
+  document.getElementById('customSelectLabel').textContent = label;
+  document.querySelectorAll('.custom-select-option').forEach(opt => {
+    opt.classList.toggle('active', opt.getAttribute('data-value') === val);
+  });
+  document.getElementById('customFormatDropdown').classList.remove('active');
+  setGlobalFormat(val);
+}
+
+window.addEventListener('click', e => {
+  if (!e.target.closest('#customFormatSelect')) {
+    document.getElementById('customFormatDropdown')?.classList.remove('active');
+  }
+});
+
 function toggleSubCategory(key) {
   const cats = ['images', 'docs', 'pdf', 'media'];
   cats.forEach(c => {
@@ -1166,7 +1252,13 @@ function toggleSubCategory(key) {
 }
 
 function selectSubFormat(fmt) {
-  setGlobalFormat(fmt);
+  const optionsMap = {
+    jpeg: 'JPEG (.jpg)', png: 'PNG (.png)', webp: 'WEBP (.webp)', ico: 'Favicon Generator (.ico)', heic_to_jpg: 'HEIC to JPG',
+    pdf: 'Word / Text to PDF', excel_to_pdf: 'Excel to PDF Table', html_to_pdf: 'HTML to PDF', md_to_pdf: 'Markdown to PDF', pdf_to_word: 'PDF to Word (.docx)',
+    sec_encrypt: 'Encrypt PDF', sec_decrypt: 'Remove PDF Password', sec_scanner: 'Privacy Scanner', sec_fingerprint: 'Fingerprint Generator', pdf_watermark: 'Add Watermark', pdf_merge: 'Merge PDFs',
+    video_to_audio: 'Video → WAV Audio', json_to_csv: 'JSON → CSV', csv_to_json: 'CSV → JSON', file_to_base64: 'File → Base64 URI', mp3: 'MP3 Audio'
+  };
+  chooseCustomFormat(fmt, optionsMap[fmt] || fmt.toUpperCase());
   showToast(`Format Selected: ${fmt.toUpperCase().replace('_', ' ')} ⚡`);
 }
 
@@ -1218,9 +1310,6 @@ function setQualityPreset(val) {
 
 function setGlobalFormat(fmt) {
   globalFormat = fmt;
-  const sel = document.getElementById('globalFormatSelect');
-  if (sel) sel.value = fmt;
-
   batchFiles.forEach(f => f.targetFormat = fmt);
   renderBatch();
 }
@@ -1230,6 +1319,7 @@ window.addEventListener('keydown', e => {
     toggleDrawer(false);
     toggleHistoryDrawer(false);
     togglePreviewModal(false);
+    document.getElementById('customFormatDropdown')?.classList.remove('active');
   }
   if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'o') {
     e.preventDefault();
