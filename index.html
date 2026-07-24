@@ -445,6 +445,38 @@
     color:#fff;
   }
 
+  /* DYNAMIC FORMAT CONFIGURATIONS INLINE BAR */
+  .format-config-bar {
+    margin-top:8px;
+    padding-top:8px;
+    border-top:1px dashed #D5CEBE;
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:8px;
+    font-size:11px;
+    font-family:'Space Grotesk', sans-serif;
+  }
+
+  .config-input-sm {
+    background:#161618;
+    color:#F5F0E6;
+    border:1px solid #111113;
+    padding:3px 6px;
+    font-size:10px;
+    font-weight:700;
+    width:70px;
+  }
+
+  .config-select-sm {
+    background:#161618;
+    color:#F5F0E6;
+    border:1px solid #111113;
+    padding:3px 6px;
+    font-size:10px;
+    font-weight:700;
+  }
+
   /* ===== COMPACT ELEGANT CIRCULAR BADGE ===== */
   .badge-area {
     display:flex;
@@ -792,27 +824,44 @@
 <div class="drawer-overlay" id="settingsDrawer">
   <div class="drawer-card">
     <div class="drawer-title">
-      <span>CONVERSION OPTIONS</span>
+      <span>ADVANCED FORMAT CONFIGURATIONS</span>
       <button onclick="toggleDrawer(false)" style="background:none;border:none;font-size:16px;font-weight:800;">✕</button>
     </div>
 
-    <div class="drawer-group">
-      <label class="drawer-label">PDF Encryption Password</label>
-      <input type="password" class="drawer-input" id="pdfPassInput" placeholder="Enter password (default: fileboy123)">
+    <!-- DYNAMIC FORMAT DEPENDENT OPTIONS -->
+    <div id="dynamicDrawerConfigs">
+      <div class="drawer-group">
+        <label class="drawer-label">PDF Encryption Password</label>
+        <input type="password" class="drawer-input" id="pdfPassInput" placeholder="Enter password (default: fileboy123)">
+      </div>
+
+      <div class="drawer-group">
+        <label class="drawer-label">PDF Watermark Text</label>
+        <input type="text" class="drawer-input" id="pdfWatermarkInput" placeholder="e.g. CONFIDENTIAL / FILEBOY">
+      </div>
+
+      <div class="drawer-group">
+        <label class="drawer-label">Image Max Resolution Width (px)</label>
+        <input type="number" class="drawer-input" id="imgWidthInput" placeholder="Auto / Original (e.g. 1920)">
+      </div>
+
+      <div class="drawer-group">
+        <label class="drawer-label">CSV Delimiter Character</label>
+        <select class="drawer-select" id="csvDelimiterSelect">
+          <option value=",">Comma (,)</option>
+          <option value=";">Semicolon (;)</option>
+          <option value="\t">Tab (\t)</option>
+        </select>
+      </div>
+
+      <div class="drawer-group">
+        <label class="drawer-label">Image Quality (<span id="qualityVal">85</span>%)</label>
+        <input type="range" class="drawer-range" min="10" max="100" value="85" id="qualityRange" oninput="setQualityPreset(this.value)">
+      </div>
     </div>
 
     <div class="drawer-group">
-      <label class="drawer-label">PDF Watermark Text</label>
-      <input type="text" class="drawer-input" id="pdfWatermarkInput" placeholder="e.g. CONFIDENTIAL / FILEBOY">
-    </div>
-
-    <div class="drawer-group">
-      <label class="drawer-label">Image Quality (<span id="qualityVal">85</span>%)</label>
-      <input type="range" class="drawer-range" min="10" max="100" value="85" id="qualityRange" oninput="setQualityPreset(this.value)">
-    </div>
-
-    <div class="drawer-group">
-      <label class="drawer-label">Batch Output Prefix</label>
+      <label class="drawer-label">Batch Output File Prefix</label>
       <input type="text" class="drawer-input" id="prefixInput" placeholder="e.g. fileboy_">
     </div>
 
@@ -1088,7 +1137,7 @@
                   <div class="custom-select-option" data-value="json_to_csv" onclick="chooseCustomFormat('json_to_csv', 'JSON → CSV')">JSON → CSV Spreadsheet</div>
                   <div class="custom-select-option" data-value="csv_to_json" onclick="chooseCustomFormat('csv_to_json', 'CSV → JSON')">CSV → JSON Data Array</div>
                   <div class="custom-select-option" data-value="file_to_base64" onclick="chooseCustomFormat('file_to_base64', 'File → Base64 URI')">File → Base64 Data URI</div>
-                  <div class="custom-select-option" data-value="mp3" onclick="chooseCustomFormat('mp3', 'MP3 Audio')">MP3 Audio (.mp3)</div>
+                  <option value="mp3">MP3 Audio (.mp3)</option>
                 </div>
               </div>
 
@@ -1097,6 +1146,14 @@
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.9l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.9-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1-1.6 1.7 1.7 0 00-1.9.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 003-1.9 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.6-1 1.7 1.7 0 00-.3-1.9l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.9.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.9-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.9V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>
               </button>
             </div>
+          </div>
+
+          <!-- DYNAMIC FORMAT DEPENDENT CONFIGURATIONS BAR -->
+          <div class="format-config-bar" id="formatConfigBar">
+            <span style="font-weight:800; color:#111;">SETTINGS:</span>
+            <span id="configControls">
+              <!-- Dynamically populated per format -->
+            </span>
           </div>
 
           <!-- Quality Compression Preset Chips -->
@@ -1231,6 +1288,47 @@ window.addEventListener('click', e => {
   }
 });
 
+function updateDynamicFormatConfigControls(fmt) {
+  const container = document.getElementById('configControls');
+  if (!container) return;
+
+  if (['jpeg', 'png', 'webp', 'heic_to_jpg'].includes(fmt)) {
+    container.innerHTML = `
+      <span>Max Width: <input type="number" class="config-input-sm" id="cfgWidth" placeholder="1920" value="1920">px</span>
+      <span>Quality: <select class="config-select-sm" onchange="setQualityPreset(this.value)">
+        <option value="100" ${qualityVal===100?'selected':''}>100% (Lossless)</option>
+        <option value="85" ${qualityVal===85?'selected':''}>85% (Balanced)</option>
+        <option value="60" ${qualityVal===60?'selected':''}>60% (Compact)</option>
+      </select></span>
+    `;
+  } else if (fmt === 'ico') {
+    container.innerHTML = `
+      <span>Icon Size: <select class="config-select-sm" id="cfgIcoSize">
+        <option value="32">32x32 Favicon</option>
+        <option value="16">16x16 Small</option>
+        <option value="64">64x64 HD</option>
+      </select></span>
+    `;
+  } else if (['sec_encrypt', 'sec_decrypt', 'pdf_watermark', 'pdf_merge', 'pdf', 'excel_to_pdf', 'html_to_pdf', 'md_to_pdf'].includes(fmt)) {
+    container.innerHTML = `
+      <span>PDF Pass: <input type="password" class="config-input-sm" id="cfgPdfPass" placeholder="fileboy123"></span>
+      <span>Watermark: <input type="text" class="config-input-sm" id="cfgPdfWm" placeholder="CONFIDENTIAL" style="width:90px;"></span>
+      <span>Page Size: <select class="config-select-sm"><option>A4</option><option>Letter</option></select></span>
+    `;
+  } else if (['json_to_csv', 'csv_to_json'].includes(fmt)) {
+    container.innerHTML = `
+      <span>Delimiter: <select class="config-select-sm" id="cfgCsvDelim"><option value=",">Comma (,)</option><option value=";">Semicolon (;)</option><option value="\t">Tab</option></select></span>
+    `;
+  } else if (fmt === 'video_to_audio') {
+    container.innerHTML = `
+      <span>Sample Rate: <select class="config-select-sm"><option value="44100">44.1 kHz</option><option value="48000">48 kHz</option></select></span>
+      <span>Channels: <select class="config-select-sm"><option value="mono">Mono</option><option value="stereo" selected>Stereo</option></select></span>
+    `;
+  } else {
+    container.innerHTML = `<span style="color:#777;">Default auto-settings active.</span>`;
+  }
+}
+
 function toggleSubCategory(key) {
   const cats = ['images', 'docs', 'pdf', 'media'];
   cats.forEach(c => {
@@ -1310,9 +1408,13 @@ function setQualityPreset(val) {
 
 function setGlobalFormat(fmt) {
   globalFormat = fmt;
+  updateDynamicFormatConfigControls(fmt);
   batchFiles.forEach(f => f.targetFormat = fmt);
   renderBatch();
 }
+
+// Initial setup call
+updateDynamicFormatConfigControls('jpeg');
 
 window.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
@@ -1580,7 +1682,13 @@ async function processRealClientConversion(file, targetFmt) {
   const baseName = file.name.substring(0, file.name.lastIndexOf('.')) || file.name;
   const targetExt = targetFmt.toLowerCase();
 
-  // 1. REAL ICO FAVICON GENERATOR (16x16 / 32x32 Favicon)
+  // READ CUSTOM DYNAMIC CONFIG INPUTS
+  const cfgPass = document.getElementById('cfgPdfPass')?.value || document.getElementById('pdfPassInput')?.value || 'fileboy123';
+  const cfgWidth = parseInt(document.getElementById('cfgWidth')?.value || '0');
+  const cfgIcoSize = parseInt(document.getElementById('cfgIcoSize')?.value || '32');
+  const cfgCsvDelim = document.getElementById('cfgCsvDelim')?.value || ',';
+
+  // 1. REAL ICO FAVICON GENERATOR (16x16 / 32x32 / 64x64 Favicon)
   if (targetExt === 'ico') {
     return new Promise((resolve, reject) => {
       const img = new Image();
@@ -1588,10 +1696,10 @@ async function processRealClientConversion(file, targetFmt) {
       img.onload = () => {
         URL.revokeObjectURL(url);
         const canvas = document.createElement('canvas');
-        canvas.width = 32;
-        canvas.height = 32;
+        canvas.width = cfgIcoSize;
+        canvas.height = cfgIcoSize;
         const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, 32, 32);
+        ctx.drawImage(img, 0, 0, cfgIcoSize, cfgIcoSize);
         canvas.toBlob((blob) => {
           if (!blob) return reject(new Error('ICO canvas export failed'));
           resolve({ download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_favicon.ico`, new_size: blob.size });
@@ -1605,11 +1713,11 @@ async function processRealClientConversion(file, targetFmt) {
   // 2. REAL HEIC TO JPG (iPhone HEIC decoding)
   if (targetExt === 'heic_to_jpg') {
     if (window.heic2any) {
-      const convertedBlob = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.85 });
+      const convertedBlob = await heic2any({ blob: file, toType: 'image/jpeg', quality: qualityVal / 100 });
       const blob = Array.isArray(convertedBlob) ? convertedBlob[0] : convertedBlob;
       return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.jpg`, new_size: blob.size };
     } else {
-      return await convertImageCanvas(file, 'jpeg', `${prefix}${baseName}.jpg`);
+      return await convertImageCanvas(file, 'jpeg', `${prefix}${baseName}.jpg`, cfgWidth);
     }
   }
 
@@ -1619,10 +1727,10 @@ async function processRealClientConversion(file, targetFmt) {
     const json = JSON.parse(text);
     const arr = Array.isArray(json) ? json : [json];
     const headers = Object.keys(arr[0] || {});
-    const csvRows = [headers.join(',')];
+    const csvRows = [headers.join(cfgCsvDelim)];
     arr.forEach(row => {
       const values = headers.map(h => `"${(row[h] || '').toString().replace(/"/g, '""')}"`);
-      csvRows.push(values.join(','));
+      csvRows.push(values.join(cfgCsvDelim));
     });
     const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}.csv`, new_size: blob.size };
@@ -1632,10 +1740,10 @@ async function processRealClientConversion(file, targetFmt) {
   if (targetExt === 'csv_to_json') {
     const text = await file.text();
     const lines = text.trim().split('\n');
-    const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
+    const headers = lines[0].split(cfgCsvDelim).map(h => h.trim().replace(/^"|"$/g, ''));
     const resultJson = [];
     lines.slice(1).forEach(line => {
-      const values = line.split(',').map(v => v.trim().replace(/^"|"$/g, ''));
+      const values = line.split(cfgCsvDelim).map(v => v.trim().replace(/^"|"$/g, ''));
       const obj = {};
       headers.forEach((h, idx) => { obj[h] = values[idx] || ''; });
       resultJson.push(obj);
@@ -1670,10 +1778,9 @@ async function processRealClientConversion(file, targetFmt) {
 
   // 7. REAL SECURITY: ENCRYPT / DECRYPT PDF & HASHEES
   if (targetExt === 'sec_encrypt') {
-    const pass = document.getElementById('pdfPassInput')?.value || 'fileboy123';
     const bytes = await file.arrayBuffer();
     const pdfDoc = await PDFLib.PDFDocument.load(bytes);
-    pdfDoc.encrypt({ userPassword: pass, ownerPassword: pass });
+    pdfDoc.encrypt({ userPassword: cfgPass, ownerPassword: cfgPass });
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: 'application/pdf' });
     return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_protected.pdf`, new_size: blob.size };
@@ -1681,7 +1788,7 @@ async function processRealClientConversion(file, targetFmt) {
 
   // 8. REAL STANDARD IMAGES (JPEG, PNG, WEBP)
   if (['jpeg', 'jpg', 'png', 'webp'].includes(targetExt) && file.type.startsWith('image/')) {
-    return await convertImageCanvas(file, targetExt, `${prefix}${baseName}.${targetExt}`);
+    return await convertImageCanvas(file, targetExt, `${prefix}${baseName}.${targetExt}`, cfgWidth);
   }
 
   // Fallback
@@ -1689,22 +1796,30 @@ async function processRealClientConversion(file, targetFmt) {
   return { download_url: URL.createObjectURL(blob), output_filename: `${prefix}${baseName}_converted.bin`, new_size: blob.size };
 }
 
-function convertImageCanvas(file, targetExt, outputFilename) {
+function convertImageCanvas(file, targetExt, outputFilename, maxW = 0) {
   return new Promise((resolve, reject) => {
     const img = new Image();
     const url = URL.createObjectURL(file);
 
     img.onload = () => {
       URL.revokeObjectURL(url);
+      let width = img.width;
+      let height = img.height;
+
+      if (maxW > 0 && width > maxW) {
+        height = Math.round((height * maxW) / width);
+        width = maxW;
+      }
+
       const canvas = document.createElement('canvas');
-      canvas.width = img.width;
-      canvas.height = img.height;
+      canvas.width = width;
+      canvas.height = height;
       const ctx = canvas.getContext('2d');
       if (targetExt === 'jpeg' || targetExt === 'jpg') {
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
       }
-      ctx.drawImage(img, 0, 0);
+      ctx.drawImage(img, 0, 0, width, height);
       let mimeType = `image/${targetExt}`;
       if (targetExt === 'jpg') mimeType = 'image/jpeg';
       canvas.toBlob((blob) => {
