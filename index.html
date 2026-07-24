@@ -1194,7 +1194,7 @@
           <div class="files-card-header">
             <span class="files-card-title" id="filesTitle">Files uploading</span>
             <div class="batch-actions">
-              <button class="convert-all-main-btn" onclick="convertAllBatch()">Convert All ⚡</button>
+              <button class="convert-all-main-btn" onclick="convertAllBatch()">Convert ⚡</button>
               <button class="batch-btn" onclick="clearBatch()">Clear</button>
             </div>
           </div>
@@ -1531,6 +1531,16 @@ function renderBatch() {
   const container = document.getElementById('fileListRows');
   const title = document.getElementById('filesTitle');
   const badge = document.getElementById('badgeSvg');
+  const convertBtn = document.querySelector('.convert-all-main-btn');
+
+  // DYNAMIC BUTTON TEXT SWITCHER
+  if (convertBtn) {
+    if (batchFiles.length > 1) {
+      convertBtn.textContent = 'Convert All ⚡';
+    } else {
+      convertBtn.textContent = 'Convert ⚡';
+    }
+  }
 
   const isConverting = batchFiles.some(f => f.status === 'converting');
   if (badge) badge.classList.toggle('spinning', isConverting);
